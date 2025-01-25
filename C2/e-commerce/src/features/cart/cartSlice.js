@@ -1,6 +1,6 @@
 // src/features/counter/counterSlice.js
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import fetchCount from "./authAPI"
+import fetchCount from "./cartAPI"
 const initialState = {
   value: 0,
   status: "idle"
@@ -15,8 +15,8 @@ export const incrementAsync = createAsyncThunk(
 )
 
 // Create a slice for the counter state
-const authSlice = createSlice({
-  name: "counter",
+const cartSlice = createSlice({
+  name: "cart",
   initialState,
   reducers: {
     increment: (state) => {
@@ -35,9 +35,9 @@ const authSlice = createSlice({
 });
 
 // Export actions so they can be dispatched
-export const { increment } = authSlice.actions;
+export const { increment } = cartSlice.actions;
 
 export const selectCount = (state) => state.counter.value;
 
 // Export the reducer to be used in the store
-export default authSlice.reducer;
+export default cartSlice.reducer;
