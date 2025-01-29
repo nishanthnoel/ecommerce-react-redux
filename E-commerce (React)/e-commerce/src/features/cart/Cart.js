@@ -79,12 +79,15 @@ function Cart() {
                     </div>
                     <div className="flex flex-1 items-end justify-between text-sm">
                       <div className="text-gray-500">
-                      {/* <label htmlFor="quantity" className="block text-sm/6 font-medium text-gray-900">
+                        {/* <label htmlFor="quantity" className="block text-sm/6 font-medium text-gray-900">
                   Qty
                 </label> */}
-                 <label htmlFor="quantity" className="inline mr-2  text-sm/6 font-medium text-gray-900">
-                  Qty
-                </label>
+                        <label
+                          htmlFor="quantity"
+                          className="inline mr-2  text-sm/6 font-medium text-gray-900"
+                        >
+                          Qty
+                        </label>
                         <select class="text-sm py-1  border rounded">
                           <option value={1}>1</option>
                           <option value={2}>2</option>
@@ -117,26 +120,26 @@ function Cart() {
             Shipping and taxes calculated at checkout.
           </p>
           <div className="mt-6">
-            <a
-              href="#"
+            <Link
+              to="/checkout"
               className="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-xs hover:bg-indigo-700"
             >
               Checkout
-            </a>
+            </Link>
           </div>
           <div className="mt-6 flex justify-center text-center text-sm text-gray-500">
             <p>
               or{" "}
               <Link to="/">
-              <button
-                type="button"
-                onClick={() => setOpen(false)}
-                className="font-medium text-indigo-600 hover:text-indigo-500"
+                <button
+                  type="button"
+                  onClick={() => setOpen(false)}
+                  className="font-medium text-indigo-600 hover:text-indigo-500"
                 >
-                Continue Shopping
-                <span aria-hidden="true"> &rarr;</span>
-              </button>
-                </Link>
+                  Continue Shopping
+                  <span aria-hidden="true"> &rarr;</span>
+                </button>
+              </Link>
             </p>
           </div>
         </div>
