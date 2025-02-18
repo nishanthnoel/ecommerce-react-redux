@@ -17,11 +17,12 @@ export async function fetchAllProducts() {
   }
 }
 
-export async function fetchProductsByFilters(filter, sort) {
+export async function fetchProductsByFilters(filter, sort, pagination) {
   // console.log(filter);
 
   //filter = {category: "electronics"}
   //sort = {_sort: "-rating""}
+  //pagination = {page:1, limit:17} _page=1&_limit=17
   //TODO: on server we will use multiple values  filter = {category: ["electronics", "laptops"]} here the filter will be an array and we have to push the values in the query string as category=electronics&category=laptops
   // let queryString = "";
   // for (let key in filter) {
@@ -46,19 +47,25 @@ export async function fetchProductsByFilters(filter, sort) {
   for (let key in sort) {
     queryString += `${key}=${sort[key]}&`;
   }
+  for(let key in pagination){
+    queryString += `${key}=${pagination[key]}&`; // this logic will work in older versions of json-ser
+  }
+  // console.log(queryString);
   try {
     const response = await fetch(
       "http://localhost:8080/products?" + queryString //http://localhost:8080/products?category=laptops&_sort=-rating
     );
+    console.log(response);
 
     // Check if the response is OK (status code 2xx)
     if (!response.ok) {
       throw new Error("Failed to fetch products");
     }
-
+    // console.log(response.json());// the reciieved arry is the same first 10 products
     const data = await response.json();
+    const totalItems = response.headers.get("X-Total-Count");
     // console.log({ data });
-    return { data }; // Returning the data as an object
+    return { data: {products: data,totalItems: +totalItems}}; // Returning the data as an object
   } catch (error) {
     // Handle errors (e.g., network errors, or bad response)
     console.error(error);

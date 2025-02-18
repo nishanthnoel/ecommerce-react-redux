@@ -11,8 +11,8 @@ export const fetchAllProductsAsync = createAsyncThunk(
 );
 export const fetchProductsByFiltersAsync = createAsyncThunk(
   "product/fetchProductsByFilters",
-  async ({filter, sort}) => {
-    const response = await fetchProductsByFilters(filter, sort);
+  async ({filter, sort, pagination}) => {
+    const response = await fetchProductsByFilters(filter, sort, pagination);
     return response.data;
   }
 );
@@ -22,6 +22,7 @@ const productSlice = createSlice({
   initialState: {
     products: [],
     status: "idle",
+    totalItems: 0,
   },
   reducers: {
     increment: (state) => {
@@ -47,7 +48,8 @@ const productSlice = createSlice({
       })
       .addCase(fetchProductsByFiltersAsync.fulfilled, (state, action) => {
         state.status = "idle";
-        state.products = action.payload;
+        state.products = action.payload.products;
+        state.totalItems = action.payload.totalItems;
       });
   },
 });
@@ -56,6 +58,7 @@ const productSlice = createSlice({
 export const { increment } = productSlice.actions;
 
 export const selectAllProducts = (state) => state.product.products;
+export const selectTotalItems = (state) => state.product.totalItems
 
 // Export the reducer to be used in the store
 export default productSlice.reducer;
