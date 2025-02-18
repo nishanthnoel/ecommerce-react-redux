@@ -135,31 +135,46 @@ function classNames(...classes) {
 export default function ProductList() {
   const dispatch = useDispatch();
   const [filter, setFilter] = useState({});
+  const [sort, setSort] = useState({});
   const products = useSelector(selectAllProducts); // Access the products array from Redux state
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
 
   const handleFilter = (e, section, option) => {
     // e.preventDefault(); // do not do this  doesnt check the checkbox for one click
     //TODO: handle multiple categories
-    console.log(option.value, section.id);
+    // console.log(option.value, section.id); // furniture category
+
+    // const newFilter = { ...filter,[section.id] : option.value };
+    //or
+    //  this method is used to unchecked the checkbox and remove the filter from the filter object when not checked
     const newFilter = { ...filter };
     if(e.target.checked){
-     newFilter[section.id] = option.value;   // CATEGORY  is section.id: "beauty" is option.value
+      if(newFilter[section.id]){
+        newFilter[section.id].push(option.value); // // CATEGORY  is section.id: "beauty" is option.value
+        // newFilter[section.id]= [...newFilter[section.id], option.value];
+      }else{
+        newFilter[section.id] = [option.value]; 
+      }
     }else{
-      delete newFilter[section.id];
+       const index = newFilter[section.id].findIndex((item) => item === option.value);
+       newFilter[section.id].splice(index, 1);
     }
+    console.log({newFilter});
     setFilter(newFilter);
     // dispatch(fetchProductsByFiltersAsync(filter)); // by this method we used to get the ui updated when clicked twice
-    // console.log(option.value, section.id);
+    // console.log(option.value, section.id); // furniture category
   };
   // option andre product
-  //section andre brand/ catergory
+  //section andre brand/category
+
+
   const handleSort = (e, option) => {
     // e.preventDefault(); // do not do this  doesnt check the checkbox for one click
     // const newFilter = { ...filter, _sort: option.sort, _order : option.order };
-    const newFilter = { ...filter, _sort: option.sort };
-    setFilter(newFilter);
-    // dispatch(fetchProductsByFiltersAsync(filter)); // by this method we used to get the ui updated when clicked twice
+    const sort = { _sort: option.sort };
+    console.log(sort);
+    setSort(sort);
+    // dispatch(fetchProductsByFiltersAsync(newFilter)); // by this method we used to get the ui updated when clicked twice
   };
 
   // useEffect(() => {
@@ -168,8 +183,8 @@ export default function ProductList() {
   // }, [dispatch]);   // this is no longer needed as we are fetching products by filters. which also runs when the page loads. 
 
   useEffect(() => {
-    dispatch(fetchProductsByFiltersAsync(filter));
-  }, [filter, dispatch]);
+    dispatch(fetchProductsByFiltersAsync(filter, sort));
+  }, [filter, sort, dispatch]);
 
   // console.log("Products state:", products);
   return (
