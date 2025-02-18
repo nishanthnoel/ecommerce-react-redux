@@ -37,8 +37,8 @@ import {
 
 const sortOptions = [
   { name: "Best Rating", sort: "-rating", current: false },
-  { name: "Price: Low to High", sort: "price",  current: false },
-  { name: "Price: High to Low", sort: "-price",   current: false },  // order: "desc" this didnt work in my json server 
+  { name: "Price: Low to High", sort: "price", current: false },
+  { name: "Price: High to Low", sort: "-price", current: false }, // order: "desc" this didnt work in my json server
 ];
 // const subCategories = [
 //   { name: "Totes", href: "#" },
@@ -133,16 +133,23 @@ function classNames(...classes) {
 }
 
 export default function ProductList() {
-  const products = useSelector(selectAllProducts); // Access the products array from Redux state
   const dispatch = useDispatch();
-  const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [filter, setFilter] = useState({});
+  const products = useSelector(selectAllProducts); // Access the products array from Redux state
+  const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
 
   const handleFilter = (e, section, option) => {
     // e.preventDefault(); // do not do this  doesnt check the checkbox for one click
-    const newFilter = { ...filter, [section.id]: option.value };
+    //TODO: handle multiple categories
+    console.log(option.value, section.id);
+    const newFilter = { ...filter };
+    if(e.target.checked){
+     newFilter[section.id] = option.value;   // CATEGORY  is section.id: "beauty" is option.value
+    }else{
+      delete newFilter[section.id];
+    }
     setFilter(newFilter);
-    dispatch(fetchProductsByFiltersAsync(filter));
+    // dispatch(fetchProductsByFiltersAsync(filter)); // by this method we used to get the ui updated when clicked twice
     // console.log(option.value, section.id);
   };
   // option andre product
@@ -152,13 +159,17 @@ export default function ProductList() {
     // const newFilter = { ...filter, _sort: option.sort, _order : option.order };
     const newFilter = { ...filter, _sort: option.sort };
     setFilter(newFilter);
-    dispatch(fetchProductsByFiltersAsync(filter));
+    // dispatch(fetchProductsByFiltersAsync(filter)); // by this method we used to get the ui updated when clicked twice
   };
 
+  // useEffect(() => {
+  //   console.log("Fetching products...");
+  //   dispatch(fetchAllProductsAsync());
+  // }, [dispatch]);   // this is no longer needed as we are fetching products by filters. which also runs when the page loads. 
+
   useEffect(() => {
-    console.log("Fetching products...");
-    dispatch(fetchAllProductsAsync());
-  }, [dispatch]);
+    dispatch(fetchProductsByFiltersAsync(filter));
+  }, [filter, dispatch]);
 
   // console.log("Products state:", products);
   return (
@@ -167,134 +178,11 @@ export default function ProductList() {
         <div className="bg-white">
           <div>
             {/* Mobile filter dialog */}
-            <Dialog
-              open={mobileFiltersOpen}
-              onClose={setMobileFiltersOpen}
-              className="relative z-40 lg:hidden"
-            >
-              <DialogBackdrop
-                transition
-                className="fixed inset-0 bg-black/25 transition-opacity duration-300 ease-linear data-closed:opacity-0"
-              />
-
-              <div className="fixed inset-0 z-40 flex">
-                <DialogPanel
-                  transition
-                  className="relative ml-auto flex size-full max-w-xs transform flex-col overflow-y-auto bg-white py-4 pb-12 shadow-xl transition duration-300 ease-in-out data-closed:translate-x-full"
-                >
-                  <div className="flex items-center justify-between px-4">
-                    <h2 className="text-lg font-medium text-gray-900">
-                      Filters
-                    </h2>
-                    <button
-                      type="button"
-                      onClick={() => setMobileFiltersOpen(false)}
-                      className="-mr-2 flex size-10 items-center justify-center rounded-md bg-white p-2 text-gray-400"
-                    >
-                      <span className="sr-only">Close menu</span>
-                      <XMarkIcon aria-hidden="true" className="size-6" />
-                    </button>
-                  </div>
-
-                  {/* Filters */}
-                  <form className="mt-4 border-t border-gray-200">
-                    {/* <h3 className="sr-only">Categories</h3> */}
-                    {/* <ul
-                      role="list"
-                      className="px-2 py-3 font-medium text-gray-900"
-                    >
-                      {subCategories.map((category) => (
-                        <li key={category.name}>
-                          <a href={category.href} className="block px-2 py-3">
-                            {category.name}
-                          </a>
-                        </li>
-                      ))}
-                    </ul> */}
-
-                    {filters.map((section) => (
-                      <Disclosure
-                        key={section.id}
-                        as="div"
-                        className="border-t border-gray-200 px-4 py-6"
-                      >
-                        <h3 className="-mx-2 -my-3 flow-root">
-                          <DisclosureButton className="group flex w-full items-center justify-between bg-white px-2 py-3 text-gray-400 hover:text-gray-500">
-                            <span className="font-medium text-gray-900">
-                              {section.name}
-                            </span>
-                            <span className="ml-6 flex items-center">
-                              <PlusIcon
-                                aria-hidden="true"
-                                className="size-5 group-data-open:hidden"
-                              />
-                              <MinusIcon
-                                aria-hidden="true"
-                                className="size-5 group-not-data-open:hidden"
-                              />
-                            </span>
-                          </DisclosureButton>
-                        </h3>
-                        <DisclosurePanel className="pt-6">
-                          <div className="space-y-6">
-                            {section.options.map((option, optionIdx) => (
-                              <div key={option.value} className="flex gap-3">
-                                <div className="flex h-5 shrink-0 items-center">
-                                  <div className="group grid size-4 grid-cols-1">
-                                    <input
-                                      defaultChecked={option.checked}
-                                      defaultValue={option.value}
-                                      // checked={option.checked}
-                                      id={`filter-mobile-${section.id}-${optionIdx}`}
-                                      name={`${section.id}[]`}
-                                      type="checkbox"
-                                      //  onChange={(e) => {
-                                      //   console.log(e.target.value); // Log the checkbox state when it's changed
-                                      //   // dispatch(toggleCheckbox(e.target.checked)); // Dispatch the Redux action
-                                      // }}
-                                      onChange={(e) =>
-                                        handleFilter(e, section, option)
-                                      }
-                                      className="col-start-1 row-start-1 appearance-none rounded-sm border border-gray-300 bg-white checked:border-indigo-600 checked:bg-indigo-600 indeterminate:border-indigo-600 indeterminate:bg-indigo-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:border-gray-300 disabled:bg-gray-100 disabled:checked:bg-gray-100 forced-colors:appearance-auto"
-                                    />
-                                    <svg
-                                      fill="none"
-                                      viewBox="0 0 14 14"
-                                      className="pointer-events-none col-start-1 row-start-1 size-3.5 self-center justify-self-center stroke-white group-has-disabled:stroke-gray-950/25"
-                                    >
-                                      <path
-                                        d="M3 8L6 11L11 3.5"
-                                        strokeWidth={2}
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        className="opacity-0 group-has-checked:opacity-100"
-                                      />
-                                      <path
-                                        d="M3 7H11"
-                                        strokeWidth={2}
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        className="opacity-0 group-has-indeterminate:opacity-100"
-                                      />
-                                    </svg>
-                                  </div>
-                                </div>
-                                <label
-                                  htmlFor={`filter-mobile-${section.id}-${optionIdx}`}
-                                  className="min-w-0 flex-1 text-gray-500"
-                                >
-                                  {option.label}
-                                </label>
-                              </div>
-                            ))}
-                          </div>
-                        </DisclosurePanel>
-                      </Disclosure>
-                    ))}
-                  </form>
-                </DialogPanel>
-              </div>
-            </Dialog>
+            <MobileFilter
+              handleFilter={handleFilter}
+              mobileFiltersOpen={mobileFiltersOpen}
+              setMobileFiltersOpen={setMobileFiltersOpen}
+            ></MobileFilter>
 
             <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
               <div className="flex items-baseline justify-between border-b border-gray-200 pt-24 pb-6">
@@ -322,7 +210,7 @@ export default function ProductList() {
                         {sortOptions.map((option) => (
                           <MenuItem key={option.name}>
                             <p
-                             onClick={e=>handleSort(e,option)}
+                              onClick={(e) => handleSort(e, option)}
                               className={classNames(
                                 option.current
                                   ? "font-medium text-gray-900"
@@ -365,241 +253,21 @@ export default function ProductList() {
                 </h2>
 
                 <div className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-4">
-                  {/* Filters */}
-                  <form className="hidden lg:block">
-                    {/* <h3 className="sr-only">Categories</h3> */}
-                    {/* <ul
-                      role="list"
-                      className="space-y-4 border-b border-gray-200 pb-6 text-sm font-medium text-gray-900"
-                    >
-                      {subCategories.map((category) => (
-                        <li key={category.name}>
-                          <a href={category.href}>{category.name}</a>
-                        </li>
-                      ))}
-                    </ul> */}
-
-                    {filters.map((section) => (
-                      <Disclosure
-                        key={section.id}
-                        as="div"
-                        className="border-b border-gray-200 py-6"
-                      >
-                        <h3 className="-my-3 flow-root">
-                          <DisclosureButton className="group flex w-full items-center justify-between bg-white py-3 text-sm text-gray-400 hover:text-gray-500">
-                            <span className="font-medium text-gray-900">
-                              {section.name}
-                            </span>
-                            <span className="ml-6 flex items-center">
-                              <PlusIcon
-                                aria-hidden="true"
-                                className="size-5 group-data-open:hidden"
-                              />
-                              <MinusIcon
-                                aria-hidden="true"
-                                className="size-5 group-not-data-open:hidden"
-                              />
-                            </span>
-                          </DisclosureButton>
-                        </h3>
-                        <DisclosurePanel className="pt-6">
-                          <div className="space-y-4">
-                            {section.options.map((option, optionIdx) => (
-                              <div key={option.value} className="flex gap-3">
-                                <div className="flex h-5 shrink-0 items-center">
-                                  <div className="group grid size-4 grid-cols-1">
-                                    <input
-                                      defaultValue={option.value}
-                                      defaultChecked={option.checked}
-                                      id={`filter-${section.id}-${optionIdx}`}
-                                      name={`${section.id}[]`}
-                                      type="checkbox"
-                                      onChange={(e) =>
-                                        handleFilter(e, section, option)
-                                      }
-                                      className="col-start-1 row-start-1 appearance-none rounded-sm border border-gray-300 bg-white checked:border-indigo-600 checked:bg-indigo-600 indeterminate:border-indigo-600 indeterminate:bg-indigo-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:border-gray-300 disabled:bg-gray-100 disabled:checked:bg-gray-100 forced-colors:appearance-auto"
-                                    />
-                                    <svg
-                                      fill="none"
-                                      viewBox="0 0 14 14"
-                                      className="pointer-events-none col-start-1 row-start-1 size-3.5 self-center justify-self-center stroke-white group-has-disabled:stroke-gray-950/25"
-                                    >
-                                      <path
-                                        d="M3 8L6 11L11 3.5"
-                                        strokeWidth={2}
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        className="opacity-0 group-has-checked:opacity-100"
-                                      />
-                                      <path
-                                        d="M3 7H11"
-                                        strokeWidth={2}
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        className="opacity-0 group-has-indeterminate:opacity-100"
-                                      />
-                                    </svg>
-                                  </div>
-                                </div>
-                                <label
-                                  htmlFor={`filter-${section.id}-${optionIdx}`}
-                                  className="text-sm text-gray-600"
-                                >
-                                  {option.label}
-                                </label>
-                              </div>
-                            ))}
-                          </div>
-                        </DisclosurePanel>
-                      </Disclosure>
-                    ))}
-                  </form>
+                  {/* Filters Desktop*/}
+                  <DesktopFilter handleFilter={handleFilter}></DesktopFilter>
 
                   {/* Product grid */}
                   <div className="lg:col-span-3">
                     {" "}
                     {/* This is our product page  */}
-                    <div className="bg-white">
-                      <div className="mx-auto max-w-2xl px-4 py-0 sm:px-6 sm:py-0 lg:max-w-7xl lg:px-8">
-                        <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-8">
-                          {products.map((product) => (
-                            <Link to="/product-detail">
-                              <div
-                                key={product.id}
-                                className="group relative  border-solid border-2 border-gray-200 p-2"
-                              >
-                                {/* <div className="min-h-60 lg:h-60"> */}
-                                <div className="min-h-60 ">
-                                  <img
-                                    alt={product.title}
-                                    src={product.thumbnail}
-                                    className=" aspect-square w-full rounded-md bg-gray-200 object-cover group-hover:opacity-75 lg:aspect-auto lg:h-80"
-                                  />
-                                </div>
-                                <div className="mt-4 flex justify-between">
-                                  <div>
-                                    <h3 className="text-sm text-gray-700">
-                                      <div href={product.thumbnail}>
-                                        <span
-                                          aria-hidden="true"
-                                          className="absolute inset-0"
-                                        />
-                                        {product.title}
-                                      </div>
-                                    </h3>
-                                    <p className="mt-1 text-sm text-gray-500 flex items-center">
-                                      <StarIcon className=" w-6 h-6 inline"></StarIcon>
-                                      <span className="align-bottom p-1">
-                                        {product.rating}
-                                      </span>
-                                    </p>
-                                  </div>
-                                  <div>
-                                    <p className="text-sm block font-medium text-gray-900">
-                                      ${" "}
-                                      {Math.round(
-                                        product.price *
-                                          (1 - product.discountPercentage / 100)
-                                      )}
-                                    </p>
-                                    <p className="text-sm block font-medium text-gray-400 line-through">
-                                      ${product.price}
-                                    </p>
-                                  </div>
-                                </div>
-                              </div>
-                            </Link>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
+                    <ProductGrid products={products}></ProductGrid>
                   </div>
                   {/* Product Grid End */}
                 </div>
               </section>
               {/* The section of products and filters end here */}
-
-              <div className="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6">
-                <div className="flex flex-1 justify-between sm:hidden">
-                  <a
-                    href="#"
-                    className="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
-                  >
-                    Previous
-                  </a>
-                  <a
-                    href="#"
-                    className="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
-                  >
-                    Next
-                  </a>
-                </div>
-                <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
-                  <div>
-                    <p className="text-sm text-gray-700">
-                      Showing <span className="font-medium">1</span> to{" "}
-                      <span className="font-medium">10</span> of{" "}
-                      <span className="font-medium">97</span> results
-                    </p>
-                  </div>
-                  <div>
-                    <nav
-                      aria-label="Pagination"
-                      className="isolate inline-flex -space-x-px rounded-md shadow-xs"
-                    >
-                      <a
-                        href="#"
-                        className="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
-                      >
-                        <span className="sr-only">Previous</span>
-                        <ChevronLeftIcon
-                          aria-hidden="true"
-                          className="size-5"
-                        />
-                      </a>
-                      {/* Current: "z-10 bg-indigo-600 text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600", Default: "text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:outline-offset-0" */}
-                      <a
-                        href="#"
-                        aria-current="page"
-                        className="relative z-10 inline-flex items-center bg-indigo-600 px-4 py-2 text-sm font-semibold text-white focus:z-20 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                      >
-                        1
-                      </a>
-                      <a
-                        href="#"
-                        className="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
-                      >
-                        2
-                      </a>
-                      <a
-                        href="#"
-                        className="relative hidden items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus:z-20 focus:outline-offset-0 md:inline-flex"
-                      >
-                        3
-                      </a>
-                      <span className="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-700 ring-1 ring-gray-300 ring-inset focus:outline-offset-0">
-                        ...
-                      </span>
-                      <a
-                        href="#"
-                        className="relative hidden items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus:z-20 focus:outline-offset-0 md:inline-flex"
-                      >
-                        8
-                      </a>
-
-                      <a
-                        href="#"
-                        className="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
-                      >
-                        <span className="sr-only">Next</span>
-                        <ChevronRightIcon
-                          aria-hidden="true"
-                          className="size-5"
-                        />
-                      </a>
-                    </nav>
-                  </div>
-                </div>
+              <div>
+                <Pagination></Pagination>
               </div>
             </main>
           </div>
@@ -645,6 +313,366 @@ export default function ProductList() {
             </div>
           </div>
         </div> */}
+      </div>
+    </div>
+  );
+}
+
+function MobileFilter({
+  mobileFiltersOpen,
+  setMobileFiltersOpen,
+  handleFilter,
+}) {
+  return (
+    <div>
+      <Dialog
+        open={mobileFiltersOpen}
+        onClose={setMobileFiltersOpen}
+        className="relative z-40 lg:hidden"
+      >
+        <DialogBackdrop
+          transition
+          className="fixed inset-0 bg-black/25 transition-opacity duration-300 ease-linear data-closed:opacity-0"
+        />
+
+        <div className="fixed inset-0 z-40 flex">
+          <DialogPanel
+            transition
+            className="relative ml-auto flex size-full max-w-xs transform flex-col overflow-y-auto bg-white py-4 pb-12 shadow-xl transition duration-300 ease-in-out data-closed:translate-x-full"
+          >
+            <div className="flex items-center justify-between px-4">
+              <h2 className="text-lg font-medium text-gray-900">Filters</h2>
+              <button
+                type="button"
+                onClick={() => setMobileFiltersOpen(false)}
+                className="-mr-2 flex size-10 items-center justify-center rounded-md bg-white p-2 text-gray-400"
+              >
+                <span className="sr-only">Close menu</span>
+                <XMarkIcon aria-hidden="true" className="size-6" />
+              </button>
+            </div>
+
+            {/* Filters */}
+            <form className="mt-4 border-t border-gray-200">
+              {/* <h3 className="sr-only">Categories</h3> */}
+              {/* <ul
+                      role="list"
+                      className="px-2 py-3 font-medium text-gray-900"
+                    >
+                      {subCategories.map((category) => (
+                        <li key={category.name}>
+                          <a href={category.href} className="block px-2 py-3">
+                            {category.name}
+                          </a>
+                        </li>
+                      ))}
+                    </ul> */}
+
+              {filters.map((section) => (
+                <Disclosure
+                  key={section.id}
+                  as="div"
+                  className="border-t border-gray-200 px-4 py-6"
+                >
+                  <h3 className="-mx-2 -my-3 flow-root">
+                    <DisclosureButton className="group flex w-full items-center justify-between bg-white px-2 py-3 text-gray-400 hover:text-gray-500">
+                      <span className="font-medium text-gray-900">
+                        {section.name}
+                      </span>
+                      <span className="ml-6 flex items-center">
+                        <PlusIcon
+                          aria-hidden="true"
+                          className="size-5 group-data-open:hidden"
+                        />
+                        <MinusIcon
+                          aria-hidden="true"
+                          className="size-5 group-not-data-open:hidden"
+                        />
+                      </span>
+                    </DisclosureButton>
+                  </h3>
+                  <DisclosurePanel className="pt-6">
+                    <div className="space-y-6">
+                      {section.options.map((option, optionIdx) => (
+                        <div key={option.value} className="flex gap-3">
+                          <div className="flex h-5 shrink-0 items-center">
+                            <div className="group grid size-4 grid-cols-1">
+                              <input
+                                defaultChecked={option.checked}
+                                defaultValue={option.value}
+                                // checked={option.checked}
+                                id={`filter-mobile-${section.id}-${optionIdx}`}
+                                name={`${section.id}[]`}
+                                type="checkbox"
+                                //  onChange={(e) => {
+                                //   console.log(e.target.value); // Log the checkbox state when it's changed
+                                //   // dispatch(toggleCheckbox(e.target.checked)); // Dispatch the Redux action
+                                // }}
+                                onChange={(e) =>
+                                  handleFilter(e, section, option)
+                                }
+                                className="col-start-1 row-start-1 appearance-none rounded-sm border border-gray-300 bg-white checked:border-indigo-600 checked:bg-indigo-600 indeterminate:border-indigo-600 indeterminate:bg-indigo-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:border-gray-300 disabled:bg-gray-100 disabled:checked:bg-gray-100 forced-colors:appearance-auto"
+                              />
+                              <svg
+                                fill="none"
+                                viewBox="0 0 14 14"
+                                className="pointer-events-none col-start-1 row-start-1 size-3.5 self-center justify-self-center stroke-white group-has-disabled:stroke-gray-950/25"
+                              >
+                                <path
+                                  d="M3 8L6 11L11 3.5"
+                                  strokeWidth={2}
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  className="opacity-0 group-has-checked:opacity-100"
+                                />
+                                <path
+                                  d="M3 7H11"
+                                  strokeWidth={2}
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  className="opacity-0 group-has-indeterminate:opacity-100"
+                                />
+                              </svg>
+                            </div>
+                          </div>
+                          <label
+                            htmlFor={`filter-mobile-${section.id}-${optionIdx}`}
+                            className="min-w-0 flex-1 text-gray-500"
+                          >
+                            {option.label}
+                          </label>
+                        </div>
+                      ))}
+                    </div>
+                  </DisclosurePanel>
+                </Disclosure>
+              ))}
+            </form>
+          </DialogPanel>
+        </div>
+      </Dialog>
+    </div>
+  );
+}
+
+function DesktopFilter({ handleFilter }) {
+  return (
+    <form className="hidden lg:block">
+      {/* <h3 className="sr-only">Categories</h3> */}
+      {/* <ul
+      role="list"
+      className="space-y-4 border-b border-gray-200 pb-6 text-sm font-medium text-gray-900"
+    >
+      {subCategories.map((category) => (
+        <li key={category.name}>
+          <a href={category.href}>{category.name}</a>
+        </li>
+      ))}
+    </ul> */}
+
+      {filters.map((section) => (
+        <Disclosure
+          key={section.id}
+          as="div"
+          className="border-b border-gray-200 py-6"
+        >
+          <h3 className="-my-3 flow-root">
+            <DisclosureButton className="group flex w-full items-center justify-between bg-white py-3 text-sm text-gray-400 hover:text-gray-500">
+              <span className="font-medium text-gray-900">{section.name}</span>
+              <span className="ml-6 flex items-center">
+                <PlusIcon
+                  aria-hidden="true"
+                  className="size-5 group-data-open:hidden"
+                />
+                <MinusIcon
+                  aria-hidden="true"
+                  className="size-5 group-not-data-open:hidden"
+                />
+              </span>
+            </DisclosureButton>
+          </h3>
+          <DisclosurePanel className="pt-6">
+            <div className="space-y-4">
+              {section.options.map((option, optionIdx) => (
+                <div key={option.value} className="flex gap-3">
+                  <div className="flex h-5 shrink-0 items-center">
+                    <div className="group grid size-4 grid-cols-1">
+                      <input
+                        defaultValue={option.value}
+                        defaultChecked={option.checked}
+                        id={`filter-${section.id}-${optionIdx}`}
+                        name={`${section.id}[]`}
+                        type="checkbox"
+                        onChange={(e) => handleFilter(e, section, option)}
+                        className="col-start-1 row-start-1 appearance-none rounded-sm border border-gray-300 bg-white checked:border-indigo-600 checked:bg-indigo-600 indeterminate:border-indigo-600 indeterminate:bg-indigo-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:border-gray-300 disabled:bg-gray-100 disabled:checked:bg-gray-100 forced-colors:appearance-auto"
+                      />
+                      <svg
+                        fill="none"
+                        viewBox="0 0 14 14"
+                        className="pointer-events-none col-start-1 row-start-1 size-3.5 self-center justify-self-center stroke-white group-has-disabled:stroke-gray-950/25"
+                      >
+                        <path
+                          d="M3 8L6 11L11 3.5"
+                          strokeWidth={2}
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          className="opacity-0 group-has-checked:opacity-100"
+                        />
+                        <path
+                          d="M3 7H11"
+                          strokeWidth={2}
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          className="opacity-0 group-has-indeterminate:opacity-100"
+                        />
+                      </svg>
+                    </div>
+                  </div>
+                  <label
+                    htmlFor={`filter-${section.id}-${optionIdx}`}
+                    className="text-sm text-gray-600"
+                  >
+                    {option.label}
+                  </label>
+                </div>
+              ))}
+            </div>
+          </DisclosurePanel>
+        </Disclosure>
+      ))}
+    </form>
+  );
+}
+
+function Pagination() {
+  return (
+    <div className="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6">
+         <div className="flex flex-1 justify-between sm:hidden">
+        <a
+          href="#"
+          className="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+        >
+          Previous
+        </a>
+        <a
+          href="#"
+          className="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+        >
+          Next
+        </a>
+      </div>
+      <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
+        <div>
+          <p className="text-sm text-gray-700">
+            Showing <span className="font-medium">1</span> to{" "}
+            <span className="font-medium">10</span> of{" "}
+            <span className="font-medium">97</span> results
+          </p>
+        </div>
+        <div>
+          <nav
+            aria-label="Pagination"
+            className="isolate inline-flex -space-x-px rounded-md shadow-xs"
+          >
+            <a
+              href="#"
+              className="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
+            >
+              <span className="sr-only">Previous</span>
+              <ChevronLeftIcon aria-hidden="true" className="size-5" />
+            </a>
+            {/* Current: "z-10 bg-indigo-600 text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600", Default: "text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:outline-offset-0" */}
+            <a
+              href="#"
+              aria-current="page"
+              className="relative z-10 inline-flex items-center bg-indigo-600 px-4 py-2 text-sm font-semibold text-white focus:z-20 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            >
+              1
+            </a>
+            <a
+              href="#"
+              className="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
+            >
+              2
+            </a>
+            <a
+              href="#"
+              className="relative hidden items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus:z-20 focus:outline-offset-0 md:inline-flex"
+            >
+              3
+            </a>
+            <span className="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-700 ring-1 ring-gray-300 ring-inset focus:outline-offset-0">
+              ...
+            </span>
+            <a
+              href="#"
+              className="relative hidden items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus:z-20 focus:outline-offset-0 md:inline-flex"
+            >
+              8
+            </a>
+
+            <a
+              href="#"
+              className="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
+            >
+              <span className="sr-only">Next</span>
+              <ChevronRightIcon aria-hidden="true" className="size-5" />
+            </a>
+          </nav>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function ProductGrid({ products }) {
+  return (
+    <div className="bg-white">
+      <div className="mx-auto max-w-2xl px-4 py-0 sm:px-6 sm:py-0 lg:max-w-7xl lg:px-8">
+        <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-8">
+          {products.map((product) => (
+            <Link to="/product-detail">
+              <div
+                key={product.id}
+                className="group relative  border-solid border-2 border-gray-200 p-2"
+              >
+                {/* <div className="min-h-60 lg:h-60"> */}
+                <div className="min-h-60 ">
+                  <img
+                    alt={product.title}
+                    src={product.thumbnail}
+                    className=" aspect-square w-full rounded-md bg-gray-200 object-cover group-hover:opacity-75 lg:aspect-auto lg:h-80"
+                  />
+                </div>
+                <div className="mt-4 flex justify-between">
+                  <div>
+                    <h3 className="text-sm text-gray-700">
+                      <div href={product.thumbnail}>
+                        <span aria-hidden="true" className="absolute inset-0" />
+                        {product.title}
+                      </div>
+                    </h3>
+                    <p className="mt-1 text-sm text-gray-500 flex items-center">
+                      <StarIcon className=" w-6 h-6 inline"></StarIcon>
+                      <span className="align-bottom p-1">{product.rating}</span>
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-sm block font-medium text-gray-900">
+                      ${" "}
+                      {Math.round(
+                        product.price * (1 - product.discountPercentage / 100)
+                      )}
+                    </p>
+                    <p className="text-sm block font-medium text-gray-400 line-through">
+                      ${product.price}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </Link>
+          ))}
+        </div>
       </div>
     </div>
   );
