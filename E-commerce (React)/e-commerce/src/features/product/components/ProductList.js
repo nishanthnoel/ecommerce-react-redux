@@ -162,6 +162,7 @@ export default function ProductList() {
     console.log({newFilter});
     setFilter(newFilter);
     // dispatch(fetchProductsByFiltersAsync(filter)); // by this method we used to get the ui updated when clicked twice
+    dispatch(fetchProductsByFiltersAsync({ filter: newFilter, sort })); // Dispatch the action with the updated filter and sort. 2.11 problem solved
     // console.log(option.value, section.id); // furniture category
   };
   // option andre product
@@ -171,10 +172,10 @@ export default function ProductList() {
   const handleSort = (e, option) => {
     // e.preventDefault(); // do not do this  doesnt check the checkbox for one click
     // const newFilter = { ...filter, _sort: option.sort, _order : option.order };
-    const sort = { _sort: option.sort };
-    console.log(sort);
-    setSort(sort);
-    // dispatch(fetchProductsByFiltersAsync(newFilter)); // by this method we used to get the ui updated when clicked twice
+    const newSort = { _sort: option.sort };
+    console.log(newSort);
+    setSort(newSort);
+    dispatch(fetchProductsByFiltersAsync({ filter, sort: newSort })); // Dispatch the action with the updated filter and sort
   };
 
   // useEffect(() => {
@@ -183,7 +184,7 @@ export default function ProductList() {
   // }, [dispatch]);   // this is no longer needed as we are fetching products by filters. which also runs when the page loads. 
 
   useEffect(() => {
-    dispatch(fetchProductsByFiltersAsync(filter, sort));
+    dispatch(fetchProductsByFiltersAsync({filter, sort}));
   }, [filter, sort, dispatch]);
 
   // console.log("Products state:", products);
