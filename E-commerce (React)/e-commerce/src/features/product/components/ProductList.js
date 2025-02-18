@@ -29,14 +29,16 @@ import {
   PlusIcon,
   Squares2X2Icon,
 } from "@heroicons/react/20/solid";
-import { selectAllProducts, fetchAllProductsAsync } from "../productSlice";
+import {
+  selectAllProducts,
+  fetchAllProductsAsync,
+  fetchProductsByFiltersAsync,
+} from "../productSlice";
 
 const sortOptions = [
-  { name: "Most Popular", href: "#", current: true },
-  { name: "Best Rating", href: "#", current: false },
-  { name: "Newest", href: "#", current: false },
-  { name: "Price: Low to High", href: "#", current: false },
-  { name: "Price: High to Low", href: "#", current: false },
+  { name: "Best Rating", sort: "-rating", current: false },
+  { name: "Price: Low to High", sort: "price",  current: false },
+  { name: "Price: High to Low", sort: "-price",   current: false },  // order: "desc" this didnt work in my json server 
 ];
 // const subCategories = [
 //   { name: "Totes", href: "#" },
@@ -47,20 +49,34 @@ const sortOptions = [
 // ];
 const filters = [
   {
+    id: "category",
+    name: "Category",
+    options: [
+      { value: "beauty", label: "beauty", checked: false },
+      { value: "fragrances", label: "fragrances", checked: false },
+      { value: "furniture", label: "furniture", checked: false },
+      { value: "groceries", label: "groceries", checked: false },
+      { value: "home-decoration", label: "home decoration", checked: false },
+      {
+        value: "kitchen-accessories",
+        label: "kitchen accessories",
+        checked: false,
+      },
+      { value: "laptops", label: "laptops", checked: false },
+      { value: "mens-shirts", label: "mens shirts", checked: false },
+      { value: "mens-shoes", label: "mens shoes", checked: false },
+      { value: "mens-watches", label: "mens watches", checked: false },
+      {
+        value: "mobile-accessories",
+        label: "mobile accessories",
+        checked: false,
+      },
+    ],
+  },
+  {
     id: "brand",
     name: "Brands",
     options: [
-      { value: "Essence", label: "Essence", checked: false },
-      { value: "Glamour Beauty", label: "Glamour Beauty", checked: false },
-      { value: "Velvet Touch", label: "Velvet Touch", checked: false },
-      { value: "Chic Cosmetics", label: "Chic Cosmetics", checked: false },
-      { value: "Nail Couture", label: "Nail Couture", checked: false },
-      { value: "Calvin Klein", label: "Calvin Klein", checked: false },
-      { value: "Chanel", label: "Chanel", checked: false },
-      { value: "Dior", label: "Dior", checked: false },
-      { value: "Dolce & Gabbana", label: "Dolce & Gabbana", checked: false },
-      { value: "Gucci", label: "Gucci", checked: false },
-      { value: "Annibale Colombo", label: "Annibale Colombo", checked: false },
       { value: "Furniture Co.", label: "Furniture Co.", checked: false },
       { value: "Knoll", label: "Knoll", checked: false },
       { value: "Bath Trends", label: "Bath Trends", checked: false },
@@ -85,24 +101,18 @@ const filters = [
       { value: "Longines", label: "Longines", checked: false },
       { value: "Rolex", label: "Rolex", checked: false },
       { value: "Amazon", label: "Amazon", checked: false },
+      { value: "Essence", label: "Essence", checked: false },
+      { value: "Glamour Beauty", label: "Glamour Beauty", checked: false },
+      { value: "Velvet Touch", label: "Velvet Touch", checked: false },
+      { value: "Chic Cosmetics", label: "Chic Cosmetics", checked: false },
+      { value: "Nail Couture", label: "Nail Couture", checked: false },
+      { value: "Calvin Klein", label: "Calvin Klein", checked: false },
+      { value: "Chanel", label: "Chanel", checked: false },
+      { value: "Dior", label: "Dior", checked: false },
+      { value: "Dolce & Gabbana", label: "Dolce & Gabbana", checked: false },
+      { value: "Gucci", label: "Gucci", checked: false },
+      { value: "Annibale Colombo", label: "Annibale Colombo", checked: false },
     ],
-  },
-  {
-    id: "category",
-    name: "Category",
-    options: [
-      { value: 'beauty', label: 'beauty', checked: false },
-      { value: 'fragrances', label: 'fragrances', checked: false },
-      { value: 'furniture', label: 'furniture', checked: false },
-      { value: 'groceries', label: 'groceries', checked: false },
-      { value: 'home-decoration', label: 'home decoration', checked: false },
-      { value: 'kitchen-accessories', label: 'kitchen accessories', checked: false },
-      { value: 'laptops', label: 'laptops', checked: false },
-      { value: 'mens-shirts', label: 'mens shirts', checked: false },
-      { value: 'mens-shoes', label: 'mens shoes', checked: false },
-      { value: 'mens-watches', label: 'mens watches', checked: false },
-      { value: 'mobile-accessories', label: 'mobile accessories', checked: false }
-    ]
   },
   // {
   //   id: "size",
@@ -126,6 +136,24 @@ export default function ProductList() {
   const products = useSelector(selectAllProducts); // Access the products array from Redux state
   const dispatch = useDispatch();
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
+  const [filter, setFilter] = useState({});
+
+  const handleFilter = (e, section, option) => {
+    // e.preventDefault(); // do not do this  doesnt check the checkbox for one click
+    const newFilter = { ...filter, [section.id]: option.value };
+    setFilter(newFilter);
+    dispatch(fetchProductsByFiltersAsync(filter));
+    // console.log(option.value, section.id);
+  };
+  // option andre product
+  //section andre brand/ catergory
+  const handleSort = (e, option) => {
+    // e.preventDefault(); // do not do this  doesnt check the checkbox for one click
+    // const newFilter = { ...filter, _sort: option.sort, _order : option.order };
+    const newFilter = { ...filter, _sort: option.sort };
+    setFilter(newFilter);
+    dispatch(fetchProductsByFiltersAsync(filter));
+  };
 
   useEffect(() => {
     console.log("Fetching products...");
@@ -220,7 +248,13 @@ export default function ProductList() {
                                       id={`filter-mobile-${section.id}-${optionIdx}`}
                                       name={`${section.id}[]`}
                                       type="checkbox"
-                                      onChange={(e) => { console.log(e)}}
+                                      //  onChange={(e) => {
+                                      //   console.log(e.target.value); // Log the checkbox state when it's changed
+                                      //   // dispatch(toggleCheckbox(e.target.checked)); // Dispatch the Redux action
+                                      // }}
+                                      onChange={(e) =>
+                                        handleFilter(e, section, option)
+                                      }
                                       className="col-start-1 row-start-1 appearance-none rounded-sm border border-gray-300 bg-white checked:border-indigo-600 checked:bg-indigo-600 indeterminate:border-indigo-600 indeterminate:bg-indigo-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:border-gray-300 disabled:bg-gray-100 disabled:checked:bg-gray-100 forced-colors:appearance-auto"
                                     />
                                     <svg
@@ -287,8 +321,8 @@ export default function ProductList() {
                       <div className="py-1">
                         {sortOptions.map((option) => (
                           <MenuItem key={option.name}>
-                            <a
-                              href={option.href}
+                            <p
+                             onClick={e=>handleSort(e,option)}
                               className={classNames(
                                 option.current
                                   ? "font-medium text-gray-900"
@@ -297,7 +331,7 @@ export default function ProductList() {
                               )}
                             >
                               {option.name}
-                            </a>
+                            </p>
                           </MenuItem>
                         ))}
                       </div>
@@ -380,10 +414,9 @@ export default function ProductList() {
                                       id={`filter-${section.id}-${optionIdx}`}
                                       name={`${section.id}[]`}
                                       type="checkbox"
-                                      onChange={(e) => {
-                                        console.log(e.target.value); // Log the checkbox state when it's changed
-                                        // dispatch(toggleCheckbox(e.target.checked)); // Dispatch the Redux action
-                                      }}
+                                      onChange={(e) =>
+                                        handleFilter(e, section, option)
+                                      }
                                       className="col-start-1 row-start-1 appearance-none rounded-sm border border-gray-300 bg-white checked:border-indigo-600 checked:bg-indigo-600 indeterminate:border-indigo-600 indeterminate:bg-indigo-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:border-gray-300 disabled:bg-gray-100 disabled:checked:bg-gray-100 forced-colors:appearance-auto"
                                     />
                                     <svg
@@ -446,13 +479,13 @@ export default function ProductList() {
                                 <div className="mt-4 flex justify-between">
                                   <div>
                                     <h3 className="text-sm text-gray-700">
-                                      <a href={product.thumbnail}>
+                                      <div href={product.thumbnail}>
                                         <span
                                           aria-hidden="true"
                                           className="absolute inset-0"
                                         />
                                         {product.title}
-                                      </a>
+                                      </div>
                                     </h3>
                                     <p className="mt-1 text-sm text-gray-500 flex items-center">
                                       <StarIcon className=" w-6 h-6 inline"></StarIcon>
