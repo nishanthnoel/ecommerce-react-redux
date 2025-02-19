@@ -16,6 +16,36 @@ export async function fetchAllProducts() {
     throw error; // Rethrow the error to propagate it
   }
 }
+export async function fetchBrands() {
+  try {
+    const response = await fetch("http://localhost:8080/brands");
+    if (!response.ok) {
+      throw new Error("Failed to fetch Brands");
+    }
+    const data = await response.json();
+    console.log({ data });
+    return { data }; 
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+export async function fetchCategories() {
+  try {
+    const response = await fetch("http://localhost:8080/categories");
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch Categories");
+    }
+
+    const data = await response.json();
+    console.log({ data });
+    return { data };
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
 
 export async function fetchProductsByFilters(filter, sort, pagination) {
   // console.log(filter);

@@ -34,13 +34,22 @@ import {
   fetchAllProductsAsync,
   fetchProductsByFiltersAsync,
   selectTotalItems,
+  selectCategories,
+  selectBrands,
+  fetchCategoriesAsync,
+  fetchBrandsAsync,
 } from "../productSlice";
 import { ITEMS_PER_PAGE } from "../../../app/constants";
 
+// const sortOptions = [
+//   { name: "Best Rating", sort: "-rating", current: false },
+//   { name: "Price: Low to High", sort: "price", current: false },
+//   { name: "Price: High to Low", sort: "-price", current: false }, // order: "desc" this didnt work in my json server   // this is for latest json server
+// ];
 const sortOptions = [
-  { name: "Best Rating", sort: "-rating", current: false },
-  { name: "Price: Low to High", sort: "price", current: false },
-  { name: "Price: High to Low", sort: "-price", current: false }, // order: "desc" this didnt work in my json server
+  { name: "Best Rating", sort: "rating", order: "desc", current: false },
+  { name: "Price: Low to High", sort: "price", order: "asc", current: false },
+  { name: "Price: High to Low", sort: "price", order: "desc", current: false }, // order: "desc" this didnt work in my json server
 ];
 // const subCategories = [
 //   { name: "Totes", href: "#" },
@@ -49,86 +58,6 @@ const sortOptions = [
 //   { name: "Hip Bags", href: "#" },
 //   { name: "Laptop Sleeves", href: "#" },
 // ];
-const filters = [
-  {
-    id: "category",
-    name: "Category",
-    options: [
-      { value: "beauty", label: "beauty", checked: false },
-      { value: "fragrances", label: "fragrances", checked: false },
-      { value: "furniture", label: "furniture", checked: false },
-      { value: "groceries", label: "groceries", checked: false },
-      { value: "home-decoration", label: "home decoration", checked: false },
-      {
-        value: "kitchen-accessories",
-        label: "kitchen accessories",
-        checked: false,
-      },
-      { value: "laptops", label: "laptops", checked: false },
-      { value: "mens-shirts", label: "mens shirts", checked: false },
-      { value: "mens-shoes", label: "mens shoes", checked: false },
-      { value: "mens-watches", label: "mens watches", checked: false },
-      {
-        value: "mobile-accessories",
-        label: "mobile accessories",
-        checked: false,
-      },
-    ],
-  },
-  {
-    id: "brand",
-    name: "Brands",
-    options: [
-      { value: "Furniture Co.", label: "Furniture Co.", checked: false },
-      { value: "Knoll", label: "Knoll", checked: false },
-      { value: "Bath Trends", label: "Bath Trends", checked: false },
-      { value: "Apple", label: "Apple", checked: false },
-      { value: "Asus", label: "Asus", checked: false },
-      { value: "Huawei", label: "Huawei", checked: false },
-      { value: "Lenovo", label: "Lenovo", checked: false },
-      { value: "Dell", label: "Dell", checked: false },
-      { value: "Fashion Trends", label: "Fashion Trends", checked: false },
-      { value: "Gigabyte", label: "Gigabyte", checked: false },
-      { value: "Classic Wear", label: "Classic Wear", checked: false },
-      { value: "Casual Comfort", label: "Casual Comfort", checked: false },
-      { value: "Urban Chic", label: "Urban Chic", checked: false },
-      { value: "Nike", label: "Nike", checked: false },
-      { value: "Puma", label: "Puma", checked: false },
-      { value: "Off White", label: "Off White", checked: false },
-      {
-        value: "Fashion Timepieces",
-        label: "Fashion Timepieces",
-        checked: false,
-      },
-      { value: "Longines", label: "Longines", checked: false },
-      { value: "Rolex", label: "Rolex", checked: false },
-      { value: "Amazon", label: "Amazon", checked: false },
-      { value: "Essence", label: "Essence", checked: false },
-      { value: "Glamour Beauty", label: "Glamour Beauty", checked: false },
-      { value: "Velvet Touch", label: "Velvet Touch", checked: false },
-      { value: "Chic Cosmetics", label: "Chic Cosmetics", checked: false },
-      { value: "Nail Couture", label: "Nail Couture", checked: false },
-      { value: "Calvin Klein", label: "Calvin Klein", checked: false },
-      { value: "Chanel", label: "Chanel", checked: false },
-      { value: "Dior", label: "Dior", checked: false },
-      { value: "Dolce & Gabbana", label: "Dolce & Gabbana", checked: false },
-      { value: "Gucci", label: "Gucci", checked: false },
-      { value: "Annibale Colombo", label: "Annibale Colombo", checked: false },
-    ],
-  },
-  // {
-  //   id: "size",
-  //   name: "Size",
-  //   options: [
-  //     { value: "2l", label: "2L", checked: false },
-  //     { value: "6l", label: "6L", checked: false },
-  //     { value: "12l", label: "12L", checked: false },
-  //     { value: "18l", label: "18L", checked: false },
-  //     { value: "20l", label: "20L", checked: false },
-  //     { value: "40l", label: "40L", checked: true },
-  //   ],
-  // },
-];
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -140,8 +69,35 @@ export default function ProductList() {
   const [sort, setSort] = useState({});
   const products = useSelector(selectAllProducts); // Access the products array from Redux state
   const totalItems = useSelector(selectTotalItems);
+  const categories = useSelector(selectCategories);
+  const brands = useSelector(selectBrands);
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [page, setPage] = useState(1);
+
+  const filters = [
+    {
+      id: "category",
+      name: "Category",
+      options: categories,
+    },
+    {
+      id: "brand",
+      name: "Brands",
+      options: brands,
+    },
+    // {
+    //   id: "size",
+    //   name: "Size",
+    //   options: [
+    //     { value: "2l", label: "2L", checked: false },
+    //     { value: "6l", label: "6L", checked: false },
+    //     { value: "12l", label: "12L", checked: false },
+    //     { value: "18l", label: "18L", checked: false },
+    //     { value: "20l", label: "20L", checked: false },
+    //     { value: "40l", label: "40L", checked: true },
+    //   ],
+    // },
+  ];
 
   const handleFilter = (e, section, option) => {
     // e.preventDefault(); // do not do this  doesnt check the checkbox for one click
@@ -177,7 +133,8 @@ export default function ProductList() {
   const handleSort = (e, option) => {
     // e.preventDefault(); // do not do this  doesnt check the checkbox for one click
     // const newFilter = { ...filter, _sort: option.sort, _order : option.order };
-    const newSort = { _sort: option.sort };
+    // const newSort = { _sort: option.sort}; // used for latest version of json server
+    const newSort = { _sort: option.sort, _order: option.order };
     console.log(newSort);
     setSort(newSort);
     // dispatch(fetchProductsByFiltersAsync({ filter, sort: newSort })); // Dispatch the action with the updated filter and sort
@@ -206,7 +163,11 @@ export default function ProductList() {
 
   useEffect(() => {
     setPage(1);
-  }, [totalItems, sort]); 
+  }, [totalItems, sort]);
+  useEffect(() => {
+    dispatch(fetchCategoriesAsync());
+    dispatch(fetchBrandsAsync());
+  }, []);
 
   // console.log("Products state:", products);
   return (
@@ -219,6 +180,7 @@ export default function ProductList() {
               handleFilter={handleFilter}
               mobileFiltersOpen={mobileFiltersOpen}
               setMobileFiltersOpen={setMobileFiltersOpen}
+              filters={filters}
             ></MobileFilter>
 
             <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -291,7 +253,10 @@ export default function ProductList() {
 
                 <div className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-4">
                   {/* Filters Desktop*/}
-                  <DesktopFilter handleFilter={handleFilter}></DesktopFilter>
+                  <DesktopFilter
+                    handleFilter={handleFilter}
+                    filters={filters}
+                  ></DesktopFilter>
 
                   {/* Product grid */}
                   <div className="lg:col-span-3">
@@ -364,6 +329,7 @@ function MobileFilter({
   mobileFiltersOpen,
   setMobileFiltersOpen,
   handleFilter,
+  filters,
 }) {
   return (
     <div>
@@ -497,7 +463,7 @@ function MobileFilter({
   );
 }
 
-function DesktopFilter({ handleFilter }) {
+function DesktopFilter({ handleFilter, filters }) {
   return (
     <form className="hidden lg:block">
       {/* <h3 className="sr-only">Categories</h3> */}
@@ -587,21 +553,23 @@ function DesktopFilter({ handleFilter }) {
 }
 
 function Pagination({ page, setPage, handlePage, totalItems }) {
+  
+  const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE)
   return (
     <div className="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6">
       <div className="flex flex-1 justify-between sm:hidden">
-        <a
-          href="#"
+        <div
+          onClick={(e) => handlePage(page > 1 ? page - 1 : page)} 
           className="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
         >
           Previous
-        </a>
-        <a
-          href="#"
+        </div>
+        <div
+          onClick={(e) => handlePage(page < totalPages ? page + 1 : page)} 
           className="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
         >
           Next
-        </a>
+        </div>
       </div>
       <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
         <div>
@@ -624,16 +592,14 @@ function Pagination({ page, setPage, handlePage, totalItems }) {
             aria-label="Pagination"
             className="isolate inline-flex -space-x-px rounded-md shadow-xs"
           >
-            <a
-              href="#"
-              className="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
+            <div onClick={(e) => handlePage(page > 1 ? page - 1 : page)}   className="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
             >
               <span className="sr-only">Previous</span>
               <ChevronLeftIcon aria-hidden="true" className="size-5" />
-            </a>
+            </div>
             {/* Current: "z-10 bg-indigo-600 text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600", Default: "text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:outline-offset-0" */}
 
-            {Array.from({ length: Math.ceil(totalItems / ITEMS_PER_PAGE) }).map(
+            {Array.from({ length: totalPages }).map(
               (el, index) => (
                 <div
                   onClick={(e) => handlePage(index + 1)}
@@ -649,7 +615,7 @@ function Pagination({ page, setPage, handlePage, totalItems }) {
               )
             )}
 
-            {/* <span className="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-700 ring-1 ring-gray-300 ring-inset focus:outline-offset-0">
+            <span className="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-700 ring-1 ring-gray-300 ring-inset focus:outline-offset-0">
               ...
             </span>
             <a
@@ -659,13 +625,10 @@ function Pagination({ page, setPage, handlePage, totalItems }) {
               {Math.ceil(totalItems / ITEMS_PER_PAGE)}
             </a>
 
-            <a
-              href="#"
-              className="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
-            > */}
-              {/* <span className="sr-only">Next</span>
+            <div onClick={(e) => handlePage(page < totalPages ? page + 1 : page)}  className="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus:z-20 focus:outline-offset-0">
+              <span className="sr-only">Next</span>
               <ChevronRightIcon aria-hidden="true" className="size-5" />
-            </a> */}
+            </div>
           </nav>
         </div>
       </div>
