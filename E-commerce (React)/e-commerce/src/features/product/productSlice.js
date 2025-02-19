@@ -5,12 +5,20 @@ import {
   fetchProductsByFilters,
   fetchBrands,
   fetchCategories,
+  fetchProductById,
 } from "./productAPI";
 
 export const fetchAllProductsAsync = createAsyncThunk(
   "product/fetchAllProducts",
   async () => {
     const response = await fetchAllProducts();
+    return response.data;
+  }
+);
+export const fetchProductByIdAsync = createAsyncThunk(
+  "product/fetchProductById",
+  async (id) => {
+    const response = await fetchProductById(id);
     return response.data;
   }
 );
@@ -44,6 +52,7 @@ const productSlice = createSlice({
     categories: [],
     status: "idle",
     totalItems: 0,
+    selectedProduct: null
   },
   reducers: {
     increment: (state) => {
@@ -85,6 +94,12 @@ const productSlice = createSlice({
       .addCase(fetchCategoriesAsync.fulfilled, (state, action) => {
         state.status = "idle";
         state.categories = action.payload;
+      }).addCase(fetchProductByIdAsync.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(fetchProductByIdAsync.fulfilled, (state, action) => {
+        state.status = "idle";
+        state.selectedProduct = action.payload; // Store the selected product
       });
   },
 });
@@ -96,6 +111,7 @@ export const selectAllProducts = (state) => state.product.products;
 export const selectTotalItems = (state) => state.product.totalItems;
 export const selectBrands = (state) => state.product.brands;
 export const selectCategories = (state) => state.product.categories;
+export const selectProductById = (state) => state.product.selectedProduct;  
 
 // Export the reducer to be used in the store
 export default productSlice.reducer;

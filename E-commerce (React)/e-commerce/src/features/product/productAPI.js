@@ -16,6 +16,31 @@ export async function fetchAllProducts() {
     throw error; // Rethrow the error to propagate it
   }
 }
+
+// export async function fetchProductById({id}) {
+//   return new Promise(async (resolve, reject) => {
+//     const response = fetch(`http://localhost:8080/products/${id}`);
+//     const data = await response.json();
+//     resolve({ data });
+//   });
+// }
+
+export async function fetchProductById(id ) {
+  console.log(id)
+  try {
+    const response = await fetch(`http://localhost:8080/products/${id}`);
+    if (!response.ok) {
+      throw new Error("Failed to fetch product");
+    }
+    const data = await response.json();
+    console.log(data)
+    return { data };
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
 export async function fetchBrands() {
   try {
     const response = await fetch("http://localhost:8080/brands");
@@ -24,7 +49,7 @@ export async function fetchBrands() {
     }
     const data = await response.json();
     console.log({ data });
-    return { data }; 
+    return { data };
   } catch (error) {
     console.error(error);
     throw error;
@@ -77,7 +102,7 @@ export async function fetchProductsByFilters(filter, sort, pagination) {
   for (let key in sort) {
     queryString += `${key}=${sort[key]}&`;
   }
-  for(let key in pagination){
+  for (let key in pagination) {
     queryString += `${key}=${pagination[key]}&`; // this logic will work in older versions of json-ser
   }
   // console.log(queryString);
@@ -95,7 +120,7 @@ export async function fetchProductsByFilters(filter, sort, pagination) {
     const data = await response.json();
     const totalItems = response.headers.get("X-Total-Count");
     // console.log({ data });
-    return { data: {products: data,totalItems: +totalItems}}; // Returning the data as an object
+    return { data: { products: data, totalItems: +totalItems } }; // Returning the data as an object
   } catch (error) {
     // Handle errors (e.g., network errors, or bad response)
     console.error(error);
