@@ -81,7 +81,7 @@ export default function ProductDetail() {
   const [selectedSize, setSelectedSize] = useState(sizes[2]);
   const product = useSelector(selectProductById)
   const dispatch = useDispatch()
-  const params = useParams() // useParams is a hook that returns an object of key/value pairs of URL parameters. Use it to access match.params of the current <Route>.
+  const params = useParams()  //Yes, useParams accesses the current URL from the React Router system, no matter where the URL is changed or set. However, it works only when you're using React Router to handle navigation, and it’s specifically for routes defined in your app.
 
   useEffect(() => {
     dispatch(fetchProductByIdAsync(params.id));
