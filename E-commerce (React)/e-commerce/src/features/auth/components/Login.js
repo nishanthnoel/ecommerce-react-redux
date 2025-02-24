@@ -49,7 +49,7 @@ function Login() {
               dispatch(
                 checkUserAsync({ email: data.email, password: data.password })
               );
-              console.log(data);  // this logs the login credentials(object with email and password)
+              // console.log(data);  // this logs the login credentials(object with email and password)
             })}
             className="space-y-6"
           >

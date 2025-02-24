@@ -45,7 +45,7 @@ function Signup() {
           <form
             noValidate
             onSubmit={handleSubmit((data) => {
-              dispatch(createUserAsync({email: data.email, password: data.password}));
+              dispatch(createUserAsync({email: data.email, password: data.password, addresses: []}));
               console.log(data);   // this logs the signup credentials(object with email, password, and confirmPassword)
             })}
             // action="#" method="POST"

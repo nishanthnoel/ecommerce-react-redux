@@ -6227,175 +6227,84 @@
     {
       "email": "test@gmail.com",
       "password": "Test1234",
-      "id": 1
+      "id": 1,
+      "addresses": [
+        {
+          "name": "Nishanth",
+          "email": "batman@gmail.com",
+          "phone": "9632852411",
+          "street": "7th cross, Wayne Mansion",
+          "city": "Gotham City",
+          "state": "Gotham",
+          "pinCode": "560074"
+        },
+        {
+          "name": "Nishanth",
+          "email": "batman@gmail.com",
+          "phone": "9632852411",
+          "street": "7th cross, Wayne Mansion",
+          "city": "Gotham City",
+          "state": "Gotham",
+          "pinCode": "560074"
+        }
+      ]
     },
     {
       "email": "test7@gmail.com",
       "password": "7789Test",
-      "id": 2
+      "id": 2,
+      "addresses": []
     },
     {
       "email": "test2@gmail.com",
       "password": "Test21234",
-      "id": 3
+      "id": 3,
+      "addresses": []
     },
     {
       "email": "test3@gmail.com",
       "password": "Test31234",
-      "id": 4
+      "id": 4,
+      "addresses": []
     },
     {
       "email": "demo@gmail.com",
       "password": "Demo1234",
-      "id": 5
+      "id": 5,
+      "addresses": []
     },
     {
       "email": "test1@gmail.com",
       "password": "Test1234",
-      "id": 6
+      "id": 6,
+      "addresses": []
     },
     {
       "email": "demo1@gmail.com",
       "password": "Demo1234",
-      "id": 7
+      "id": 7,
+      "addresses": []
     },
     {
       "email": "demo2@gmail.com",
       "password": "Demo1234",
-      "id": 8
+      "id": 8,
+      "addresses": []
     },
     {
       "email": "demo3@gmail.com",
       "password": "Demo1234",
-      "id": 9
+      "id": 9,
+      "addresses": []
+    },
+    {
+      "email": "demo200@gmail.com",
+      "password": "Demo1234",
+      "addresses": [],
+      "id": 10
     }
   ],
   "cart": [
-    {
-      "id": 9,
-      "title": "Dolce Shine Eau de",
-      "description": "Dolce Shine by Dolce & Gabbana is a vibrant and fruity fragrance, featuring notes of mango, jasmine, and blonde woods. It's a joyful and youthful scent.",
-      "category": "fragrances",
-      "price": 69.99,
-      "discountPercentage": 11.47,
-      "rating": 2.68,
-      "stock": 3,
-      "tags": [
-        "fragrances",
-        "perfumes"
-      ],
-      "brand": "Dolce & Gabbana",
-      "sku": "1NBFK980",
-      "weight": 5,
-      "dimensions": {
-        "width": 17,
-        "height": 24.57,
-        "depth": 13.3
-      },
-      "warrantyInformation": "5 year warranty",
-      "shippingInformation": "Ships in 1-2 business days",
-      "availabilityStatus": "Low Stock",
-      "reviews": [
-        {
-          "rating": 4,
-          "comment": "Very satisfied!",
-          "date": "2024-05-23T08:56:21.619Z",
-          "reviewerName": "Xavier Wright",
-          "reviewerEmail": "xavier.wright@x.dummyjson.com"
-        },
-        {
-          "rating": 1,
-          "comment": "Poor quality!",
-          "date": "2024-05-23T08:56:21.619Z",
-          "reviewerName": "Mila Hernandez",
-          "reviewerEmail": "mila.hernandez@x.dummyjson.com"
-        },
-        {
-          "rating": 5,
-          "comment": "Very happy with my purchase!",
-          "date": "2024-05-23T08:56:21.619Z",
-          "reviewerName": "Sophia Brown",
-          "reviewerEmail": "sophia.brown@x.dummyjson.com"
-        }
-      ],
-      "returnPolicy": "30 days return policy",
-      "minimumOrderQuantity": 9,
-      "meta": {
-        "createdAt": "2024-05-23T08:56:21.619Z",
-        "updatedAt": "2024-05-23T08:56:21.619Z",
-        "barcode": "1939383392674",
-        "qrCode": "https://assets.dummyjson.com/public/qr-code.png"
-      },
-      "images": [
-        "https://cdn.dummyjson.com/products/images/fragrances/Dolce%20Shine%20Eau%20de/1.png",
-        "https://cdn.dummyjson.com/products/images/fragrances/Dolce%20Shine%20Eau%20de/2.png",
-        "https://cdn.dummyjson.com/products/images/fragrances/Dolce%20Shine%20Eau%20de/3.png"
-      ],
-      "thumbnail": "https://cdn.dummyjson.com/products/images/fragrances/Dolce%20Shine%20Eau%20de/thumbnail.png",
-      "quantity": 5,
-      "user": 1
-    },
-    {
-      "id": 22,
-      "title": "Dog Food",
-      "description": "Specially formulated dog food designed to provide essential nutrients for your canine companion.",
-      "category": "groceries",
-      "price": 10.99,
-      "discountPercentage": 18.15,
-      "rating": 2.74,
-      "stock": 40,
-      "tags": [
-        "pet supplies",
-        "dog food"
-      ],
-      "sku": "A6QRCH37",
-      "weight": 2,
-      "dimensions": {
-        "width": 29.39,
-        "height": 29.77,
-        "depth": 20.54
-      },
-      "warrantyInformation": "1 year warranty",
-      "shippingInformation": "Ships in 1 month",
-      "availabilityStatus": "In Stock",
-      "reviews": [
-        {
-          "rating": 5,
-          "comment": "Highly impressed!",
-          "date": "2024-05-23T08:56:21.620Z",
-          "reviewerName": "Leo Rivera",
-          "reviewerEmail": "leo.rivera@x.dummyjson.com"
-        },
-        {
-          "rating": 4,
-          "comment": "Highly recommended!",
-          "date": "2024-05-23T08:56:21.620Z",
-          "reviewerName": "Alexander Jones",
-          "reviewerEmail": "alexander.jones@x.dummyjson.com"
-        },
-        {
-          "rating": 4,
-          "comment": "Would buy again!",
-          "date": "2024-05-23T08:56:21.620Z",
-          "reviewerName": "Addison Wright",
-          "reviewerEmail": "addison.wright@x.dummyjson.com"
-        }
-      ],
-      "returnPolicy": "90 days return policy",
-      "minimumOrderQuantity": 29,
-      "meta": {
-        "createdAt": "2024-05-23T08:56:21.620Z",
-        "updatedAt": "2024-05-23T08:56:21.620Z",
-        "barcode": "7957222289508",
-        "qrCode": "https://assets.dummyjson.com/public/qr-code.png"
-      },
-      "images": [
-        "https://cdn.dummyjson.com/products/images/groceries/Dog%20Food/1.png"
-      ],
-      "thumbnail": "https://cdn.dummyjson.com/products/images/groceries/Dog%20Food/thumbnail.png",
-      "quantity": 1,
-      "user": 1
-    },
     {
       "id": 20,
       "title": "Cooking Oil",
@@ -6577,6 +6486,195 @@
       "thumbnail": "https://cdn.dummyjson.com/products/images/beauty/Powder%20Canister/thumbnail.png",
       "quantity": 1,
       "user": 7
+    },
+    {
+      "title": "Essence Mascara Lash Princess",
+      "description": "The Essence Mascara Lash Princess is a popular mascara known for its volumizing and lengthening effects. Achieve dramatic lashes with this long-lasting and cruelty-free formula.",
+      "category": "beauty",
+      "price": 9.99,
+      "discountPercentage": 7.17,
+      "rating": 4.94,
+      "stock": 5,
+      "tags": [
+        "beauty",
+        "mascara"
+      ],
+      "brand": "Essence",
+      "sku": "RCH45Q1A",
+      "weight": 2,
+      "dimensions": {
+        "width": 23.17,
+        "height": 14.43,
+        "depth": 28.01
+      },
+      "warrantyInformation": "1 month warranty",
+      "shippingInformation": "Ships in 1 month",
+      "availabilityStatus": "Low Stock",
+      "reviews": [
+        {
+          "rating": 2,
+          "comment": "Very unhappy with my purchase!",
+          "date": "2024-05-23T08:56:21.618Z",
+          "reviewerName": "John Doe",
+          "reviewerEmail": "john.doe@x.dummyjson.com"
+        },
+        {
+          "rating": 2,
+          "comment": "Not as described!",
+          "date": "2024-05-23T08:56:21.618Z",
+          "reviewerName": "Nolan Gonzalez",
+          "reviewerEmail": "nolan.gonzalez@x.dummyjson.com"
+        },
+        {
+          "rating": 5,
+          "comment": "Very satisfied!",
+          "date": "2024-05-23T08:56:21.618Z",
+          "reviewerName": "Scarlett Wright",
+          "reviewerEmail": "scarlett.wright@x.dummyjson.com"
+        }
+      ],
+      "returnPolicy": "30 days return policy",
+      "minimumOrderQuantity": 24,
+      "meta": {
+        "createdAt": "2024-05-23T08:56:21.618Z",
+        "updatedAt": "2024-05-23T08:56:21.618Z",
+        "barcode": "9164035109868",
+        "qrCode": "https://assets.dummyjson.com/public/qr-code.png"
+      },
+      "images": [
+        "https://cdn.dummyjson.com/products/images/beauty/Essence%20Mascara%20Lash%20Princess/1.png"
+      ],
+      "thumbnail": "https://cdn.dummyjson.com/products/images/beauty/Essence%20Mascara%20Lash%20Princess/thumbnail.png",
+      "quantity": 1,
+      "user": 1,
+      "id": 41
+    },
+    {
+      "title": "Essence Mascara Lash Princess",
+      "description": "The Essence Mascara Lash Princess is a popular mascara known for its volumizing and lengthening effects. Achieve dramatic lashes with this long-lasting and cruelty-free formula.",
+      "category": "beauty",
+      "price": 9.99,
+      "discountPercentage": 7.17,
+      "rating": 4.94,
+      "stock": 5,
+      "tags": [
+        "beauty",
+        "mascara"
+      ],
+      "brand": "Essence",
+      "sku": "RCH45Q1A",
+      "weight": 2,
+      "dimensions": {
+        "width": 23.17,
+        "height": 14.43,
+        "depth": 28.01
+      },
+      "warrantyInformation": "1 month warranty",
+      "shippingInformation": "Ships in 1 month",
+      "availabilityStatus": "Low Stock",
+      "reviews": [
+        {
+          "rating": 2,
+          "comment": "Very unhappy with my purchase!",
+          "date": "2024-05-23T08:56:21.618Z",
+          "reviewerName": "John Doe",
+          "reviewerEmail": "john.doe@x.dummyjson.com"
+        },
+        {
+          "rating": 2,
+          "comment": "Not as described!",
+          "date": "2024-05-23T08:56:21.618Z",
+          "reviewerName": "Nolan Gonzalez",
+          "reviewerEmail": "nolan.gonzalez@x.dummyjson.com"
+        },
+        {
+          "rating": 5,
+          "comment": "Very satisfied!",
+          "date": "2024-05-23T08:56:21.618Z",
+          "reviewerName": "Scarlett Wright",
+          "reviewerEmail": "scarlett.wright@x.dummyjson.com"
+        }
+      ],
+      "returnPolicy": "30 days return policy",
+      "minimumOrderQuantity": 24,
+      "meta": {
+        "createdAt": "2024-05-23T08:56:21.618Z",
+        "updatedAt": "2024-05-23T08:56:21.618Z",
+        "barcode": "9164035109868",
+        "qrCode": "https://assets.dummyjson.com/public/qr-code.png"
+      },
+      "images": [
+        "https://cdn.dummyjson.com/products/images/beauty/Essence%20Mascara%20Lash%20Princess/1.png"
+      ],
+      "thumbnail": "https://cdn.dummyjson.com/products/images/beauty/Essence%20Mascara%20Lash%20Princess/thumbnail.png",
+      "quantity": 1,
+      "id": 42
+    },
+    {
+      "title": "Dolce Shine Eau de",
+      "description": "Dolce Shine by Dolce & Gabbana is a vibrant and fruity fragrance, featuring notes of mango, jasmine, and blonde woods. It's a joyful and youthful scent.",
+      "category": "fragrances",
+      "price": 69.99,
+      "discountPercentage": 11.47,
+      "rating": 2.68,
+      "stock": 3,
+      "tags": [
+        "fragrances",
+        "perfumes"
+      ],
+      "brand": "Dolce & Gabbana",
+      "sku": "1NBFK980",
+      "weight": 5,
+      "dimensions": {
+        "width": 17,
+        "height": 24.57,
+        "depth": 13.3
+      },
+      "warrantyInformation": "5 year warranty",
+      "shippingInformation": "Ships in 1-2 business days",
+      "availabilityStatus": "Low Stock",
+      "reviews": [
+        {
+          "rating": 4,
+          "comment": "Very satisfied!",
+          "date": "2024-05-23T08:56:21.619Z",
+          "reviewerName": "Xavier Wright",
+          "reviewerEmail": "xavier.wright@x.dummyjson.com"
+        },
+        {
+          "rating": 1,
+          "comment": "Poor quality!",
+          "date": "2024-05-23T08:56:21.619Z",
+          "reviewerName": "Mila Hernandez",
+          "reviewerEmail": "mila.hernandez@x.dummyjson.com"
+        },
+        {
+          "rating": 5,
+          "comment": "Very happy with my purchase!",
+          "date": "2024-05-23T08:56:21.619Z",
+          "reviewerName": "Sophia Brown",
+          "reviewerEmail": "sophia.brown@x.dummyjson.com"
+        }
+      ],
+      "returnPolicy": "30 days return policy",
+      "minimumOrderQuantity": 9,
+      "meta": {
+        "createdAt": "2024-05-23T08:56:21.619Z",
+        "updatedAt": "2024-05-23T08:56:21.619Z",
+        "barcode": "1939383392674",
+        "qrCode": "https://assets.dummyjson.com/public/qr-code.png"
+      },
+      "images": [
+        "https://cdn.dummyjson.com/products/images/fragrances/Dolce%20Shine%20Eau%20de/1.png",
+        "https://cdn.dummyjson.com/products/images/fragrances/Dolce%20Shine%20Eau%20de/2.png",
+        "https://cdn.dummyjson.com/products/images/fragrances/Dolce%20Shine%20Eau%20de/3.png"
+      ],
+      "thumbnail": "https://cdn.dummyjson.com/products/images/fragrances/Dolce%20Shine%20Eau%20de/thumbnail.png",
+      "quantity": 3,
+      "id": 43
     }
+  ],
+  "orders": [
+    
   ]
 }

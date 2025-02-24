@@ -1,6 +1,10 @@
 // src/features/counter/Counter.js
 import { useDispatch, useSelector } from "react-redux";
-import { selectItems, updateCartAsync, deleteItemFromCartAsync } from "./cartSlice";
+import {
+  selectItems,
+  updateCartAsync,
+  deleteItemFromCartAsync,
+} from "./cartSlice";
 import { useState } from "react";
 import {
   Dialog,
@@ -9,7 +13,7 @@ import {
   DialogTitle,
 } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 
 function Cart() {
   const dispatch = useDispatch();
@@ -32,13 +36,15 @@ function Cart() {
   };
   // console.log(items);
 
-  const handleRemove= (e, id)=>{
+  const handleRemove = (e, id) => {
     e.preventDefault();
-    dispatch(deleteItemFromCartAsync(id))
-  }
+    dispatch(deleteItemFromCartAsync(id));
+  };
 
   return (
     <div>
+      {!items.length && <Navigate to="/" replace={true}></Navigate>}
+
       <div className="mx-auto mt-20 bg-gray-200 max-w-7xl px-4 sm:px-6 lg:px-8 rounded-md border border-transparent">
         {/* <h2 className="text-3xl font-bold">Cart</h2> */}
 
@@ -97,7 +103,7 @@ function Cart() {
 
                       <div className="flex">
                         <button
-                        onClick={e=>handleRemove(e, item.id)}
+                          onClick={(e) => handleRemove(e, item.id)}
                           type="button"
                           className="font-medium text-indigo-600 hover:text-indigo-500"
                         >

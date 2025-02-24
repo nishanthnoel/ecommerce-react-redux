@@ -46,9 +46,22 @@ export default function ProductDetail() {
   const params = useParams()  //Yes, useParams accesses the current URL from the React Router system, no matter where the URL is changed or set. However, it works only when you're using React Router to handle navigation, and it’s specifically for routes defined in your app.
 
 
+
+  
+  // delete newItem['id'] is correct because you're removing the property with the key 'id' from the newItem object.
+  // delete newItem[id] would only work if id is a variable holding the string 'id'.
+
+
+
+
+  // the problem occured at server error 500 is that the cart wanst creating its own id rather it was using the product id
   const handleCart = (e) => {
     e.preventDefault()
-    dispatch(addToCartAsync({...product, quantity:1, user: user.id}))
+    const newItem = {...product, quantity:1, user: user.id}
+    console.log(product)
+    delete newItem['id'];
+    dispatch(addToCartAsync(newItem)) // now we have removed the id here. SO, in the next step the backend creates the id all by itself
+    // dispatch(addToCartAsync({...product, quantity:1, user: user.id}))// this was the old code. where the product id and user id were clashing
   }
   useEffect(() => {
     dispatch(fetchProductByIdAsync(params.id));
