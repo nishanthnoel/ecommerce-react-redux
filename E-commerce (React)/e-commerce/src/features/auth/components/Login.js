@@ -15,7 +15,8 @@ function Login() {
   // console.log(errors);
   const error = useSelector(selectError); // Access the counter value from the Redux store
   const dispatch = useDispatch();
-  const user = useSelector(selectLoggedInUser);
+  const user = useSelector(selectLoggedInUser); 
+  // console.log(user); // this logs logincredentails
 
 
   return (
@@ -48,7 +49,7 @@ function Login() {
               dispatch(
                 checkUserAsync({ email: data.email, password: data.password })
               );
-              console.log(data);
+              console.log(data);  // this logs the login credentials(object with email and password)
             })}
             className="space-y-6"
           >

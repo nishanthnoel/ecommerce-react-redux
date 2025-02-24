@@ -12,6 +12,7 @@ function Signup() {
     formState: { errors },
   } = useForm();
   const user = useSelector(selectLoggedInUser); // Access the counter value from the Redux store
+  console.log(user); // this logs object[object Object]
   const dispatch = useDispatch();
 
   // console.log(JSON.stringify(user));  
@@ -45,7 +46,7 @@ function Signup() {
             noValidate
             onSubmit={handleSubmit((data) => {
               dispatch(createUserAsync({email: data.email, password: data.password}));
-              console.log(data);
+              console.log(data);   // this logs the signup credentials(object with email, password, and confirmPassword)
             })}
             // action="#" method="POST"
             className="space-y-6"

@@ -13,7 +13,9 @@ import {
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import { Children } from "react";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { selectItems } from "../cart/cartSlice";
 
 const user = {
   name: "Tom Cook",
@@ -36,6 +38,7 @@ function classNames(...classes) {
 }
 
 function Navbar({ children }) {
+  const items = useSelector(selectItems)
   return (
     <div className="min-h-full">
       <Disclosure as="nav" className="bg-gray-800">
@@ -82,9 +85,9 @@ function Navbar({ children }) {
 
                     <ShoppingCartIcon aria-hidden="true" className="size-6" />
 
-                    <span className="absolute bottom-4 left-5  inline-flex items-center rounded-md mt-50 -mr-2 bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-red-600/10 ring-inset">
-                      3
-                    </span>
+                   {items.length> 0 ? <span className="absolute bottom-4 left-5  inline-flex items-center rounded-md mt-50 -mr-2 bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-red-600/10 ring-inset">
+                      {items.length}
+                    </span>: ""}
                   </button>
                 </Link>
 
@@ -180,9 +183,9 @@ function Navbar({ children }) {
                 <span className="absolute -inset-1.5" />
                 <span className="sr-only">View notifications</span>
                 <ShoppingCartIcon aria-hidden="true" className="size-6" />
-                <span className="absolute bottom-0.5 left-5 inline-flex items-center rounded-md mb-4 -ml-1 bg-red-50 px-1 py-0.5 text-xs font-medium text-red-700 ring-1 ring-red-600/10 ring-inset">
-                  33
-                </span>
+                {items.length>0 ? <span className="absolute bottom-0.5 left-5 inline-flex items-center rounded-md mb-4 -ml-1 bg-red-50 px-1 py-0.5 text-xs font-medium text-red-700 ring-1 ring-red-600/10 ring-inset">
+                  {items.length}
+                </span> : ""}
               </button>
               </Link>
               {/* <span className=" inline-flex items-center rounded-md mb-4 -ml-1 bg-red-50 px-1 py-0.5 text-xs font-medium text-red-700 ring-1 ring-red-600/10 ring-inset">

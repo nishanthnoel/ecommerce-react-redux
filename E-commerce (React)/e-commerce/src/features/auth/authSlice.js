@@ -8,6 +8,7 @@ const initialState = {
   error: null
 }
 
+// code for creating a new user
 export const createUserAsync = createAsyncThunk(
   'user/createUser',
   async (userData)=>{
@@ -15,6 +16,8 @@ export const createUserAsync = createAsyncThunk(
     return response.data;
   }
 )
+
+// code for checking user login credentials
 export const checkUserAsync = createAsyncThunk(
   'user/checkUser',
   async (loginInfo)=>{
