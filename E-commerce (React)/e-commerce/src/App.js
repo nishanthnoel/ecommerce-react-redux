@@ -19,6 +19,14 @@ import Protected from "./features/auth/components/Protected";
 import { fetchItemsByUserIdAsync } from "./features/cart/cartSlice";
 import { selectLoggedInUser } from "./features/auth/authSlice";
 import { useDispatch, useSelector } from "react-redux";
+import PageNotFound from "./pages/404";
+import OrderSuccessPage from "./pages/OrderSuccessPage";
+import UserOrders from "./features/user/components/userOrders";
+import UserOrdersPage from "./pages/UserOrdersPage";
+import UserProfile from "./features/user/components/userProfile";
+import UserProfilePage from "./pages/userProfilePage";
+import { fetchLoggedInUser } from "./features/user/userAPI";
+import { fetchLoggedInUserAsync } from "./features/user/userSlice";
 
 const router = createBrowserRouter([
   {
@@ -61,6 +69,36 @@ const router = createBrowserRouter([
       </Protected>
     ),
   },
+  {
+    path: "/order-success/:id",
+    element: (
+      <Protected>
+        <OrderSuccessPage></OrderSuccessPage>
+      </Protected>
+    ),
+  },
+  {
+    path: "/orders",
+    element: (
+      <Protected>
+        <UserOrdersPage></UserOrdersPage>
+      </Protected>
+      // we will add orders page later. now we have directly put the userOrders component for testing
+    ),
+  },
+  {
+    path: "/profile",
+    element: (
+      <Protected>
+        <UserProfilePage></UserProfilePage>
+      </Protected>
+      // we will add orders page later. now we have directly put the userOrders component for testing
+    ),
+  },
+  {
+    path: "*",
+    element: <PageNotFound></PageNotFound>,
+  },
 ]);
 
 function App() {
@@ -70,10 +108,10 @@ function App() {
 
   useEffect(() => {
     if (user && user.id) {
-      dispatch(fetchItemsByUserIdAsync(user.id))
-
+      dispatch(fetchItemsByUserIdAsync(user.id));
+      dispatch(fetchLoggedInUserAsync(user.id));
     }
-  },[dispatch, user]);
+  }, [dispatch, user]);
   return (
     <div className="App">
       {/* <SignupPage></SignupPage> */}

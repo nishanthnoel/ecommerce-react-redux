@@ -58,7 +58,7 @@ export default function ProductDetail() {
   const handleCart = (e) => {
     e.preventDefault()
     const newItem = {...product, quantity:1, user: user.id}
-    console.log(product)
+    // console.log(product)
     delete newItem['id'];
     dispatch(addToCartAsync(newItem)) // now we have removed the id here. SO, in the next step the backend creates the id all by itself
     // dispatch(addToCartAsync({...product, quantity:1, user: user.id}))// this was the old code. where the product id and user id were clashing

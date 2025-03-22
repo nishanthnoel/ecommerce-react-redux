@@ -1,6 +1,7 @@
 // src/features/counter/counterSlice.js
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { createUser, checkUser, updateUser } from "./authAPI";
+import { createUser, checkUser} from "./authAPI";
+import { updateUser } from "../user/userAPI";
 
 const initialState = {
   loggedInUser: null, // this is the user object, which is used to store the user data. both for login(fulfilled) and signup(fulfilled)

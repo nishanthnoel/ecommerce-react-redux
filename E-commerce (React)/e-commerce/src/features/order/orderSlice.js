@@ -3,7 +3,8 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { createOrder } from "./orderAPI";
 const initialState = {
   orders: [],
-  status: "idle"
+  status: "idle",
+  currentOrder: null
 }
 
 export const createOrderAsync = createAsyncThunk(
@@ -19,8 +20,8 @@ const orderSlice = createSlice({
   name: "order",
   initialState,
   reducers: {
-    increment: (state) => {
-      state.value += 1; // Increment the counter
+    resetOrder: (state) => {
+      state.currentOrder = null;
     },
   },
   extraReducers: (builder) => {
@@ -30,14 +31,15 @@ const orderSlice = createSlice({
     .addCase(createOrderAsync.fulfilled, (state, action)=>{
       state.status="idle"
       state.orders.push(action.payload)
+      state.currentOrder = action.payload; // Order placed successfully, set the flag
     });
   },
 });
 
 // Export actions so they can be dispatched
-export const { increment } = orderSlice.actions;
+export const { resetOrder } = orderSlice.actions;
 
-export const selectOrder = (state) => state.counter.value;
+export const selectCurrentOrder = (state) => state.order.currentOrder;
 
 // Export the reducer to be used in the store
 export default orderSlice.reducer;

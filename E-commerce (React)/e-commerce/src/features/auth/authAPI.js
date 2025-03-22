@@ -40,19 +40,3 @@ export  function checkUser (loginInfo){
 }
 
 
-export  function updateUser (update){
-    console.log(update)  //this logs object
-    return new Promise(async (resolve) => {
-        const response = await fetch("http://localhost:8080/users/"+update.id, {    // users / was missing hencethe data wasnt getting updated to the database 
-            method: "PATCH",
-            body: JSON.stringify(update), 
-            headers: {
-                "Content-Type": "application/json",
-            },
-    })
-        const data = await response.json()
-        console.log(data)  
-        resolve({data}) 
-    
-    })
-}

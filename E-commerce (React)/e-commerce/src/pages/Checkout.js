@@ -20,9 +20,8 @@ import {
   selectLoggedInUser,
   updateUserAsync,
 } from "../features/auth/authSlice";
-import { createOrderAsync } from "../features/order/orderSlice";
-import debounce from 'lodash.debounce';
-
+import { createOrderAsync, selectCurrentOrder } from "../features/order/orderSlice";
+import { selectUserInfo } from "../features/user/userSlice";
 
 function Checkout() {
   const {
@@ -35,7 +34,8 @@ function Checkout() {
   const [open, setOpen] = useState(true);
   const [selectedAddress, setSelectedAddress] = useState(null);
   const [paymentMethod, setPaymentMethod] = useState("cash");
-  const user = useSelector(selectLoggedInUser);
+  const user = useSelector(selectUserInfo);
+  const currentOrder = useSelector(selectCurrentOrder)
   console.log(user); // this logs out when checkout page is loaded
 
   const items = useSelector(selectItems);
@@ -65,22 +65,33 @@ function Checkout() {
   };
 
   const handlePayment = (e) => {
-   setPaymentMethod(e.target.value)
+    setPaymentMethod(e.target.value);
   };
   const handleOrder = (e) => {
-    e.preventDefault()
-    const order = {items, totalAmount, totalItems, user, paymentMethod, selectedAddress};
+    e.preventDefault();
+    if (selectedAddress && paymentMethod) {
+    const order = {
+      items,
+      totalAmount,
+      totalItems,
+      user,
+      paymentMethod,
+      selectedAddress, 
+      status: "pending",  // other status can be delivered, cancelled etc. 
+    };
     dispatch(createOrderAsync(order));
-    //TODO: redirect to order success page  
-    //TODO: clear cart after order has been placed
+    //TODO: redirect to order success page
+  }else{
+    alert("Please select address and payment method");
     //TODO: on server change the total number of stock items
+    //TODO: clear cart after order has been placed
+  }
   };
-
-
 
   return (
     <>
       {!items.length && <Navigate to="/" replace={true}></Navigate>}
+      {currentOrder && <Navigate to={`/order-success/${currentOrder.id}`} replace={true}></Navigate>}
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 bg-gray-100">
         <div className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-5">
           <div className="  rounded-md border border-transparent col-span-3">
@@ -317,7 +328,7 @@ function Checkout() {
                             id="cash"
                             value="cash"
                             name="payments"
-                            checked = {paymentMethod ===  'cash'}
+                            checked={paymentMethod === "cash"}
                             type="radio"
                             className="relative size-4 appearance-none rounded-full border border-gray-300 bg-white before:absolute before:inset-1 before:rounded-full before:bg-white checked:border-indigo-600 checked:bg-indigo-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:border-gray-300 disabled:bg-gray-100 disabled:before:bg-gray-400 forced-colors:appearance-auto forced-colors:before:hidden [&:not(:checked)]:before:hidden"
                           />
@@ -334,7 +345,7 @@ function Checkout() {
                             onChange={handlePayment}
                             value="card"
                             name="payments"
-                            checked = {paymentMethod ===  'card'}
+                            checked={paymentMethod === "card"}
                             type="radio"
                             className="relative size-4 appearance-none rounded-full border border-gray-300 bg-white before:absolute before:inset-1 before:rounded-full before:bg-white checked:border-indigo-600 checked:bg-indigo-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:border-gray-300 disabled:bg-gray-100 disabled:before:bg-gray-400 forced-colors:appearance-auto forced-colors:before:hidden [&:not(:checked)]:before:hidden"
                           />
@@ -440,7 +451,7 @@ function Checkout() {
                 </p>
                 <div className="mt-6">
                   <div
-                  onClick={handleOrder}
+                    onClick={handleOrder}
                     className="flex items-center justify-center cursor-pointer rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-xs hover:bg-indigo-700"
                   >
                     Order Now
