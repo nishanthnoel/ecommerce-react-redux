@@ -1,14 +1,14 @@
-import Navbar from "../features/navbar/Navbar";
-import UserOrders from "../features/user/components/userOrders";
+import NavBar from '../features/navbar/Navbar';
+import UserOrders from '../features/user/components/UserOrders';
 
 function UserOrdersPage() {
   return (
-    <>
-      <Navbar>
-      <h1 className="text-2xl font-bold tracking-tight text-black text-left">My Orders</h1>
+    <div>
+      <NavBar>
+        <h1 className='mx-auto text-2xl'>My Orders</h1>
         <UserOrders></UserOrders>
-      </Navbar>
-    </>
+      </NavBar>
+    </div>
   );
 }
 

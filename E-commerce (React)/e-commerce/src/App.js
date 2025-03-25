@@ -1,36 +1,36 @@
-import "./App.css";
-// import Counter from './features/counter/Counter';
-// import ProductList from './features/product-list/ProductList'
-import Home from "./pages/Home";
-import LoginPage from "./pages/LoginPage";
-import SignupPage from "./pages/SignupPage";
-import CartPage from "./pages/CartPage";
-import Checkout from "./pages/Checkout";
-import ProductDetailPage from "./pages/ProductDetailPage";
-import React, { useEffect } from "react";
-import { createRoot } from "react-dom/client";
+import { Counter } from './features/counter/Counter';
+import './App.css';
+import Home from './pages/Home';
+import LoginPage from './pages/LoginPage';
+import SignupPage from './pages/SignupPage';
+
 import {
   createBrowserRouter,
   RouterProvider,
   Route,
   Link,
-} from "react-router-dom";
-import Protected from "./features/auth/components/Protected";
-import { fetchItemsByUserIdAsync } from "./features/cart/cartSlice";
-import { selectLoggedInUser } from "./features/auth/authSlice";
-import { useDispatch, useSelector } from "react-redux";
-import PageNotFound from "./pages/404";
-import OrderSuccessPage from "./pages/OrderSuccessPage";
-import UserOrders from "./features/user/components/userOrders";
-import UserOrdersPage from "./pages/UserOrdersPage";
-import UserProfile from "./features/user/components/userProfile";
-import UserProfilePage from "./pages/userProfilePage";
-import { fetchLoggedInUser } from "./features/user/userAPI";
-import { fetchLoggedInUserAsync } from "./features/user/userSlice";
-
+} from 'react-router-dom';
+import Cart from './features/cart/Cart';
+import CartPage from './pages/CartPage';
+import Checkout from './pages/Checkout';
+import ProductDetailPage from './pages/ProductDetailPage';
+import Protected from './features/auth/components/Protected';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectLoggedInUser } from './features/auth/authSlice';
+import { fetchItemsByUserIdAsync } from './features/cart/cartSlice';
+import PageNotFound from './pages/404';
+import OrderSuccessPage from './pages/OrderSuccessPage';
+import UserOrders from './features/user/components/UserOrders';
+import UserOrdersPage from './pages/UserOrdersPage';
+import UserProfile from './features/user/components/UserProfile';
+import UserProfilePage from './pages/UserProfilePage';
+import { fetchLoggedInUserAsync } from './features/user/userSlice';
+import Logout from './features/auth/components/Logout';
+import ForgotPasswordPage from './pages/ForgotPasswordPage';
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: '/',
     element: (
       <Protected>
         <Home></Home>
@@ -38,15 +38,15 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: "/login",
+    path: '/login',
     element: <LoginPage></LoginPage>,
   },
   {
-    path: "/signup",
+    path: '/signup',
     element: <SignupPage></SignupPage>,
   },
   {
-    path: "/cart",
+    path: '/cart',
     element: (
       <Protected>
         <CartPage></CartPage>
@@ -54,7 +54,7 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: "/checkout",
+    path: '/checkout',
     element: (
       <Protected>
         <Checkout></Checkout>
@@ -62,7 +62,7 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: "/product-detail/:id",
+    path: '/product-detail/:id',
     element: (
       <Protected>
         <ProductDetailPage></ProductDetailPage>
@@ -70,33 +70,27 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: "/order-success/:id",
-    element: (
-      <Protected>
-        <OrderSuccessPage></OrderSuccessPage>
-      </Protected>
-    ),
+    path: '/order-success/:id',
+    element: <OrderSuccessPage></OrderSuccessPage>,
   },
   {
-    path: "/orders",
-    element: (
-      <Protected>
-        <UserOrdersPage></UserOrdersPage>
-      </Protected>
-      // we will add orders page later. now we have directly put the userOrders component for testing
-    ),
+    path: '/orders',
+    element: <UserOrdersPage></UserOrdersPage>,
   },
   {
-    path: "/profile",
-    element: (
-      <Protected>
-        <UserProfilePage></UserProfilePage>
-      </Protected>
-      // we will add orders page later. now we have directly put the userOrders component for testing
-    ),
+    path: '/profile',
+    element: <UserProfilePage></UserProfilePage>,
   },
   {
-    path: "*",
+    path: '/logout',
+    element: <Logout></Logout>,
+  },
+  {
+    path: '/forgot-password',
+    element: <ForgotPasswordPage></ForgotPasswordPage>,
+  },
+  {
+    path: '*',
     element: <PageNotFound></PageNotFound>,
   },
 ]);
@@ -104,18 +98,16 @@ const router = createBrowserRouter([
 function App() {
   const dispatch = useDispatch();
   const user = useSelector(selectLoggedInUser);
-  // console.log(user) // this logs logincredentails
 
   useEffect(() => {
-    if (user && user.id) {
+    if (user) {
       dispatch(fetchItemsByUserIdAsync(user.id));
       dispatch(fetchLoggedInUserAsync(user.id));
     }
   }, [dispatch, user]);
+
   return (
     <div className="App">
-      {/* <SignupPage></SignupPage> */}
-      {/* <LoginPage></LoginPage> */}
       <RouterProvider router={router} />
     </div>
   );

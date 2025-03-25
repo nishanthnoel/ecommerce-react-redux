@@ -1,36 +1,33 @@
-export  function fetchLoggedInUserOrders(userId) {
+export function fetchLoggedInUserOrders(userId) {
+  return new Promise(async (resolve) =>{
+    const response = await fetch('http://localhost:8080/orders/?user.id='+userId) 
+    const data = await response.json()
+    resolve({data})
+  }
+  );
+}
+
+
+export function fetchLoggedInUser(userId) {
+  return new Promise(async (resolve) =>{
+    const response = await fetch('http://localhost:8080/users/'+userId) 
+    const data = await response.json()
+    resolve({data})
+  }
+  );
+}
+
+export function updateUser(update) {
   return new Promise(async (resolve) => {
-    // setTimeout(()=> resolve({data: amount}), 500)
-    const response = await fetch(
-      "http://localhost:8080/orders/?user.id" + userId
-    );
+    const response = await fetch('http://localhost:8080/users/'+update.id, {
+      method: 'PATCH',
+      body: JSON.stringify(update),
+      headers: { 'content-type': 'application/json' },
+    });
     const data = await response.json();
+    // TODO: on server it will only return some info of user (not password)
     resolve({ data });
   });
 }
 
-export  function fetchLoggedInUser (userId){
-    return new Promise(async (resolve) => {
-        // setTimeout(()=> resolve({data: amount}), 500)
-        const response = await fetch("http://localhost:8080/users/"+userId)
-        const data = await response.json()
-        resolve({data})
 
-    })
-}
-export  function updateUser (update){
-    console.log(update)  //this logs object
-    return new Promise(async (resolve) => {
-        const response = await fetch("http://localhost:8080/users/"+update.id, {    // users / was missing hencethe data wasnt getting updated to the database 
-            method: "PATCH",
-            body: JSON.stringify(update), 
-            headers: {
-                "Content-Type": "application/json",
-            },
-    })
-        const data = await response.json()
-        console.log(data)  
-        resolve({data}) 
-    
-    })
-}

@@ -1,17 +1,14 @@
-import Navbar from "../features/navbar/Navbar";
-import UserProfile from "../features/user/components/userProfile";
+import NavBar from '../features/navbar/Navbar';
+import UserProfile from '../features/user/components/UserProfile';
 
 function UserProfilePage() {
   return (
-    <>
-      <Navbar>
-        <h1 className="text-2xl font-bold tracking-tight text-black text-left">
-          My Profile
-        </h1>
-
+    <div>
+      <NavBar>
+        <h1 className='mx-auto text-2xl'>My Profile</h1>
         <UserProfile></UserProfile>
-      </Navbar>
-    </>
+      </NavBar>
+    </div>
   );
 }
 

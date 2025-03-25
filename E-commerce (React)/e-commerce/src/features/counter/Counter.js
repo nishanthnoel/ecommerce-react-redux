@@ -1,16 +1,22 @@
-// // src/features/counter/Counter.js
-// import { useDispatch, useSelector } from "react-redux";
-// import { increment, incrementAsync, selectCount } from "./counterSlice";
+import React, { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import {
+  increment,
+  incrementAsync,
+  selectCount,
+} from './counterSlice';
 
-// function Counter() {
-//   const count = useSelector(selectCount); // Access the counter value from the Redux store
-//   const dispatch = useDispatch();
+export default function Counter() {
+  const count = useSelector(selectCount);
+  const dispatch = useDispatch();
 
-//   return (
-//     <div>
-//       <div></div>
-//     </div>
-//   );
-// }
-// // 
-// export default Counter;
+
+  return (
+    <div>
+      <div>
+      
+       
+      </div>
+    </div>
+  );
+}

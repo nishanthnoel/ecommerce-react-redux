@@ -1,6 +1,11 @@
-import Signup from "../features/auth/components/Signup"
+import Signup from "../features/auth/components/Signup";
+
 function SignupPage() {
-    return ( <Signup></Signup> );
+    return ( 
+        <div>
+            <Signup></Signup>
+        </div>
+     );
 }
 
 export default SignupPage;
