@@ -14,6 +14,7 @@ import {
 } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { Link, Navigate } from "react-router-dom";
+import { discountedPrice } from "../../app/constants";
 
 function Cart() {
   const dispatch = useDispatch();
@@ -21,7 +22,7 @@ function Cart() {
   const items = useSelector(selectItems);
   // console.log(items) //this is returning  array of items
   const totalAmount = items.reduce(
-    (amount, item) => item.price * item.quantity + amount,
+    (amount, item) => discountedPrice(item) * item.quantity + amount,
     0
   );
   const totalItems = items.reduce((total, item) => item.quantity + total, 0);
@@ -70,7 +71,13 @@ function Cart() {
                         <h3>
                           <a href={item.href}>{item.title}</a>
                         </h3>
-                        <p className="ml-4">${item.price}</p>
+                        <div className="flex ">
+                          <p className="ml-4  text-gray-600">M.R.P: </p>
+                          <p className="ml-4 line-through text-gray-600">
+                            ${item.price}
+                          </p>
+                        </div>
+                        <p className="ml-4">${discountedPrice(item)}</p>
                       </div>
                       <p className="mt-1 text-left text-sm text-gray-500">
                         {item.brand}

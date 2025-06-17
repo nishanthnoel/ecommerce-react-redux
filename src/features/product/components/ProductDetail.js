@@ -6,7 +6,8 @@ import { selectProductById, fetchProductByIdAsync } from "../productSlice";
 import { useDispatch } from "react-redux";
 import { useParams } from 'react-router-dom';
 import { selectLoggedInUser } from "../../auth/authSlice";
-import { addToCartAsync } from "../../cart/cartSlice";
+import { addToCartAsync, selectItems } from "../../cart/cartSlice";
+import { discountedPrice } from "../../../app/constants";
 
 
 // TODO: in server we will add color, size, and highlights
@@ -41,6 +42,7 @@ export default function ProductDetail() {
   const [selectedColor, setSelectedColor] = useState(colors[0]);
   const [selectedSize, setSelectedSize] = useState(sizes[2]);
   const product = useSelector(selectProductById)
+  const items = useSelector(selectItems)
   const user = useSelector(selectLoggedInUser)
   const dispatch = useDispatch()
   const params = useParams()  //Yes, useParams accesses the current URL from the React Router system, no matter where the URL is changed or set. However, it works only when you're using React Router to handle navigation, and it’s specifically for routes defined in your app.
@@ -57,11 +59,16 @@ export default function ProductDetail() {
   // the problem occured at server error 500 is that the cart wanst creating its own id rather it was using the product id
   const handleCart = (e) => {
     e.preventDefault()
-    const newItem = {...product, quantity:1, user: user.id}
-    // console.log(product)
-    delete newItem['id'];
-    dispatch(addToCartAsync(newItem)) // now we have removed the id here. SO, in the next step the backend creates the id all by itself
-    // dispatch(addToCartAsync({...product, quantity:1, user: user.id}))// this was the old code. where the product id and user id were clashing
+    if(items.findIndex(item=>item.productId===product.id)<0){
+      const newItem = {...product, productId:product.id, quantity:1, user: user.id}
+      // console.log(product)
+      delete newItem['id'];
+      dispatch(addToCartAsync(newItem)) // now we have removed the id here. SO, in the next step the backend creates the id all by itself
+      // dispatch(addToCartAsync({...product, quantity:1, user: user.id}))// this was the old code. where the product id and user id were clashing
+
+    }else{
+      console.log("already added")
+    }
   }
   useEffect(() => {
     dispatch(fetchProductByIdAsync(params.id));
@@ -149,6 +156,9 @@ export default function ProductDetail() {
             <h2 className="sr-only">Product information</h2>
             <p className="text-3xl tracking-tight text-gray-900">
               ${product.price}
+            </p>
+            <p className="text-3xl tracking-tight text-gray-900">
+              ${discountedPrice(product)}
             </p>
 
             {/* Reviews */}

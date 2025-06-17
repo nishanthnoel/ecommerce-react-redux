@@ -20,8 +20,12 @@ import {
   selectLoggedInUser,
   updateUserAsync,
 } from "../features/auth/authSlice";
-import { createOrderAsync, selectCurrentOrder } from "../features/order/orderSlice";
+import {
+  createOrderAsync,
+  selectCurrentOrder,
+} from "../features/order/orderSlice";
 import { selectUserInfo } from "../features/user/userSlice";
+import { discountedPrice } from "../app/constants";
 
 function Checkout() {
   const {
@@ -35,13 +39,13 @@ function Checkout() {
   const [selectedAddress, setSelectedAddress] = useState(null);
   const [paymentMethod, setPaymentMethod] = useState("cash");
   const user = useSelector(selectUserInfo);
-  const currentOrder = useSelector(selectCurrentOrder)
+  const currentOrder = useSelector(selectCurrentOrder);
   console.log(user); // this logs out when checkout page is loaded
 
   const items = useSelector(selectItems);
   // console.log(items) //this is returning  array of items
   const totalAmount = items.reduce(
-    (amount, item) => item.price * item.quantity + amount,
+    (amount, item) => discountedPrice(item) * item.quantity + amount,
     0
   );
   const totalItems = items.reduce((total, item) => item.quantity + total, 0);
@@ -70,28 +74,33 @@ function Checkout() {
   const handleOrder = (e) => {
     e.preventDefault();
     if (selectedAddress && paymentMethod) {
-    const order = {
-      items,
-      totalAmount,
-      totalItems,
-      user,
-      paymentMethod,
-      selectedAddress, 
-      status: "pending",  // other status can be delivered, cancelled etc. 
-    };
-    dispatch(createOrderAsync(order));
-    //TODO: redirect to order success page
-  }else{
-    alert("Please select address and payment method");
-    //TODO: on server change the total number of stock items
-    //TODO: clear cart after order has been placed
-  }
+      const order = {
+        items,
+        totalAmount,
+        totalItems,
+        user,
+        paymentMethod,
+        selectedAddress,
+        status: "pending", // other status can be delivered, cancelled etc.
+      };
+      dispatch(createOrderAsync(order));
+      //TODO: redirect to order success page
+    } else {
+      alert("Please select address and payment method");
+      //TODO: on server change the total number of stock items
+      //TODO: clear cart after order has been placed
+    }
   };
 
   return (
     <>
       {!items.length && <Navigate to="/" replace={true}></Navigate>}
-      {currentOrder && <Navigate to={`/order-success/${currentOrder.id}`} replace={true}></Navigate>}
+      {currentOrder && (
+        <Navigate
+          to={`/order-success/${currentOrder.id}`}
+          replace={true}
+        ></Navigate>
+      )}
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 bg-gray-100">
         <div className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-5">
           <div className="  rounded-md border border-transparent col-span-3">
@@ -389,7 +398,13 @@ function Checkout() {
                               <h3>
                                 <a href={item.href}>{item.title}</a>
                               </h3>
-                              <p className="ml-4">${item.price}</p>
+                              <div className="flex">
+                                <p className="ml-4  text-gray-600">M.R.P:</p>
+                                <p className="ml-4 line-through text-gray-600">
+                                  ${item.price}
+                                </p>
+                              </div>
+                              <p className="ml-4 font-bold">${discountedPrice(item)}</p>
                             </div>
                             <p className="mt-1 text-left text-sm text-gray-500">
                               {item.brand}

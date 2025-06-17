@@ -7,6 +7,7 @@ import { useDispatch } from "react-redux";
 import { useParams } from 'react-router-dom';
 import { selectLoggedInUser } from "../../auth/authSlice";
 import { addToCartAsync } from "../../cart/cartSlice";
+import { discountedPrice } from "../../../app/constants";
 
 
 // TODO: in server we will add color, size, and highlights
@@ -148,7 +149,7 @@ export default function AdminProductDetail() {
           <div className="mt-4 lg:row-span-3 lg:mt-0">
             <h2 className="sr-only">Product information</h2>
             <p className="text-3xl tracking-tight text-gray-900">
-              ${product.price}
+              ${discountedPrice(product)}
             </p>
 
             {/* Reviews */}

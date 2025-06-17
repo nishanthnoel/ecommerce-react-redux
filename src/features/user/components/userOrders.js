@@ -2,6 +2,7 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchLoggedInUserOrdersAsync, selectUserInfo, selectUserOrders } from "../userSlice";
+import { discountedPrice } from "../../../app/constants";
 // import { selectLoggedInUser } from "../../auth/authSlice";
 
 function UserOrders() {
@@ -53,7 +54,12 @@ function UserOrders() {
                                   <h3>
                                     <a href={item.href}>{item.title}</a>
                                   </h3>
-                                  <p className="ml-4">${item.price}</p>
+                                  <div className="flex">
+
+                                  <p className="ml-4">M.R.P:</p>
+                                  <p className="ml-4 line-through">${item.price}</p>
+                                  </div>
+                                  <p className="ml-4 font-bold">${discountedPrice(item)}</p>
                                 </div>
                                 <p className="mt-1 text-left text-sm text-gray-500">
                                   {item.brand}
@@ -84,7 +90,7 @@ function UserOrders() {
                   <div className="border-t border-gray-200 px-4 py-6 sm:px-6">
                     <div className="flex justify-between text-base font-medium text-gray-900 my-2">
                       <p>Subtotal :</p>
-                      <p>${parseFloat(order.totalAmount.toFixed(2))}</p>
+                      <p className="font-bold">${parseFloat(order.totalAmount.toFixed(2))}</p>
                     </div>
                     <div className="flex justify-between text-base font-medium text-gray-900 my-2">
                       <p>Total Items in Cart :</p>
