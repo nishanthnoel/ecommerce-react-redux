@@ -1,4 +1,6 @@
 export async function fetchAllProducts() {
+  //TODO: server will filter the deleted products
+
   try {
     const response = await fetch("http://localhost:8080/products");
 
@@ -25,15 +27,15 @@ export async function fetchAllProducts() {
 //   });
 // }
 
-export async function fetchProductById(id ) {
-  console.log(id)
+export async function fetchProductById(id) {
+  console.log(id);
   try {
     const response = await fetch(`http://localhost:8080/products/${id}`);
     if (!response.ok) {
       throw new Error("Failed to fetch product");
     }
     const data = await response.json();
-    console.log(data)
+    console.log(data);
     return { data };
   } catch (error) {
     console.error(error);
@@ -55,6 +57,41 @@ export async function fetchBrands() {
     throw error;
   }
 }
+export async function createProduct(product) {
+  try {
+    const response = await fetch("http://localhost:8080/products", {
+      method: "POST",
+      body: JSON.stringify(product),
+      headers: { "content-type": "application/json" },
+    });
+    if (!response.ok) {
+      throw new Error("Failed to create product");
+    }
+    const data = await response.json();
+    // console.log({ data });
+    return { data };
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+// export  function createProduct (product){
+//   return new Promise(async (resolve) => {
+//       const response = await fetch("http://localhost:8080/users", {
+//           method: "POST",
+//           body: JSON.stringify(product),
+//           headers: {
+//               "Content-Type": "application/json",
+//           },
+//   })
+//   // TODO: on server it will return only relevant information of user9not password
+//       const data = await response.json()
+//       console.log(data)  // this logs the created user object with id
+//       resolve({data})
+
+//   })
+// }
+
 export async function fetchCategories() {
   try {
     const response = await fetch("http://localhost:8080/categories");
@@ -70,6 +107,24 @@ export async function fetchCategories() {
     console.error(error);
     throw error;
   }
+}
+
+export function updateProduct(update) {
+  return new Promise(async (resolve) => {
+    const response = await fetch(
+      "http://localhost:8080/products/" + update.id,
+      {
+        method: "PATCH", // this is to modify the database of the item where as slice is to modify the state
+        body: JSON.stringify(update), // this is the patch request with updated item object
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    const data = await response.json();
+    // console.log(data);
+    resolve({ data });
+  });
 }
 
 export async function fetchProductsByFilters(filter, sort, pagination) {

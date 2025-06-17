@@ -38,7 +38,7 @@ import {
   selectBrands,
   fetchCategoriesAsync,
   fetchBrandsAsync,
-} from "../productSlice";
+} from "../../product/productSlice";
 import { ITEMS_PER_PAGE } from "../../../app/constants";
 
 // const sortOptions = [
@@ -63,7 +63,7 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function ProductList() {
+export default function AdminProductList() {
   const dispatch = useDispatch();
   const [filter, setFilter] = useState({});
   const [sort, setSort] = useState({});
@@ -159,7 +159,6 @@ export default function ProductList() {
   useEffect(() => {
     const pagination = { _page: page, _limit: ITEMS_PER_PAGE };
     dispatch(fetchProductsByFiltersAsync({ filter, sort, pagination }));
-    //TODO: server will filter the deleted products
   }, [filter, sort, dispatch, page]);
 
   useEffect(() => {
@@ -262,7 +261,12 @@ export default function ProductList() {
 
                   {/* Product grid */}
                   <div className="lg:col-span-3">
-                    {" "}
+                    <Link
+                      to="/admin/product-form"
+                      className="rounded-md my-5 align-left bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600"
+                    >
+                      Add New Product
+                    </Link>{" "}
                     {/* This is our product page  */}
                     <ProductGrid products={products}></ProductGrid>
                   </div>
@@ -646,49 +650,69 @@ function ProductGrid({ products }) {
       <div className="mx-auto max-w-2xl px-4 py-0 sm:px-6 sm:py-0 lg:max-w-7xl lg:px-8">
         <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-8">
           {products.map((product) => (
-            <Link to={`/product-detail/${product.id}`}>
-              <div
-                key={product.id}
-                className="group relative  border-solid border-2 border-gray-200 p-2"
-              >
-                {/* <div className="min-h-60 lg:h-60"> */}
-                <div className="min-h-60 ">
-                  <img
-                    alt={product.title}
-                    src={product.thumbnail}
-                    className=" aspect-square w-full rounded-md bg-gray-200 object-cover group-hover:opacity-75 lg:aspect-auto lg:h-80"
-                  />
-                </div>
-                <div className="mt-4 flex justify-between">
-                  <div>
-                    <h3 className="text-sm text-gray-700">
-                      <div href={product.thumbnail}>
-                        <span aria-hidden="true" className="absolute inset-0" />
-                        {product.title}
-                      </div>
-                    </h3>
-                    <p className="mt-1 text-sm text-gray-500 flex items-center">
-                      <StarIcon className=" w-6 h-6 inline"></StarIcon>
-                      <span className="align-bottom p-1">{product.rating}</span>
-                    </p>
+            <div>
+              <Link to={`/product-detail/${product.id}`}>
+                <div
+                  key={product.id}
+                  className="group relative  border-solid border-2 border-gray-200 p-2"
+                >
+                  {/* <div className="min-h-60 lg:h-60"> */}
+                  <div className="min-h-60 ">
+                    <img
+                      alt={product.title}
+                      src={product.thumbnail}
+                      className=" aspect-square w-full rounded-md bg-gray-200 object-cover group-hover:opacity-75 lg:aspect-auto lg:h-80"
+                    />
                   </div>
-                  <div>
-                    <p className="text-sm block font-medium text-gray-900">
-                      ${" "}
-                      {Math.round(
-                        product.price * (1 - product.discountPercentage / 100)
-                      )}
-                    </p>
-                    <p className="text-sm block font-medium text-gray-400 line-through">
-                      ${product.price}
-                    </p>
+                  <div className="mt-4 flex justify-between">
+                    <div>
+                      <h3 className="text-sm text-gray-700">
+                        <div href={product.thumbnail}>
+                          <span
+                            aria-hidden="true"
+                            className="absolute inset-0"
+                          />
+                          {product.title}
+                        </div>
+                      </h3>
+                      <p className="mt-1 text-sm text-gray-500 flex items-center">
+                        <StarIcon className=" w-6 h-6 inline"></StarIcon>
+                        <span className="align-bottom p-1">
+                          {product.rating}
+                        </span>
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-sm block font-medium text-gray-900">
+                        ${" "}
+                        {Math.round(
+                          product.price * (1 - product.discountPercentage / 100)
+                        )}
+                      </p>
+                      <p className="text-sm block font-medium text-gray-400 line-through">
+                        ${product.price}
+                      </p>
+                    </div>
                   </div>
-                </div>
-                {product.deleted && <div>
+                  {product.deleted && <div>
                     <p className="text-sm text-red-600">Product Deleted</p>
                   </div>}
+                </div>
+              </Link>
+              <div>
+              <button className= "mt-5">
+                <Link
+                  to={`/admin/product-form/edit/${product.id}`}
+                  className="rounded-md my-5 align-left bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                >
+                  
+
+                  Edit Product
+                  
+                </Link>
+                </button>
               </div>
-            </Link>
+            </div>
           ))}
         </div>
       </div>

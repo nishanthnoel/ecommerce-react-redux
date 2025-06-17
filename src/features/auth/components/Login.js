@@ -16,7 +16,8 @@ function Login() {
   // console.log(errors);
   const error = useSelector(selectError); // Access the counter value from the Redux store
   const dispatch = useDispatch();
-  const user = useSelector(selectUserInfo); 
+  // const user = useSelector(selectUserInfo); 
+  const user = useSelector(selectLoggedInUser); 
   // console.log(user); // this logs logincredentails
 
 

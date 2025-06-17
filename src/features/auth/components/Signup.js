@@ -1,7 +1,7 @@
 // src/features/counter/Counter.js
 import { useDispatch, useSelector } from "react-redux";
 import { selectLoggedInUser, createUserAsync } from "../authSlice";
-import { data, Link } from "react-router-dom";
+import {  Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { Navigate } from "react-router-dom";
 
@@ -45,7 +45,9 @@ function Signup() {
           <form
             noValidate
             onSubmit={handleSubmit((data) => {
-              dispatch(createUserAsync({email: data.email, password: data.password, addresses: []}));
+              dispatch(createUserAsync({email: data.email, password: data.password, addresses: [], role: 'user'
+                // TODO: this role can be directly given on backend
+              }));
               console.log(data);   // this logs the signup credentials(object with email, password, and confirmPassword)
             })}
             // action="#" method="POST"

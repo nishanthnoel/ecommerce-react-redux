@@ -63,6 +63,9 @@ function UserProfile() {
           <h3 className="text-xl font-bold tracking-tight my-2 text-red-900">
             Email Addresses: {user.email}
           </h3>
+          {user.role==="admin" && <h3 className="text-xl font-bold tracking-tight my-2 text-red-900">
+            Role : {user.role}
+          </h3>}
         </div>
 
         <div className="border-t border-gray-200 px-4 py-6 sm:px-6">
