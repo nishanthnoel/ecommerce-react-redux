@@ -55,8 +55,8 @@ function Navbar({ children }) {
                 
               <img
                 alt="Your Company"
-                src="https://tailwindui.com/plus-assets/img/logos/mark.svg?color=indigo&shade=500"
-                className="h-8 w-auto"
+                src="/ecommerce.png"
+                className="h-10 w-auto"
               /></Link>
               </div>
               <div className="hidden md:block">

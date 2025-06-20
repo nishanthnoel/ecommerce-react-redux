@@ -34,6 +34,7 @@ import AdminHome from "./pages/AdminHome";
 import AdminProductDetailPage from "./pages/AdminProductDetailPage";
 import AdminProductForm from "./pages/AdminProductFormPage";
 import AdminOrdersPage from "./pages/AdminOrdersPage";
+import { ToastContainer, toast } from "react-toastify";
 
 const router = createBrowserRouter([
   {
@@ -172,6 +173,8 @@ function App() {
       {/* <SignupPage></SignupPage> */}
       {/* <LoginPage></LoginPage> */}
       <RouterProvider router={router} />
+      <ToastContainer />
+
       {/* Link must be always be in the provider */}
     </div>
   );

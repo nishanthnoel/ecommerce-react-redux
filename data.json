@@ -246,7 +246,8 @@
       "images": [
         "https://cdn.dummyjson.com/products/images/beauty/Red%20Lipstick/1.png"
       ],
-      "thumbnail": "https://cdn.dummyjson.com/products/images/beauty/Red%20Lipstick/thumbnail.png"
+      "thumbnail": "https://cdn.dummyjson.com/products/images/beauty/Red%20Lipstick/thumbnail.png",
+      "deleted": true
     },
     {
       "id": 5,
@@ -368,7 +369,8 @@
         "https://cdn.dummyjson.com/products/images/fragrances/Calvin%20Klein%20CK%20One/2.png",
         "https://cdn.dummyjson.com/products/images/fragrances/Calvin%20Klein%20CK%20One/3.png"
       ],
-      "thumbnail": "https://cdn.dummyjson.com/products/images/fragrances/Calvin%20Klein%20CK%20One/thumbnail.png"
+      "thumbnail": "https://cdn.dummyjson.com/products/images/fragrances/Calvin%20Klein%20CK%20One/thumbnail.png",
+      "deleted": true
     },
     {
       "id": 7,
@@ -6477,6 +6479,133 @@
       "quantity": 1,
       "user": 9,
       "id": 3
+    },
+    {
+      "title": "Fine Mesh Strainer",
+      "description": "The Fine Mesh Strainer is a versatile tool for straining liquids and sifting dry ingredients. Its fine mesh ensures efficient filtering for smooth cooking and baking.",
+      "category": "kitchen-accessories",
+      "price": 9.99,
+      "discountPercentage": 2.56,
+      "rating": 3.7,
+      "stock": 13,
+      "tags": [
+        "kitchen tools",
+        "strainers"
+      ],
+      "sku": "4XB2EHHJ",
+      "weight": 6,
+      "dimensions": {
+        "width": 5.19,
+        "height": 9.64,
+        "depth": 20.53
+      },
+      "warrantyInformation": "1 week warranty",
+      "shippingInformation": "Ships in 2 weeks",
+      "availabilityStatus": "In Stock",
+      "reviews": [
+        {
+          "rating": 4,
+          "comment": "Would buy again!",
+          "date": "2024-05-23T08:56:21.621Z",
+          "reviewerName": "Jack Ward",
+          "reviewerEmail": "jack.ward@x.dummyjson.com"
+        },
+        {
+          "rating": 5,
+          "comment": "Fast shipping!",
+          "date": "2024-05-23T08:56:21.621Z",
+          "reviewerName": "John Doe",
+          "reviewerEmail": "john.doe@x.dummyjson.com"
+        },
+        {
+          "rating": 5,
+          "comment": "Excellent quality!",
+          "date": "2024-05-23T08:56:21.621Z",
+          "reviewerName": "Liam Smith",
+          "reviewerEmail": "liam.smith@x.dummyjson.com"
+        }
+      ],
+      "returnPolicy": "90 days return policy",
+      "minimumOrderQuantity": 32,
+      "meta": {
+        "createdAt": "2024-05-23T08:56:21.621Z",
+        "updatedAt": "2024-05-23T08:56:21.621Z",
+        "barcode": "0913686095458",
+        "qrCode": "https://assets.dummyjson.com/public/qr-code.png"
+      },
+      "images": [
+        "https://cdn.dummyjson.com/products/images/kitchen-accessories/Fine%20Mesh%20Strainer/1.png"
+      ],
+      "thumbnail": "https://cdn.dummyjson.com/products/images/kitchen-accessories/Fine%20Mesh%20Strainer/thumbnail.png",
+      "productId": 57,
+      "quantity": 1,
+      "user": 1,
+      "id": 6
+    },
+    {
+      "title": "Dior J'adore",
+      "description": "J'adore by Dior is a luxurious and floral fragrance, known for its blend of ylang-ylang, rose, and jasmine. It embodies femininity and sophistication.",
+      "category": "fragrances",
+      "price": 89.99,
+      "discountPercentage": 17.44,
+      "rating": 3.31,
+      "stock": 91,
+      "tags": [
+        "fragrances",
+        "perfumes"
+      ],
+      "brand": "Dior",
+      "sku": "E70NB03B",
+      "weight": 10,
+      "dimensions": {
+        "width": 21.51,
+        "height": 7,
+        "depth": 26.51
+      },
+      "warrantyInformation": "Lifetime warranty",
+      "shippingInformation": "Ships in 2 weeks",
+      "availabilityStatus": "In Stock",
+      "reviews": [
+        {
+          "rating": 5,
+          "comment": "Fast shipping!",
+          "date": "2024-05-23T08:56:21.619Z",
+          "reviewerName": "Zoe Nicholson",
+          "reviewerEmail": "zoe.nicholson@x.dummyjson.com"
+        },
+        {
+          "rating": 4,
+          "comment": "Excellent quality!",
+          "date": "2024-05-23T08:56:21.619Z",
+          "reviewerName": "Addison Wright",
+          "reviewerEmail": "addison.wright@x.dummyjson.com"
+        },
+        {
+          "rating": 4,
+          "comment": "Would buy again!",
+          "date": "2024-05-23T08:56:21.619Z",
+          "reviewerName": "Clara Berry",
+          "reviewerEmail": "clara.berry@x.dummyjson.com"
+        }
+      ],
+      "returnPolicy": "7 days return policy",
+      "minimumOrderQuantity": 8,
+      "meta": {
+        "createdAt": "2024-05-23T08:56:21.619Z",
+        "updatedAt": "2024-05-23T08:56:21.619Z",
+        "barcode": "0887083199279",
+        "qrCode": "https://assets.dummyjson.com/public/qr-code.png"
+      },
+      "images": [
+        "https://cdn.dummyjson.com/products/images/fragrances/Dior%20J'adore/1.png",
+        "https://cdn.dummyjson.com/products/images/fragrances/Dior%20J'adore/2.png",
+        "https://cdn.dummyjson.com/products/images/fragrances/Dior%20J'adore/3.png"
+      ],
+      "thumbnail": "https://cdn.dummyjson.com/products/images/fragrances/Dior%20J'adore/thumbnail.png",
+      "productId": 8,
+      "quantity": 1,
+      "user": 1,
+      "id": 8
     }
   ],
   "orders": [
@@ -6656,7 +6785,7 @@
         "state": "Gotham",
         "pinCode": "560074"
       },
-      "status": "dispatched",
+      "status": "cancelled",
       "id": 1
     },
     {
