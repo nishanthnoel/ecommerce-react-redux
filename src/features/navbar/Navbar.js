@@ -17,6 +17,7 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { selectItems } from "../cart/cartSlice";
 import { selectLoggedInUser } from "../auth/authSlice";
+import { selectUserInfo } from "../user/userSlice";
 
 // const user = {
 //   name: "Tom Cook",
@@ -42,6 +43,7 @@ function classNames(...classes) {
 }
 
 function Navbar({ children }) {
+  // const user = useSelector(selectUserInfo)
   const user = useSelector(selectLoggedInUser)
   const items = useSelector(selectItems)
   return (

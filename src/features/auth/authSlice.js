@@ -21,9 +21,14 @@ export const createUserAsync = createAsyncThunk(
 // code for checking user login credentials
 export const checkUserAsync = createAsyncThunk(
   "user/checkUser",
-  async (loginInfo) => {
-    const response = await checkUser(loginInfo);
-    return response.data;
+  async (loginInfo, {rejectWithValue}) => {
+    try{
+      const response = await checkUser(loginInfo);
+      return response.data;
+        
+    }catch(error){
+      return rejectWithValue(error)
+    }
   }
 );
 
@@ -73,7 +78,7 @@ const authSlice = createSlice({
       })
       .addCase(checkUserAsync.rejected, (state, action) => {
         state.status = "error";
-        state.error = action.error || action.payload;
+        state.error = action.payload;
         // console.log("error")
       })
       .addCase(updateUserAsync.pending, (state) => {

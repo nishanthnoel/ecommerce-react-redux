@@ -45,7 +45,8 @@ function Checkout() {
   const items = useSelector(selectItems);
   // console.log(items) //this is returning  array of items
   const totalAmount = items.reduce(
-    (amount, item) => discountedPrice(item) * item.quantity + amount,
+    // (amount, item) => discountedPrice(item) * item.quantity + amount, //not required when connecting to backend. the state item selector of the cart has been changed in backend
+    (amount, item) => discountedPrice(item.product) * item.quantity + amount,
     0
   );
   const totalItems = items.reduce((total, item) => item.quantity + total, 0);
@@ -55,7 +56,7 @@ function Checkout() {
 
   const handleQuantity = (e, item) => {
     // console.log(items);
-    dispatch(updateCartAsync({ ...item, quantity: +e.target.value })); // error was i was sending items instead of item
+    dispatch(updateCartAsync({ id: item.id  , quantity: +e.target.value })); // error was i was sending items instead of item
   };
   // console.log(items);
 
@@ -78,7 +79,8 @@ function Checkout() {
         items,
         totalAmount,
         totalItems,
-        user,
+        // user,
+        user: user.id,
         paymentMethod,
         selectedAddress,
         status: "pending", // other status can be delivered, cancelled etc.
@@ -386,8 +388,9 @@ function Checkout() {
                       <li key={item.id} className="flex py-6">
                         <div className="size-24 shrink-0 overflow-hidden rounded-md border border-gray-200">
                           <img
-                            alt={item.thumbnail}
-                            src={item.title}
+                            // alt={item.thumbnail}//when connecting to backend
+                            alt={item.product.thumbnail}
+                            src={item.product.title}
                             className="size-full object-cover"
                           />
                         </div>
@@ -396,18 +399,18 @@ function Checkout() {
                           <div>
                             <div className="flex justify-between text-base font-medium text-gray-900">
                               <h3>
-                                <a href={item.href}>{item.title}</a>
+                                <a href={item.product.href}>{item.product.title}</a>
                               </h3>
                               <div className="flex">
                                 <p className="ml-4  text-gray-600">M.R.P:</p>
                                 <p className="ml-4 line-through text-gray-600">
-                                  ${item.price}
+                                  ${item.product.price}
                                 </p>
                               </div>
-                              <p className="ml-4 font-bold">${discountedPrice(item)}</p>
+                              <p className="ml-4 font-bold">${discountedPrice(item.product)}</p>
                             </div>
                             <p className="mt-1 text-left text-sm text-gray-500">
-                              {item.brand}
+                              {item.product.brand}
                             </p>
                           </div>
                           <div className="flex flex-1 items-end justify-between text-sm">

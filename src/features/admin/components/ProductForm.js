@@ -1,3 +1,4 @@
+// product form is used to add new product and edit a product
 import { PhotoIcon, UserCircleIcon } from "@heroicons/react/24/solid";
 import { ChevronDownIcon } from "@heroicons/react/16/solid";
 import { useDispatch, useSelector } from "react-redux";

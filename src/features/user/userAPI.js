@@ -2,7 +2,8 @@ export  function fetchLoggedInUserOrders(userId) {
   return new Promise(async (resolve) => {
     // setTimeout(()=> resolve({data: amount}), 500)
     const response = await fetch(
-      "http://localhost:8080/orders/?user.id=" + userId
+      // "http://localhost:8080/orders/?user.id=" + userId  //cahnged due to backend controller logic
+      "http://localhost:8080/orders/?user=" + userId  // query params
     );
     const data = await response.json();
     resolve({ data });
@@ -12,7 +13,7 @@ export  function fetchLoggedInUserOrders(userId) {
 export  function fetchLoggedInUser (userId){
     return new Promise(async (resolve, reject) => {
         // setTimeout(()=> resolve({data: amount}), 500)
-        const response = await fetch("http://localhost:8080/users/"+userId)
+        const response = await fetch("http://localhost:8080/users/"+userId) //Path Parameter
         const data = await response.json()
         resolve({data})
        

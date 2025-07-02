@@ -42,8 +42,8 @@ function UserOrders() {
                           <li key={item.id} className="flex py-6">
                             <div className="size-24 shrink-0 overflow-hidden rounded-md border border-gray-200">
                               <img
-                                alt={item.thumbnail}
-                                src={item.title}
+                                alt={item.product.thumbnail}
+                                src={item.product.title}
                                 className="size-full object-cover"
                               />
                             </div>
@@ -52,17 +52,17 @@ function UserOrders() {
                               <div>
                                 <div className="flex justify-between text-base font-medium text-gray-900">
                                   <h3>
-                                    <a href={item.href}>{item.title}</a>
+                                    <a href={item.product.href}>{item.product.title}</a>
                                   </h3>
                                   <div className="flex">
 
                                   <p className="ml-4">M.R.P:</p>
-                                  <p className="ml-4 line-through">${item.price}</p>
+                                  <p className="ml-4 line-through">${item.product.price}</p>
                                   </div>
-                                  <p className="ml-4 font-bold">${discountedPrice(item)}</p>
+                                  <p className="ml-4 font-bold">${discountedPrice(item.product)}</p>
                                 </div>
                                 <p className="mt-1 text-left text-sm text-gray-500">
-                                  {item.brand}
+                                  {item.product.brand}
                                 </p>
                               </div>
                               <div className="flex flex-1 items-end justify-between text-sm">
@@ -105,23 +105,23 @@ function UserOrders() {
                       <div className="flex min-w-0 gap-x-4">
                         <div className="min-w-0 flex-auto">
                           <p className="text-sm font-semibold text-gray-900 text-left">
-                            {order.selectedAddress.name}
+                            {order.selectedAddress[0].name}
                           </p>
                           <p className="mt-1 truncate text-xs text-gray-500 text-left">
-                            {order.selectedAddress.street}
+                            {order.selectedAddress[0].street}
                           </p>
                           <p className="mt-1 truncate text-xs text-gray-500 text-left">
-                            {order.selectedAddress.city},{" "}
-                            {order.selectedAddress.state}
+                            {order.selectedAddress[0].city},{" "}
+                            {order.selectedAddress[0].state}
                           </p>
                         </div>
                       </div>
                       <div className="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
                         <p className="text-sm text-gray-900 text-right">
-                          Phone: {order.selectedAddress.phone}
+                          Phone: {order.selectedAddress[0].phone}
                         </p>
                         <p className="text-sm text-gray-500 text-right">
-                          {order.selectedAddress.email}
+                          {order.selectedAddress[0].email}
                         </p>
                       </div>
                     </div>

@@ -53,15 +53,17 @@ export default function ProductDetail() {
   // the problem occured at server error 500 is that the cart wanst creating its own id rather it was using the product id
   const handleCart = (e) => {
     e.preventDefault();
-    if (items.findIndex((item) => item.productId === product.id) < 0) {
+    // if (items.findIndex((item) => item.productId === product.id) < 0) {
+    if (items.findIndex((item) => item.product.id === product.id) < 0) { //productId has been changed to product.id when connecting to backend
       const newItem = {
-        ...product,
-        productId: product.id,
+        // ...product, // ot required in the backend
+        // productId: product.id,
+        product: product.id, // again productId has been changed to just product when connecting to backend
         quantity: 1,
         user: user.id,
       };
       // console.log(product)
-      delete newItem["id"];
+      // delete newItem["id"]; //not requiredwhen connecting to backend
       dispatch(addToCartAsync(newItem)); // now we have removed the id here. SO, in the next step the backend creates the id all by itself
       // dispatch(addToCartAsync({...product, quantity:1, user: user.id}))// this was the old code. where the product id and user id were clashing
       //TODO: the alert will be based on the server response of the backend
