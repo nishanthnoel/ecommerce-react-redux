@@ -4,7 +4,6 @@ import { selectError, checkUserAsync, selectLoggedInUser } from "../authSlice";
 import { Link } from "react-router-dom";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { Navigate } from "react-router-dom";
-import { selectUserInfo } from "../../user/userSlice";
 
 function Login() {
   const {
@@ -16,7 +15,6 @@ function Login() {
   // console.log(errors);
   const error = useSelector(selectError); // Access the counter value from the Redux store
   const dispatch = useDispatch();
-  // const user = useSelector(selectUserInfo); 
   const user = useSelector(selectLoggedInUser); 
   // console.log(user); // this logs logincredentails
 

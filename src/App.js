@@ -26,7 +26,10 @@ import UserOrdersPage from "./pages/UserOrdersPage";
 import UserProfile from "./features/user/components/userProfile";
 import UserProfilePage from "./pages/userProfilePage";
 import { fetchLoggedInUser } from "./features/user/userAPI";
-import { fetchLoggedInUserAsync } from "./features/user/userSlice";
+import {
+  fetchLoggedInUserAsync,
+  selectUserInfo,
+} from "./features/user/userSlice";
 import Logout from "./features/auth/components/Logout";
 import ForgotPassword from "./features/auth/components/ForgotPassword";
 import ProtectedAdmin from "./features/auth/components/ProtectedAdmin";
@@ -160,12 +163,13 @@ const router = createBrowserRouter([
 function App() {
   const dispatch = useDispatch();
   const user = useSelector(selectLoggedInUser);
+  // const userInfo = useSelector(selectUserInfo);
   // console.log(user) // this logs logincredentails
 
   useEffect(() => {
     if (user && user.id) {
-      dispatch(fetchItemsByUserIdAsync(user.id));
       dispatch(fetchLoggedInUserAsync(user.id));
+      dispatch(fetchItemsByUserIdAsync(user.id));
     }
   }, [dispatch, user]);
   return (

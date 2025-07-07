@@ -6,7 +6,7 @@ import {
   fetchLoggedInUser,
 } from "./userAPI";
 const initialState = {
-  userOrders: [],
+  // userOrders: [], //the ordersare set inside userInfo.orders
   status: "idle",
   userInfo: null,
 };
@@ -28,8 +28,8 @@ export const fetchLoggedInUserAsync = createAsyncThunk(
 );
 export const updateUserAsync = createAsyncThunk(
   "user/updateUser",
-  async (id) => {
-    const response = await updateUser(id);
+  async (update) => {
+    const response = await updateUser(update);
     return response.data;
   }
 );
@@ -52,7 +52,7 @@ const userSlice = createSlice({
       .addCase(fetchLoggedInUserOrdersAsync.fulfilled, (state, action) => {
         state.status = "idle";
         //this info can be different or more form the logged-in user
-        state.userOrders = action.payload;
+        state.userInfo.orders = action.payload;
       })
       .addCase(updateUserAsync.pending, (state) => {
         state.status = "loading";
@@ -60,7 +60,7 @@ const userSlice = createSlice({
       .addCase(updateUserAsync.fulfilled, (state, action) => {
         state.status = "idle";
         //this info can be different or more form the logged-in user
-        state.userOrders = action.payload;
+        state.userInfo.orders = action.payload; //in action.payload updated user comes. so, user.Orders cannot be action.payload;
       })
       .addCase(fetchLoggedInUserAsync.pending, (state) => {
         state.status = "loading";
@@ -70,14 +70,15 @@ const userSlice = createSlice({
         //this info can be different or more form the logged-in user
         state.userInfo = action.payload;
       })
-  },
+  }
 });
 
 // Export actions so they can be dispatched
 export const { increment } = userSlice.actions;
 //TOdo: change the orders and addresses independent of each other. my code works fine and is independent
-export const selectUserOrders = (state) => state.user.userOrders;
+export const selectUserOrders = (state) => state.user.userInfo.orders;
 export const selectUserInfo   = (state) => state.user.userInfo;
+export const selectUserInfoStatus   = (state) => state.status;
 
 // Export the reducer to be used in the store
 export default userSlice.reducer;

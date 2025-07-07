@@ -17,7 +17,7 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { selectItems } from "../cart/cartSlice";
 import { selectLoggedInUser } from "../auth/authSlice";
-import { selectUserInfo } from "../user/userSlice";
+import { selectUserInfo, selectUserInfoStatus } from "../user/userSlice";
 
 // const user = {
 //   name: "Tom Cook",
@@ -43,11 +43,16 @@ function classNames(...classes) {
 }
 
 function Navbar({ children }) {
-  // const user = useSelector(selectUserInfo)
-  const user = useSelector(selectLoggedInUser)
+  const status = useSelector(selectUserInfoStatus);
+  const user = useSelector(selectUserInfo)
+  // const user = useSelector(selectLoggedInUser)  // this should come from userInfo
   const items = useSelector(selectItems)
-  return (
-    <div className="min-h-full">
+  
+  return (<>
+    {
+      status === 'loading' || user == null 
+      ? <div className="min-h-full">hello </div> 
+      : <div className="min-h-full">
       <Disclosure as="nav" className="bg-gray-800">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex h-16 items-center justify-between">
@@ -230,7 +235,8 @@ function Navbar({ children }) {
           {children}
         </div>
       </main>
-    </div>
+    </div>}
+    </>
   );
 }
 

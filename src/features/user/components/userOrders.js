@@ -8,10 +8,10 @@ import { discountedPrice } from "../../../app/constants";
 function UserOrders() {
   const dispatch = useDispatch();
   // const user = useSelector(selectLoggedInUser);
-  const user = useSelector(selectUserInfo);
+  const userInfo = useSelector(selectUserInfo);
   const orders = useSelector(selectUserOrders);
   useEffect(() => {
-    dispatch(fetchLoggedInUserOrdersAsync(user.id));
+    dispatch(fetchLoggedInUserOrdersAsync(userInfo.id));
   }, []);
 
   return (
@@ -52,7 +52,7 @@ function UserOrders() {
                               <div>
                                 <div className="flex justify-between text-base font-medium text-gray-900">
                                   <h3>
-                                    <a href={item.product.href}>{item.product.title}</a>
+                                    <a href={item.product.id}>{item.product.title}</a>
                                   </h3>
                                   <div className="flex">
 
@@ -105,23 +105,23 @@ function UserOrders() {
                       <div className="flex min-w-0 gap-x-4">
                         <div className="min-w-0 flex-auto">
                           <p className="text-sm font-semibold text-gray-900 text-left">
-                            {order.selectedAddress[0].name}
+                            {order.selectedAddress.name}
                           </p>
                           <p className="mt-1 truncate text-xs text-gray-500 text-left">
-                            {order.selectedAddress[0].street}
+                            {order.selectedAddress.street}
                           </p>
                           <p className="mt-1 truncate text-xs text-gray-500 text-left">
-                            {order.selectedAddress[0].city},{" "}
-                            {order.selectedAddress[0].state}
+                            {order.selectedAddress.city},{" "}
+                            {order.selectedAddress.state}
                           </p>
                         </div>
                       </div>
                       <div className="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
                         <p className="text-sm text-gray-900 text-right">
-                          Phone: {order.selectedAddress[0].phone}
+                          Phone: {order.selectedAddress.phone}
                         </p>
                         <p className="text-sm text-gray-500 text-right">
-                          {order.selectedAddress[0].email}
+                          {order.selectedAddress.email}
                         </p>
                       </div>
                     </div>

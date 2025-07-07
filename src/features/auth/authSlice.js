@@ -4,7 +4,7 @@ import { createUser, checkUser, signOut } from "./authAPI";
 import { updateUser } from "../user/userAPI";
 
 const initialState = {
-  loggedInUser: null, // this is the user object, which is used to store the user data. both for login(fulfilled) and signup(fulfilled)
+  loggedInUser: null, // this is the user object, which is used to store the user data. both for login(fulfilled) and signup(fulfilled). this should only contain the identity information
   status: "idle",
   error: null,
 };
@@ -32,13 +32,13 @@ export const checkUserAsync = createAsyncThunk(
   }
 );
 
-export const updateUserAsync = createAsyncThunk(
-  "user/updateUser",
-  async (update) => {
-    const response = await updateUser(update);
-    return response.data;
-  }
-);
+// export const updateUserAsync = createAsyncThunk(
+//   "user/updateUser",
+//   async (update) => {
+//     const response = await updateUser(update);
+//     return response.data;
+//   }
+// );
 export const signOutAsync = createAsyncThunk(
   "user/signOut",
   async (loginInfo) => {
@@ -81,13 +81,14 @@ const authSlice = createSlice({
         state.error = action.payload;
         // console.log("error")
       })
-      .addCase(updateUserAsync.pending, (state) => {
-        state.status = "loading";
-      })
-      .addCase(updateUserAsync.fulfilled, (state, action) => {
-        state.status = "idle";
-        state.loggedInUser = action.payload;
-      })
+      // ******************the below updateUserAsync is commented out so that the use*******************
+      // .addCase(updateUserAsync.pending, (state) => {
+      //   state.status = "loading";
+      // })
+      // .addCase(updateUserAsync.fulfilled, (state, action) => {
+      //   state.status = "idle";
+      //   state.loggedInUser = action.payload;
+      // })
       .addCase(signOutAsync.pending, (state) => {
         state.status = "loading";
       })

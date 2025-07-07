@@ -16,8 +16,6 @@ import { XMarkIcon } from "@heroicons/react/24/outline";
 import { Link, Navigate } from "react-router-dom";
 import { discountedPrice } from "../../app/constants";
 import Modal from "../common/Modal";
-import { fetchItemsByUserId } from "./cartAPI";
-import { selectLoggedInUser } from "../auth/authSlice";
 
 function Cart() {
   const dispatch = useDispatch();
@@ -64,8 +62,8 @@ function Cart() {
                 <li key={item.id} className="flex py-6">
                   <div className="size-24 shrink-0 overflow-hidden rounded-md border border-gray-200">
                     <img
-                      alt={item.product.thumbnail}
-                      src={item.product.title}
+                      alt={item.product.title}
+                      src={item.product.thumbnail}
                       className="size-full object-cover"
                     />
                   </div>

@@ -8,14 +8,14 @@ import { useState } from "react";
 function UserProfile() {
   const dispatch = useDispatch();
   // const user = useSelector(selectLoggedInUser);
-  const user = useSelector(selectUserInfo);
+  const userInfo = useSelector(selectUserInfo);
   const [selectEditIndex, setSelectEditIndex] = useState(-1);
   const [showAddAddressForm, setShowAddAddressForm] = useState(false);
   // selectUserInfo and selectLoggedInUser = {name: "Guest", email: "email@gmail,com", addresses: []}
 // TODO : we will add payment section when we work on backend
 
   const handleEdit = (addressUpdate, index) => {
-    const newUser = { ...user, addresses: [...user.addresses] }; // for shallow copy issue
+    const newUser = { ...userInfo, addresses: [...userInfo.addresses] }; // for shallow copy issue
     newUser.addresses.splice(index, 1, addressUpdate); //removes the address at index
     dispatch(updateUserAsync(newUser));
     setSelectEditIndex(-1);
@@ -23,20 +23,20 @@ function UserProfile() {
 
 
   const handleRemove = (e, index) => {
-    const newUser = { ...user, addresses: [...user.addresses] }; // for shallow copy issue
+    const newUser = { ...userInfo, addresses: [...userInfo.addresses] }; // for shallow copy issue
     newUser.addresses.splice(index, 1); //removes the address at index
     dispatch(updateUserAsync(newUser));
   };
 
   const handleAdd = (address) => {
-    const newUser = { ...user, addresses: [...user.addresses,address] }; // for shallow copy issue
+    const newUser = { ...userInfo, addresses: [...userInfo.addresses, address] }; // for shallow copy issue
     dispatch(updateUserAsync(newUser));
     setShowAddAddressForm(false);
   };
 
   const handleEditForm = (index) => {
     setSelectEditIndex(index);
-    const address = user.addresses[index];
+    const address = userInfo.addresses[index];
     setValue("name", address.name);
     setValue("email", address.email);
     setValue("phone", address.phone);
@@ -58,13 +58,13 @@ function UserProfile() {
       <div className="mx-auto mt-20 bg-gray-200 max-w-7xl px-4 sm:px-6 lg:px-8 rounded-md border border-transparent">
         <div className="border-t border-gray-200 px-4 py-6 sm:px-6">
           <h1 className="text-4xl font-bold tracking-tight my-2 text-gray-900">
-            Name: {user.name ? user.name : "Guest"}
+            Name: {userInfo.name ? userInfo.name : "Guest"}
           </h1>
           <h3 className="text-xl font-bold tracking-tight my-2 text-red-900">
-            Email Addresses: {user.email}
+            Email Addresses: {userInfo.email}
           </h3>
-          {user.role==="admin" && <h3 className="text-xl font-bold tracking-tight my-2 text-red-900">
-            Role : {user.role}
+          {userInfo.role==="admin" && <h3 className="text-xl font-bold tracking-tight my-2 text-red-900">
+            Role : {userInfo.role}
           </h3>}
         </div>
 
@@ -334,7 +334,7 @@ function UserProfile() {
           <p className="flex-initial mt-0.5 text-md text-black font-bold text-left">
             Your Addresses :
           </p>
-          {user.addresses.map((address, index) => (
+          {userInfo.addresses.map((address, index) => (
             <div>
               {selectEditIndex === index ? (
                 <form

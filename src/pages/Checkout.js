@@ -19,7 +19,7 @@ import { useForm } from "react-hook-form";
 import {
   selectLoggedInUser,
   updateUserAsync,
-} from "../features/auth/authSlice";
+} from "../features/user/userSlice";
 import {
   createOrderAsync,
   selectCurrentOrder,
@@ -38,9 +38,9 @@ function Checkout() {
   const [open, setOpen] = useState(true);
   const [selectedAddress, setSelectedAddress] = useState(null);
   const [paymentMethod, setPaymentMethod] = useState("cash");
-  const user = useSelector(selectUserInfo);
+  const userInfo = useSelector(selectUserInfo);
   const currentOrder = useSelector(selectCurrentOrder);
-  console.log(user); // this logs out when checkout page is loaded
+  console.log(userInfo); // this logs out when checkout page is loaded
 
   const items = useSelector(selectItems);
   // console.log(items) //this is returning  array of items
@@ -66,7 +66,7 @@ function Checkout() {
 
   const handleAddress = (e) => {
     // console.log(e.target.value);
-    setSelectedAddress(user.addresses[e.target.value]);
+    setSelectedAddress(userInfo.addresses[e.target.value]);
   };
 
   const handlePayment = (e) => {
@@ -80,7 +80,7 @@ function Checkout() {
         totalAmount,
         totalItems,
         // user,
-        user: user.id,
+        user: userInfo.id,
         paymentMethod,
         selectedAddress,
         status: "pending", // other status can be delivered, cancelled etc.
@@ -110,11 +110,11 @@ function Checkout() {
               className=" bg-white px-5 mt-12 py-10"
               noValidate
               onSubmit={handleSubmit((data) => {
-                console.log(data); // we get object of the input data
+                console.log(data); // we get object of the input data. this data is the new address
                 dispatch(
                   updateUserAsync({
-                    ...user,
-                    addresses: [...user.addresses, data],
+                    ...userInfo,
+                    addresses: [...userInfo.addresses, data],
                   })
                 );
                 reset();
@@ -289,7 +289,7 @@ function Checkout() {
                     Choose from Existing Addresses
                   </p>
                   <ul role="list">
-                    {user.addresses.map((address, index) => (
+                    {userInfo.addresses.map((address, index) => (
                       <li
                         key={index}
                         className="flex justify-between px-5 gap-x-6 py-5 border-solid border-2 border-gray-200"
