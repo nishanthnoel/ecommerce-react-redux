@@ -125,7 +125,7 @@ export default function ProductList() {
       );
       newFilter[section.id].splice(index, 1);
     }
-    console.log({ newFilter });
+    // console.log({ newFilter });
     setFilter(newFilter);
     // dispatch(fetchProductsByFiltersAsync(filter)); // by this method we used to get the ui updated when clicked twice
     // dispatch(fetchProductsByFiltersAsync({ filter: newFilter, sort })); // Dispatch the action with the updated filter and sort. 2.11 problem solved
@@ -139,12 +139,12 @@ export default function ProductList() {
     // const newFilter = { ...filter, _sort: option.sort, _order : option.order };
     // const newSort = { _sort: option.sort}; // used for latest version of json server
     const newSort = { _sort: option.sort, _order: option.order };
-    console.log(newSort);
+    // console.log(newSort);
     setSort(newSort);
     // dispatch(fetchProductsByFiltersAsync({ filter, sort: newSort })); // Dispatch the action with the updated filter and sort
   };
   const handlePage = (page) => {
-    console.log(page);
+    // console.log(page);
     setPage(page);
     dispatch(
       fetchProductsByFiltersAsync({

@@ -8,7 +8,7 @@ export function addToCart(item) {
       },
     });
     const data = await response.json();
-    console.log(data);
+    // console.log(data);
     resolve({ data });
   });
 }
@@ -41,7 +41,7 @@ export function updateCart(update) {
       },
     });
     const data = await response.json();
-    console.log(data);
+    // console.log(data);
     resolve({ data });
   });
 }

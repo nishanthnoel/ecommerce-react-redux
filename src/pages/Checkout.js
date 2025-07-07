@@ -26,6 +26,7 @@ import {
 } from "../features/order/orderSlice";
 import { selectUserInfo } from "../features/user/userSlice";
 import { discountedPrice } from "../app/constants";
+import { toast } from "react-toastify";
 
 function Checkout() {
   const {
@@ -40,7 +41,7 @@ function Checkout() {
   const [paymentMethod, setPaymentMethod] = useState("cash");
   const userInfo = useSelector(selectUserInfo);
   const currentOrder = useSelector(selectCurrentOrder);
-  console.log(userInfo); // this logs out when checkout page is loaded
+  // console.log(userInfo); // this logs out when checkout page is loaded
 
   const items = useSelector(selectItems);
   // console.log(items) //this is returning  array of items
@@ -56,7 +57,7 @@ function Checkout() {
 
   const handleQuantity = (e, item) => {
     // console.log(items);
-    dispatch(updateCartAsync({ id: item.id  , quantity: +e.target.value })); // error was i was sending items instead of item
+    dispatch(updateCartAsync({ id: item.id, quantity: +e.target.value })); // error was i was sending items instead of item
   };
   // console.log(items);
 
@@ -88,7 +89,7 @@ function Checkout() {
       dispatch(createOrderAsync(order));
       //TODO: redirect to order success page
     } else {
-      alert("Please select address and payment method");
+      toast("Please select address and payment method");
       //TODO: on server change the total number of stock items
       //TODO: clear cart after order has been placed
     }
@@ -110,7 +111,7 @@ function Checkout() {
               className=" bg-white px-5 mt-12 py-10"
               noValidate
               onSubmit={handleSubmit((data) => {
-                console.log(data); // we get object of the input data. this data is the new address
+                // console.log(data); // we get object of the input data. this data is the new address
                 dispatch(
                   updateUserAsync({
                     ...userInfo,
@@ -389,8 +390,8 @@ function Checkout() {
                         <div className="size-24 shrink-0 overflow-hidden rounded-md border border-gray-200">
                           <img
                             // alt={item.thumbnail}//when connecting to backend
-                            alt={item.product.thumbnail}
-                            src={item.product.title}
+                            alt={item.product.title}
+                            src={item.product.thumbnail}
                             className="size-full object-cover"
                           />
                         </div>
@@ -399,7 +400,9 @@ function Checkout() {
                           <div>
                             <div className="flex justify-between text-base font-medium text-gray-900">
                               <h3>
-                                <a href={item.product.href}>{item.product.title}</a>
+                                <a href={item.product.href}>
+                                  {item.product.title}
+                                </a>
                               </h3>
                               <div className="flex">
                                 <p className="ml-4  text-gray-600">M.R.P:</p>
@@ -407,7 +410,9 @@ function Checkout() {
                                   ${item.product.price}
                                 </p>
                               </div>
-                              <p className="ml-4 font-bold">${discountedPrice(item.product)}</p>
+                              <p className="ml-4 font-bold">
+                                ${discountedPrice(item.product)}
+                              </p>
                             </div>
                             <p className="mt-1 text-left text-sm text-gray-500">
                               {item.product.brand}

@@ -1,23 +1,24 @@
-export async function fetchAllProducts() {
-  //TODO: server will filter the deleted products
+// all products are fetched using query
+// export async function fetchAllProducts() {
+//   //TODO: server will filter the deleted products
 
-  try {
-    const response = await fetch("http://localhost:8080/products");
+//   try {
+//     const response = await fetch("http://localhost:8080/products");
 
-    // Check if the response is OK (status code 2xx)
-    if (!response.ok) {
-      throw new Error("Failed to fetch products");
-    }
+//     // Check if the response is OK (status code 2xx)
+//     if (!response.ok) {
+//       throw new Error("Failed to fetch products");
+//     }
 
-    const data = await response.json();
-    console.log({ data });
-    return { data }; // Returning the data as an object
-  } catch (error) {
-    // Handle errors (e.g., network errors, or bad response)
-    console.error(error);
-    throw error; // Rethrow the error to propagate it
-  }
-}
+//     const data = await response.json();
+//     // console.log({ data });
+//     return { data }; // Returning the data as an object
+//   } catch (error) {
+//     // Handle errors (e.g., network errors, or bad response)
+//     console.error(error);
+//     throw error; // Rethrow the error to propagate it
+//   }
+// }
 
 // export async function fetchProductById({id}) {
 //   return new Promise(async (resolve, reject) => {
@@ -28,14 +29,14 @@ export async function fetchAllProducts() {
 // }
 
 export async function fetchProductById(id) {
-  console.log(id);
+  // console.log(id);
   try {
     const response = await fetch(`http://localhost:8080/products/${id}`);
     if (!response.ok) {
       throw new Error("Failed to fetch product");
     }
     const data = await response.json();
-    console.log(data);
+    // console.log(data);
     return { data };
   } catch (error) {
     console.error(error);
@@ -50,7 +51,7 @@ export async function fetchBrands() {
       throw new Error("Failed to fetch Brands");
     }
     const data = await response.json();
-    console.log({ data });
+    // console.log({ data });
     return { data };
   } catch (error) {
     console.error(error);
@@ -101,7 +102,7 @@ export async function fetchCategories() {
     }
 
     const data = await response.json();
-    console.log({ data });
+    // console.log({ data });
     return { data };
   } catch (error) {
     console.error(error);
@@ -127,7 +128,7 @@ export function updateProduct(update) {
   });
 }
 
-export async function fetchProductsByFilters(filter, sort, pagination) {
+export async function fetchProductsByFilters(filter, sort, pagination, admin) {
   // console.log(filter);
 
   //filter = {category: "electronics"}
@@ -149,9 +150,9 @@ export async function fetchProductsByFilters(filter, sort, pagination) {
     console.log(categoryValues); //furniture
     if (categoryValues.length) {
       const lastCategoryValue = categoryValues[categoryValues.length - 1];
-      console.log(lastCategoryValue);
+      // console.log(lastCategoryValue);
       queryString += `${key}=${lastCategoryValue}&`;
-      console.log(queryString);
+      // console.log(queryString);
     }
   }
   for (let key in sort) {
@@ -160,12 +161,15 @@ export async function fetchProductsByFilters(filter, sort, pagination) {
   for (let key in pagination) {
     queryString += `${key}=${pagination[key]}&`; // this logic will work in older versions of json-ser
   }
+  if(admin){
+    queryString += `admin=true`
+  }
   // console.log(queryString);
   try {
     const response = await fetch(
       "http://localhost:8080/products?" + queryString //http://localhost:8080/products?category=laptops&_sort=-rating
     );
-    console.log(response);
+    // console.log(response);
 
     // Check if the response is OK (status code 2xx)
     if (!response.ok) {

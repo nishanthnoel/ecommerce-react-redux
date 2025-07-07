@@ -8,7 +8,7 @@ export  function createOrder (order){
             },
     })
         const data = await response.json()
-        console.log(data)
+        // console.log(data)
         resolve({data})
     
     })
@@ -23,7 +23,7 @@ export  function updateOrder (order){
             },
     })
         const data = await response.json()
-        console.log(data)
+        // console.log(data)
         resolve({data})
     
     })
@@ -43,7 +43,7 @@ export  async function fetchAllOrders ({sort,pagination}){
     const response = await fetch(
       "http://localhost:8080/orders?" + queryString //http://localhost:8080/orders?page=1&_limit=10
     );
-    console.log(response);
+    // console.log(response);
 
     // Check if the response is OK (status code 2xx)
     if (!response.ok) {

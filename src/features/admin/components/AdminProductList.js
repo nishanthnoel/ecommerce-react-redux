@@ -135,12 +135,12 @@ export default function AdminProductList() {
     // const newFilter = { ...filter, _sort: option.sort, _order : option.order };
     // const newSort = { _sort: option.sort}; // used for latest version of json server
     const newSort = { _sort: option.sort, _order: option.order };
-    console.log(newSort);
+    // console.log(newSort);s
     setSort(newSort);
     // dispatch(fetchProductsByFiltersAsync({ filter, sort: newSort })); // Dispatch the action with the updated filter and sort
   };
   const handlePage = (page) => {
-    console.log(page);
+    // console.log(page);
     setPage(page);
     dispatch(
       fetchProductsByFiltersAsync({
@@ -158,7 +158,7 @@ export default function AdminProductList() {
 
   useEffect(() => {
     const pagination = { _page: page, _limit: ITEMS_PER_PAGE };
-    dispatch(fetchProductsByFiltersAsync({ filter, sort, pagination }));
+    dispatch(fetchProductsByFiltersAsync({ filter, sort, pagination, admin:true }));
   }, [filter, sort, dispatch, page]);
 
   useEffect(() => {

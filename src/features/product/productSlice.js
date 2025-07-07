@@ -10,13 +10,14 @@ import {
   updateProduct,
 } from "./productAPI";
 
-export const fetchAllProductsAsync = createAsyncThunk(
-  "product/fetchAllProducts",
-  async () => {
-    const response = await fetchAllProducts();
-    return response.data;
-  }
-);
+// all products are fetched using query
+// export const fetchAllProductsAsync = createAsyncThunk(
+//   "product/fetchAllProducts",
+//   async () => {
+//     const response = await fetchAllProducts();
+//     return response.data;
+//   }
+// );
 export const fetchProductByIdAsync = createAsyncThunk(
   "product/fetchProductById",
   async (id) => {
@@ -26,8 +27,8 @@ export const fetchProductByIdAsync = createAsyncThunk(
 );
 export const fetchProductsByFiltersAsync = createAsyncThunk(
   "product/fetchProductsByFilters",
-  async ({ filter, sort, pagination }) => {
-    const response = await fetchProductsByFilters(filter, sort, pagination);
+  async ({ filter, sort, pagination, admin }) => {
+    const response = await fetchProductsByFilters(filter, sort, pagination, admin);
     return response.data;
   }
 );
@@ -77,18 +78,18 @@ const productSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchAllProductsAsync.pending, (state) => {
-        state.status = "loading";
-      })
-      .addCase(fetchAllProductsAsync.fulfilled, (state, action) => {
-        state.status = "idle";
-        state.products = action.payload;
-      })
-      .addCase(fetchAllProductsAsync.rejected, (state, action) => {
-        state.status = "failed";
-        // Optional: Store the error message
-        state.error = action.error.message;
-      })
+      // .addCase(fetchAllProductsAsync.pending, (state) => { // all products are fetched using query
+      //   state.status = "loading";
+      // })
+      // .addCase(fetchAllProductsAsync.fulfilled, (state, action) => {
+      //   state.status = "idle";
+      //   state.products = action.payload;
+      // })
+      // .addCase(fetchAllProductsAsync.rejected, (state, action) => {
+      //   state.status = "failed";
+      //   // Optional: Store the error message
+      //   state.error = action.error.message;
+      // })
       .addCase(fetchProductsByFiltersAsync.pending, (state, action) => {
         state.status = "loading";
       })

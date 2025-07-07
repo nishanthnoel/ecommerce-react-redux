@@ -9,7 +9,7 @@ export function createUser(userData) {
     });
     // TODO: on server it will return only relevant information of user9not password
     const data = await response.json();
-    console.log(data); // this logs the created user object with id
+    // console.log(data); // this logs the created user object with id
     resolve({ data });
   });
 }

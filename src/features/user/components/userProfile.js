@@ -81,7 +81,7 @@ function UserProfile() {
               className=" bg-white px-5 mt-12 py-10"
               noValidate
               onSubmit={handleSubmit((data) => {
-                console.log(data); // we get object of the input data
+                // console.log(data); // we get object of the input data
 
                 handleAdd(data);
                 reset();
@@ -341,7 +341,7 @@ function UserProfile() {
                   className=" bg-white px-5 mt-12 py-10"
                   noValidate
                   onSubmit={handleSubmit((data, index) => {
-                    console.log(data); // we get object of the input data
+                    // console.log(data); // we get object of the input data
                     // dispatch(
                     //   updateUserAsync({
                     //     ...user,

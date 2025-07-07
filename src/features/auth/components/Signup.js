@@ -12,7 +12,7 @@ function Signup() {
     formState: { errors },
   } = useForm();
   const user = useSelector(selectLoggedInUser); // Access the counter value from the Redux store
-  console.log(user); // this logs object[object Object]
+  // console.log(user); // this logs object[object Object]
   const dispatch = useDispatch();
 
   // console.log(JSON.stringify(user));  
@@ -48,7 +48,7 @@ function Signup() {
               dispatch(createUserAsync({email: data.email, password: data.password, addresses: [], role: 'user'
                 // TODO: this role can be directly given on backend
               }));
-              console.log(data);   // this logs the signup credentials(object with email, password, and confirmPassword)
+              // console.log(data);   // this logs the signup credentials(object with email, password, and confirmPassword)
             })}
             // action="#" method="POST"
             className="space-y-6"
