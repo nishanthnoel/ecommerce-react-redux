@@ -16,7 +16,7 @@ import { Children } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { selectItems } from "../cart/cartSlice";
-import { selectLoggedInUser } from "../auth/authSlice";
+import { selectLoggedInUserToken } from "../auth/authSlice";
 import { selectUserInfo, selectUserInfoStatus } from "../user/userSlice";
 
 // const user = {
@@ -44,15 +44,16 @@ function classNames(...classes) {
 
 function Navbar({ children }) {
   const status = useSelector(selectUserInfoStatus);
-  const user = useSelector(selectUserInfo)
-  // const user = useSelector(selectLoggedInUser)  // this should come from userInfo
+  const userInfo = useSelector(selectUserInfo)
+  // const user = useSelector(selectLoggedInUserToken)  // this should come from userInfo
   const items = useSelector(selectItems)
   
   return (<>
     {
-      status === 'loading' || user == null 
+      status === 'loading' || userInfo == null 
       ? <div className="min-h-full">hello </div> 
-      : <div className="min-h-full">
+      : 
+      <div className="min-h-full">
       <Disclosure as="nav" className="bg-gray-800">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex h-16 items-center justify-between">
@@ -68,7 +69,7 @@ function Navbar({ children }) {
               </div>
               <div className="hidden md:block">
                 <div className="ml-10 flex items-baseline space-x-4">
-                  {navigation.map((item) => (item[user.role] && 
+                  {navigation.map((item) => (item[userInfo.role] && 
                   //item[user.role] that is item is an iterator from navigation variable. user.role is the selectuserloggedin users role info is used as key.
                     <Link
                       key={item.name}
@@ -112,7 +113,7 @@ function Navbar({ children }) {
                       <span className="sr-only">Open user menu</span>
                       <img
                         alt=""
-                        src={user.imageUrl}
+                        src={userInfo.imageUrl}
                         className="size-8 rounded-full"
                       />
                     </MenuButton>
@@ -177,16 +178,16 @@ function Navbar({ children }) {
               <div className="shrink-0">
                 <img
                   alt=""
-                  src={user.imageUrl}
+                  src={userInfo.imageUrl}
                   className="size-10 rounded-full"
                 />
               </div>
               <div className="ml-3">
                 <div className="text-base/5 font-medium text-white">
-                  {user.name}
+                  {userInfo.name}
                 </div>
                 <div className="text-sm font-medium text-gray-400">
-                  {user.email}
+                  {userInfo.email}
                 </div>
               </div>
               <Link to = "/cart">

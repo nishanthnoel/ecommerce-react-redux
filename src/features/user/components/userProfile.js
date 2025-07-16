@@ -1,17 +1,17 @@
 // src/features/counter/Counter.js
 import { useDispatch, useSelector } from "react-redux";
-// import { selectLoggedInUser } from "../../auth/authSlice";
+// import { selectLoggedInUserToken } from "../../auth/authSlice";
 import { selectUserInfo, updateUserAsync } from "../userSlice";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 
 function UserProfile() {
   const dispatch = useDispatch();
-  // const user = useSelector(selectLoggedInUser);
+  // const user = useSelector(selectLoggedInUserToken);
   const userInfo = useSelector(selectUserInfo);
   const [selectEditIndex, setSelectEditIndex] = useState(-1);
   const [showAddAddressForm, setShowAddAddressForm] = useState(false);
-  // selectUserInfo and selectLoggedInUser = {name: "Guest", email: "email@gmail,com", addresses: []}
+  // selectUserInfo and selectLoggedInUserToken = {name: "Guest", email: "email@gmail,com", addresses: []}
 // TODO : we will add payment section when we work on backend
 
   const handleEdit = (addressUpdate, index) => {

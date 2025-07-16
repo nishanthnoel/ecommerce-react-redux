@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import { selectProductById, fetchProductByIdAsync } from "../../product/productSlice";
 import { useDispatch } from "react-redux";
 import { useParams } from 'react-router-dom';
-import { selectLoggedInUser } from "../../auth/authSlice";
+import { selectLoggedInUserToken } from "../../auth/authSlice";
 import { addToCartAsync } from "../../cart/cartSlice";
 import { discountedPrice } from "../../../app/constants";
 
@@ -42,7 +42,7 @@ export default function AdminProductDetail() {
   const [selectedColor, setSelectedColor] = useState(colors[0]);
   const [selectedSize, setSelectedSize] = useState(sizes[2]);
   const product = useSelector(selectProductById)
-  const user = useSelector(selectLoggedInUser)
+  const user = useSelector(selectLoggedInUserToken)
   const dispatch = useDispatch()
   const params = useParams()  //Yes, useParams accesses the current URL from the React Router system, no matter where the URL is changed or set. However, it works only when you're using React Router to handle navigation, and it’s specifically for routes defined in your app.
 
@@ -58,7 +58,7 @@ export default function AdminProductDetail() {
   // the problem occured at server error 500 is that the cart wanst creating its own id rather it was using the product id
   const handleCart = (e) => {
     e.preventDefault()
-    const newItem = {...product, quantity:1, user: user.id}
+    const newItem = {...product, quantity:1}
     // console.log(product)
     delete newItem['id'];
     dispatch(addToCartAsync(newItem)) // now we have removed the id here. SO, in the next step the backend creates the id all by itself

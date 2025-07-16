@@ -5,7 +5,7 @@ import {
   updateCart,
   fetchItemsByUserId,
   deleteItemFromCart,
-  resetCart
+  resetCart,
 } from "./cartAPI";
 
 const initialState = {
@@ -22,8 +22,11 @@ export const addToCartAsync = createAsyncThunk(
 );
 export const fetchItemsByUserIdAsync = createAsyncThunk(
   "cart/fetchItemsByUserId",
-  async (userId) => {
-    const response = await fetchItemsByUserId(userId);
+  // async (userId) => {
+  async () => {
+    // we can get the req.user using token in the backend no need give it in the front end
+    // const response = await fetchItemsByUserId(userId);
+    const response = await fetchItemsByUserId(); // we can get the req.user using token in the backend no need give it in the front end
     // console.log(response.data)
     return response.data;
   }
@@ -47,8 +50,8 @@ export const deleteItemFromCartAsync = createAsyncThunk(
 );
 export const resetCartAsync = createAsyncThunk(
   "cart/resetCart",
-  async (userId) => {
-    const response = await resetCart(userId);
+  async () => {
+    const response = await resetCart();
     // console.log(response.data) // This just returns item object
     return response.data;
   }
@@ -95,7 +98,9 @@ const cartSlice = createSlice({
       .addCase(deleteItemFromCartAsync.fulfilled, (state, action) => {
         state.status = "idle";
         // state.items = state.items.filter((item) => item.id !== action.payload.id);
-        const index = state.items.findIndex((item) => item.id === action.payload.id);
+        const index = state.items.findIndex(
+          (item) => item.id === action.payload.id
+        );
         state.items.splice(index, 1);
       })
       .addCase(resetCartAsync.pending, (state) => {
@@ -104,8 +109,8 @@ const cartSlice = createSlice({
       .addCase(resetCartAsync.fulfilled, (state, action) => {
         state.status = "idle";
         // state.items = state.items.filter((item) => item.id !== action.payload.id);
-        state.items= []
-      })
+        state.items = [];
+      });
   },
 });
 

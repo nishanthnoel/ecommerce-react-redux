@@ -1,47 +1,48 @@
-export  function createOrder (order){
-    return new Promise(async (resolve) => {
-        const response = await fetch("http://localhost:8080/orders", {   
-            method: "POST",
-            body: JSON.stringify(order), 
-            headers: {
-                "Content-Type": "application/json",
-            },
-    })
-        const data = await response.json()
-        // console.log(data)
-        resolve({data})
-    
-    })
+export function createOrder(order) {
+  return new Promise(async (resolve) => {
+    const response = await fetch("http://localhost:8080/orders", {
+      method: "POST",
+      body: JSON.stringify(order),
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const data = await response.json();
+    // console.log(data)
+    resolve({ data });
+  });
 }
-export  function updateOrder (order){
-    return new Promise(async (resolve) => {
-        const response = await fetch("http://localhost:8080/orders/"+order.id, {   
-            method: "PATCH",
-            body: JSON.stringify(order), 
-            headers: {
-                "Content-Type": "application/json",
-            },
-    })
-        const data = await response.json()
-        // console.log(data)
-        resolve({data})
-    
-    })
+export function updateOrder(order) {
+  return new Promise(async (resolve) => {
+    const response = await fetch("http://localhost:8080/orders/" + order.id, {
+      method: "PATCH",
+      body: JSON.stringify(order),
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const data = await response.json();
+    // console.log(data)
+    resolve({ data });
+  });
 }
-export  async function fetchAllOrders ({sort,pagination}){
-    let queryString = "";
-    
-    for (let key in sort) {
-        queryString += `${key}=${sort[key]}&`;
-    }
-    for (let key in pagination) {
-        queryString += `${key}=${pagination[key]}&`; // this logic will work in older versions of json-ser
-    }
-    // console.log(queryString);
- 
+export async function fetchAllOrders({ sort, pagination }) {
+  let queryString = "";
+
+  for (let key in sort) {
+    queryString += `${key}=${sort[key]}&`;
+  }
+  for (let key in pagination) {
+    queryString += `${key}=${pagination[key]}&`; // this logic will work in older versions of json-ser
+  }
+  // console.log(queryString);
+
   try {
     const response = await fetch(
-      "http://localhost:8080/orders?" + queryString //http://localhost:8080/orders?page=1&_limit=10
+      "http://localhost:8080/orders?" + queryString, //http://localhost:8080/orders?page=1&_limit=10
+      { credentials: "include" }
     );
     // console.log(response);
 

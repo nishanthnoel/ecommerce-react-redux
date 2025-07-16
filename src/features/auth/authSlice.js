@@ -4,7 +4,7 @@ import { createUser, checkUser, signOut } from "./authAPI";
 import { updateUser } from "../user/userAPI";
 
 const initialState = {
-  loggedInUser: null, // this is the user object, which is used to store the user data. both for login(fulfilled) and signup(fulfilled). this should only contain the identity information
+  loggedInUserToken: null, // this is the user object, which is used to store the user data. both for login(fulfilled) and signup(fulfilled). this should only contain the identity information
   status: "idle",
   error: null,
 };
@@ -64,7 +64,7 @@ const authSlice = createSlice({
       })
       .addCase(createUserAsync.fulfilled, (state, action) => {
         state.status = "idle";
-        state.loggedInUser += action.payload;
+        state.loggedInUserToken += action.payload;
       })
       .addCase(createUserAsync.rejected, (state) => {
         state.status = "error";
@@ -74,14 +74,14 @@ const authSlice = createSlice({
       })
       .addCase(checkUserAsync.fulfilled, (state, action) => {
         state.status = "idle";
-        state.loggedInUser = action.payload;
+        state.loggedInUserToken = action.payload;
       })
       .addCase(checkUserAsync.rejected, (state, action) => {
         state.status = "error";
         state.error = action.payload;
         // console.log("error")
       })
-      // ******************the below updateUserAsync is commented out so that the use*******************
+      // ******************the below updateUserAsync is commented out so that the useInfo is updated than this*******************
       // .addCase(updateUserAsync.pending, (state) => {
       //   state.status = "loading";
       // })
@@ -94,7 +94,7 @@ const authSlice = createSlice({
       })
       .addCase(signOutAsync.fulfilled, (state, action) => {
         state.status = "idle";
-        state.loggedInUser = null;
+        state.loggedInUserToken = null;
       });
   },
 });
@@ -102,8 +102,8 @@ const authSlice = createSlice({
 // Export actions so they can be dispatched
 export const { increment } = authSlice.actions;
 
-// export const selectLoggedInUser = (state) => state.user.loggedInUser; // this throws an error, auth of the store should be mentioned
-export const selectLoggedInUser = (state) => state.auth.loggedInUser;
+// export const selectLoggedInUserToken = (state) => state.user.loggedInUser; // this throws an error, auth of the store should be mentioned
+export const selectLoggedInUserToken = (state) => state.auth.loggedInUserToken;
 export const selectError = (state) => state.auth.error;
 
 // export const selectCount = (state) => state.counter.value;

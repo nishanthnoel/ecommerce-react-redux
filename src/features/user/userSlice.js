@@ -13,17 +13,19 @@ const initialState = {
 
 export const fetchLoggedInUserOrdersAsync = createAsyncThunk(
   "user/fetchLoggedInUserOrders",
-  async (id) => {
-    const response = await fetchLoggedInUserOrders(id);
+  async () => {
+    // const response = await fetchLoggedInUserOrders(id);
+    const response = await fetchLoggedInUserOrders();
     return response.data; //this info will be used n case of detailed user info, while auth will only be used for loggedInUser
   }
 );
 
 export const fetchLoggedInUserAsync = createAsyncThunk(
   "user/fetchLoggedInUser",
-  async (id) => {
-    const response = await fetchLoggedInUser(id);
-    return response.data;
+  async () => {
+    const response = await fetchLoggedInUser();
+    // return response.data;//the response how i used to send 
+    return response.data;//Your API function returns the user object directly, not an object with a data property.
   }
 );
 export const updateUserAsync = createAsyncThunk(
@@ -60,15 +62,17 @@ const userSlice = createSlice({
       .addCase(updateUserAsync.fulfilled, (state, action) => {
         state.status = "idle";
         //this info can be different or more form the logged-in user
-        state.userInfo.orders = action.payload; //in action.payload updated user comes. so, user.Orders cannot be action.payload;
+        // state.userInfo.orders = action.payload; //in action.payload updated user comes. so, user.Orders cannot be action.payload;
+        state.userInfo = action.payload; //in action.payload updated user comes. so, user.Orders cannot be action.payload;
       })
       .addCase(fetchLoggedInUserAsync.pending, (state) => {
         state.status = "loading";
       })
       .addCase(fetchLoggedInUserAsync.fulfilled, (state, action) => {
         state.status = "idle";
-        //this info can be different or more form the logged-in user
+        console.log(action.payload)
         state.userInfo = action.payload;
+        //this info can be different or more form the logged-in user
       })
   }
 });

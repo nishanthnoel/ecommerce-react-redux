@@ -3,6 +3,7 @@ export function createUser(userData) {
     const response = await fetch("http://localhost:8080/auth/signup", {
       method: "POST",
       body: JSON.stringify(userData),
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
@@ -43,6 +44,7 @@ export function checkUser(loginInfo) {
       const response = await fetch("http://localhost:8080/auth/login", {
         method: "POST",
         body: JSON.stringify(loginInfo),
+        credentials: "include",
         headers: {
           "Content-Type": "application/json",
         },
@@ -50,13 +52,13 @@ export function checkUser(loginInfo) {
       if (response.ok) {
         const data = await response.json();
         resolve({ data });
-      }else{
-        const error = await response.json()
-        reject({error})
+      } else {
+        const error = await response.text();
+        reject({ error });
       }
       //   console.log(data);
     } catch (error) {
-      reject({error});
+      reject({ error });
     }
   });
   // TODO: on server it will return only relevant information of user9not password

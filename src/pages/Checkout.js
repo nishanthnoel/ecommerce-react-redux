@@ -17,7 +17,8 @@ import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { Navigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import {
-  selectLoggedInUser,
+  fetchLoggedInUserAsync,
+  selectLoggedInUserToken,
   updateUserAsync,
 } from "../features/user/userSlice";
 import {
@@ -117,8 +118,10 @@ function Checkout() {
                     ...userInfo,
                     addresses: [...userInfo.addresses, data],
                   })
-                );
-                reset();
+                ).then(() => {
+                  dispatch(fetchLoggedInUserAsync()); // refetch user info after update
+                  reset();
+                });
               })}
             >
               <div className="space-y-12">

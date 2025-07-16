@@ -4,24 +4,36 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   fetchLoggedInUserOrdersAsync,
   selectUserInfo,
+  selectUserInfoStatus,
   selectUserOrders,
 } from "../userSlice";
 import { discountedPrice } from "../../../app/constants";
-// import { selectLoggedInUser } from "../../auth/authSlice";
+// import { selectLoggedInUserToken } from "../../auth/authSlice";
 
 function UserOrders() {
   const dispatch = useDispatch();
-  // const user = useSelector(selectLoggedInUser);
-  const userInfo = useSelector(selectUserInfo);
+  // const user = useSelector(selectLoggedInUserToken);
+  // const userInfo = useSelector(selectUserInfo);
   const orders = useSelector(selectUserOrders);
+  const status = useSelector(selectUserInfoStatus)
   useEffect(() => {
-    dispatch(fetchLoggedInUserOrdersAsync(userInfo.id));
+    // dispatch(fetchLoggedInUserOrdersAsync(userInfo.id));
+    dispatch(fetchLoggedInUserOrdersAsync());
   }, []);
 
   return (
     <>
       <div>
-        {orders.map((order) => (
+        {status === "loading" ? (
+          <div className="  w-32 h-auto  flex items-center justify-center rounded-lg object-cover lg:block">
+        <img
+            alt="loading..."
+            src="/fade-stagger-circles.svg"  
+            className="  rounded-lg object-cover lg:block"
+          />
+            </div>
+        ) : null}
+        {orders && orders.map((order) => (
           <div>
             <div>
               {/* {!items.length && <Navigate to="/" replace={true}></Navigate>} */}
@@ -137,6 +149,7 @@ function UserOrders() {
             </div>
           </div>
         ))}
+            
       </div>
     </>
   );

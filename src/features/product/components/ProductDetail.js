@@ -5,7 +5,6 @@ import { useSelector } from "react-redux";
 import { selectProductById, fetchProductByIdAsync } from "../productSlice";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
-import { selectLoggedInUser } from "../../auth/authSlice";
 import { addToCartAsync, selectItems } from "../../cart/cartSlice";
 import { discountedPrice } from "../../../app/constants";
 import { ToastContainer, toast } from "react-toastify";
@@ -43,7 +42,6 @@ export default function ProductDetail() {
   const [selectedSize, setSelectedSize] = useState(sizes[2]);
   const product = useSelector(selectProductById);
   const items = useSelector(selectItems);
-  const user = useSelector(selectLoggedInUser);
   const dispatch = useDispatch();
   const params = useParams(); //Yes, useParams accesses the current URL from the React Router system, no matter where the URL is changed or set. However, it works only when you're using React Router to handle navigation, and it’s specifically for routes defined in your app.
 
@@ -59,8 +57,8 @@ export default function ProductDetail() {
         // ...product, // ot required in the backend
         // productId: product.id,
         product: product.id, // again productId has been changed to just product when connecting to backend
-        quantity: 1,
-        user: user.id,
+        quantity: 1
+
       };
       // console.log(product)
       // delete newItem["id"]; //not requiredwhen connecting to backend

@@ -2,12 +2,12 @@ import { useEffect, useState, useFocuseEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { signOutAsync } from "../authSlice";
 import { Navigate } from "react-router-dom";
-import { selectLoggedInUser } from "../authSlice";
+import { selectLoggedInUserToken } from "../authSlice";
 
 
 function Logout() {
   const dispatch = useDispatch();
-  const user = useSelector(selectLoggedInUser);
+  const user = useSelector(selectLoggedInUserToken);
   // const [loggingOut, setLoggingOut] = useState(false); // Adding state to track the logout process
 
   // useEffect(() => {

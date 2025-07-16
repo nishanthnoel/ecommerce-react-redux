@@ -17,7 +17,7 @@ import {
 } from "react-router-dom";
 import Protected from "./features/auth/components/Protected";
 import { fetchItemsByUserIdAsync } from "./features/cart/cartSlice";
-import { selectLoggedInUser } from "./features/auth/authSlice";
+import { selectLoggedInUserToken } from "./features/auth/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import PageNotFound from "./pages/404";
 import OrderSuccessPage from "./pages/OrderSuccessPage";
@@ -162,14 +162,17 @@ const router = createBrowserRouter([
 
 function App() {
   const dispatch = useDispatch();
-  const user = useSelector(selectLoggedInUser);
+  const user = useSelector(selectLoggedInUserToken);
   // const userInfo = useSelector(selectUserInfo);
   // console.log(user) // this logs logincredentails
 
   useEffect(() => {
-    if (user && user.id) {
-      dispatch(fetchLoggedInUserAsync(user.id));
-      dispatch(fetchItemsByUserIdAsync(user.id));
+    // if (user && user.id) {
+    if (user) {
+      dispatch(fetchLoggedInUserAsync()); // this is to fetch userInfo 
+      console.log("its fetching")
+      // dispatch(fetchItemsByUserIdAsync(user.id));// we can get the req.user using token in the backend no need give it in the front end
+      dispatch(fetchItemsByUserIdAsync());// we can get the req.user using token in the backend no need give it in the front end
     }
   }, [dispatch, user]);
   return (

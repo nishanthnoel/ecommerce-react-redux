@@ -1,6 +1,6 @@
 // src/features/counter/Counter.js
 import { useDispatch, useSelector } from "react-redux";
-import { selectLoggedInUser, createUserAsync } from "../authSlice";
+import { selectLoggedInUserToken, createUserAsync } from "../authSlice";
 import {  Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { Navigate } from "react-router-dom";
@@ -11,7 +11,7 @@ function Signup() {
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const user = useSelector(selectLoggedInUser); // Access the counter value from the Redux store
+  const user = useSelector(selectLoggedInUserToken); // Access the counter value from the Redux store
   // console.log(user); // this logs object[object Object]
   const dispatch = useDispatch();
 

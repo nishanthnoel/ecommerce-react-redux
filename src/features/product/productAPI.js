@@ -31,7 +31,9 @@
 export async function fetchProductById(id) {
   // console.log(id);
   try {
-    const response = await fetch(`http://localhost:8080/products/${id}`);
+    const response = await fetch(`http://localhost:8080/products/${id}`, {
+      credentials: "include",
+    });
     if (!response.ok) {
       throw new Error("Failed to fetch product");
     }
@@ -46,7 +48,9 @@ export async function fetchProductById(id) {
 
 export async function fetchBrands() {
   try {
-    const response = await fetch("http://localhost:8080/brands");
+    const response = await fetch("http://localhost:8080/brands", {
+      credentials: "include",
+    });
     if (!response.ok) {
       throw new Error("Failed to fetch Brands");
     }
@@ -63,6 +67,7 @@ export async function createProduct(product) {
     const response = await fetch("http://localhost:8080/products", {
       method: "POST",
       body: JSON.stringify(product),
+      credentials: "include",
       headers: { "content-type": "application/json" },
     });
     if (!response.ok) {
@@ -95,7 +100,9 @@ export async function createProduct(product) {
 
 export async function fetchCategories() {
   try {
-    const response = await fetch("http://localhost:8080/categories");
+    const response = await fetch("http://localhost:8080/categories", {
+      credentials: "include",
+    });
 
     if (!response.ok) {
       throw new Error("Failed to fetch Categories");
@@ -117,6 +124,7 @@ export function updateProduct(update) {
       {
         method: "PATCH", // this is to modify the database of the item where as slice is to modify the state
         body: JSON.stringify(update), // this is the patch request with updated item object
+        credentials: "include",
         headers: {
           "Content-Type": "application/json",
         },
@@ -161,13 +169,14 @@ export async function fetchProductsByFilters(filter, sort, pagination, admin) {
   for (let key in pagination) {
     queryString += `${key}=${pagination[key]}&`; // this logic will work in older versions of json-ser
   }
-  if(admin){
-    queryString += `admin=true`
+  if (admin) {
+    queryString += `admin=true`;
   }
   // console.log(queryString);
   try {
     const response = await fetch(
-      "http://localhost:8080/products?" + queryString //http://localhost:8080/products?category=laptops&_sort=-rating
+      "http://localhost:8080/products?" + queryString, //http://localhost:8080/products?category=laptops&_sort=-rating
+      { credentials: "include" }
     );
     // console.log(response);
 
