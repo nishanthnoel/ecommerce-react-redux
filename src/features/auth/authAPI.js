@@ -38,7 +38,7 @@ export function createUser(userData) {
 
 // }
 
-export function checkUser(loginInfo) {
+export function loginUser(loginInfo) {
   return new Promise(async (resolve, reject) => {
     try {
       const response = await fetch("http://localhost:8080/auth/login", {
@@ -62,6 +62,27 @@ export function checkUser(loginInfo) {
     }
   });
   // TODO: on server it will return only relevant information of user9not password
+}
+
+export function checkAuth() {
+   console.log('checkAuth called');
+  return new Promise(async (resolve, reject) => {
+    try {
+      const response = await fetch("http://localhost:8080/auth/check", {
+        credentials: "include",
+      });
+      if (response.ok) {
+        const data = await response.json();
+        resolve({ data });
+      } else {
+        const error = await response.text();
+        reject({ error });
+      }
+      //   console.log(data);
+    } catch (error) {
+      reject({ error });
+    }
+  });
 }
 
 export function signOut(userId) {

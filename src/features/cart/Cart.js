@@ -4,6 +4,8 @@ import {
   selectItems,
   updateCartAsync,
   deleteItemFromCartAsync,
+  selectCartStatus,
+  selectCartLoaded,
 } from "./cartSlice";
 import { useState } from "react";
 import {
@@ -21,6 +23,8 @@ function Cart() {
   const dispatch = useDispatch();
   const [open, setOpen] = useState(true); // this is not related to modalopen and clse
   const items = useSelector(selectItems);
+  const status = useSelector(selectCartStatus);
+  const cartLoaded = useSelector(selectCartLoaded);
   const [openModal, setOpenModal] = useState(null);
   // console.log(items) //this is returning  array of items
   const totalAmount = items.reduce(
@@ -47,7 +51,7 @@ function Cart() {
 
   return (
     <div>
-      {!items.length && <Navigate to="/" replace={true}></Navigate>}
+      {!items.length && cartLoaded &&<Navigate to="/" replace={true}></Navigate>}
 
       <div className="mx-auto mt-20 bg-gray-200 max-w-7xl px-4 sm:px-6 lg:px-8 rounded-md border border-transparent">
         {/* <h2 className="text-3xl font-bold">Cart</h2> */}

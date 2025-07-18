@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { Navigate } from "react-router-dom";
-// import { checkUserAsync } from "../auth/authSlice";
 
 function ForgotPassword() {
   const {

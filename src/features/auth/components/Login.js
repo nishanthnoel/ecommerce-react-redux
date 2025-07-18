@@ -2,12 +2,14 @@
 import { useDispatch, useSelector } from "react-redux";
 import {
   selectError,
-  checkUserAsync,
   selectLoggedInUserToken,
+  loginUserAsync,
+  selectJustLoggedIn,
 } from "../authSlice";
 import { Link } from "react-router-dom";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { Navigate } from "react-router-dom";
+import { useEffect } from "react";
 
 function Login() {
   const {
@@ -20,7 +22,9 @@ function Login() {
   const error = useSelector(selectError); // Access the counter value from the Redux store
   const dispatch = useDispatch();
   const user = useSelector(selectLoggedInUserToken);
+  // const justLoggedIn = useSelector(selectJustLoggedIn);
   // console.log(user); // this logs logincredentails
+
 
   return (
     <>
@@ -32,7 +36,7 @@ function Login() {
         <body class="h-full">
         ```
       */}
-      {user && <Navigate to="/" replace={true}></Navigate>}
+      {user &&  <Navigate to="/" replace={true}></Navigate>}
       {/* the above line logins the logged in user's details. If user is logged in, it redirects to homepage. Otherwise, it renders the login form. */}
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
@@ -51,7 +55,7 @@ function Login() {
             noValidate
             onSubmit={handleSubmit((data) => {
               dispatch(
-                checkUserAsync({ email: data.email, password: data.password })
+                loginUserAsync({ email: data.email, password: data.password })
               );
               // console.log(data);  // this logs the login credentials(object with email and password)
             })}
