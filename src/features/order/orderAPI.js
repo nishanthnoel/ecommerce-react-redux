@@ -1,6 +1,6 @@
 export function createOrder(order) {
   return new Promise(async (resolve) => {
-    const response = await fetch("http://localhost:8080/orders", {
+    const response = await fetch("/orders", {
       method: "POST",
       body: JSON.stringify(order),
       credentials: "include",
@@ -15,7 +15,7 @@ export function createOrder(order) {
 }
 export function updateOrder(order) {
   return new Promise(async (resolve) => {
-    const response = await fetch("http://localhost:8080/orders/" + order.id, {
+    const response = await fetch("/orders/" + order.id, {
       method: "PATCH",
       body: JSON.stringify(order),
       credentials: "include",
@@ -41,7 +41,7 @@ export async function fetchAllOrders({ sort, pagination }) {
 
   try {
     const response = await fetch(
-      "http://localhost:8080/orders?" + queryString, //http://localhost:8080/orders?page=1&_limit=10
+      "/orders?" + queryString, ///orders?page=1&_limit=10
       { credentials: "include" }
     );
     // console.log(response);

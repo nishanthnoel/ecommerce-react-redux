@@ -3,7 +3,7 @@
 //   //TODO: server will filter the deleted products
 
 //   try {
-//     const response = await fetch("http://localhost:8080/products");
+//     const response = await fetch("/products");
 
 //     // Check if the response is OK (status code 2xx)
 //     if (!response.ok) {
@@ -22,7 +22,7 @@
 
 // export async function fetchProductById({id}) {
 //   return new Promise(async (resolve, reject) => {
-//     const response = fetch(`http://localhost:8080/products/${id}`);
+//     const response = fetch(`/products/${id}`);
 //     const data = await response.json();
 //     resolve({ data });
 //   });
@@ -31,7 +31,7 @@
 export async function fetchProductById(id) {
   // console.log(id);
   try {
-    const response = await fetch(`http://localhost:8080/products/${id}`, {
+    const response = await fetch(`/products/${id}`, {
       credentials: "include",
     });
     if (!response.ok) {
@@ -48,7 +48,7 @@ export async function fetchProductById(id) {
 
 export async function fetchBrands() {
   try {
-    const response = await fetch("http://localhost:8080/brands", {
+    const response = await fetch("/brands", {
       credentials: "include",
     });
     if (!response.ok) {
@@ -64,7 +64,7 @@ export async function fetchBrands() {
 }
 export async function createProduct(product) {
   try {
-    const response = await fetch("http://localhost:8080/products", {
+    const response = await fetch("/products", {
       method: "POST",
       body: JSON.stringify(product),
       credentials: "include",
@@ -83,7 +83,7 @@ export async function createProduct(product) {
 }
 // export  function createProduct (product){
 //   return new Promise(async (resolve) => {
-//       const response = await fetch("http://localhost:8080/users", {
+//       const response = await fetch("/users", {
 //           method: "POST",
 //           body: JSON.stringify(product),
 //           headers: {
@@ -100,7 +100,7 @@ export async function createProduct(product) {
 
 export async function fetchCategories() {
   try {
-    const response = await fetch("http://localhost:8080/categories", {
+    const response = await fetch("/categories", {
       credentials: "include",
     });
 
@@ -120,7 +120,7 @@ export async function fetchCategories() {
 export function updateProduct(update) {
   return new Promise(async (resolve) => {
     const response = await fetch(
-      "http://localhost:8080/products/" + update.id,
+      "/products/" + update.id,
       {
         method: "PATCH", // this is to modify the database of the item where as slice is to modify the state
         body: JSON.stringify(update), // this is the patch request with updated item object
@@ -175,7 +175,7 @@ export async function fetchProductsByFilters(filter, sort, pagination, admin) {
   // console.log(queryString);
   try {
     const response = await fetch(
-      "http://localhost:8080/products?" + queryString, //http://localhost:8080/products?category=laptops&_sort=-rating
+      "/products?" + queryString, ///products?category=laptops&_sort=-rating
       { credentials: "include" }
     );
     // console.log(response);

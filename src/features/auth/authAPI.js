@@ -1,6 +1,6 @@
 export function createUser(userData) {
   return new Promise(async (resolve) => {
-    const response = await fetch("http://localhost:8080/auth/signup", {
+    const response = await fetch("/auth/signup", {
       method: "POST",
       body: JSON.stringify(userData),
       credentials: "include",
@@ -19,8 +19,8 @@ export function createUser(userData) {
 //     return new Promise(async (resolve, reject) => {
 //         const email= loginInfo.email;
 //         const password= loginInfo.password
-//         //  const response = await fetch("http://localhost:8080/users?email"+email)
-//         const response = await fetch(`http://localhost:8080/users?email=${email}`)
+//         //  const response = await fetch("/users?email"+email)
+//         const response = await fetch(`/users?email=${email}`)
 //         const data = await response.json()
 //          console.log(data) //it returns an array with lenghth 1
 //         if(data.length){
@@ -41,7 +41,7 @@ export function createUser(userData) {
 export function loginUser(loginInfo) {
   return new Promise(async (resolve, reject) => {
     try {
-      const response = await fetch("http://localhost:8080/auth/login", {
+      const response = await fetch("/auth/login", {
         method: "POST",
         body: JSON.stringify(loginInfo),
         credentials: "include",
@@ -68,7 +68,7 @@ export function checkAuth() {
    console.log('checkAuth called');
   return new Promise(async (resolve, reject) => {
     try {
-      const response = await fetch("http://localhost:8080/auth/check", {
+      const response = await fetch("/auth/check", {
         credentials: "include",
       });
       if (response.ok) {
