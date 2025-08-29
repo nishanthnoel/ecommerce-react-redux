@@ -152,7 +152,8 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: "/orders",
+    // path: "/orders",
+    path: "/my-orders", // for deployment
     element: (
       <Protected>
         <UserOrdersPage></UserOrdersPage>
