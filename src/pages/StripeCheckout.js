@@ -38,11 +38,12 @@ const StripeCheckout = () => {
     fetch("/create-payment-intent", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ totalAmount: currentOrder.totalAmount }),
-      meta:{
-        order_id: currentOrder.id // this info will go to our stripe and then to webhook
-        // so that we can conclude the payment was successful if the payment was successful
-      }
+      // body: JSON.stringify({ totalAmount: currentOrder.totalAmount }), the order id will be sent from the body to access it in the webhook as metadata
+      body: JSON.stringify({ totalAmount: currentOrder.totalAmount, orderId: currentOrder.id }),
+      // meta:{
+      //   order_id: currentOrder.id // this info will go to our stripe and then to webhook
+      //   // so that we can conclude the payment was successful if the payment was successful
+      // } // this should have been metadata and this should be sent through body 
     })
       .then((res) => {
         console.log("Response:", res);
