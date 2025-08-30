@@ -29,10 +29,9 @@ import UserOrders from "./features/user/components/userOrders";
 import UserOrdersPage from "./pages/UserOrdersPage";
 import UserProfile from "./features/user/components/userProfile";
 import UserProfilePage from "./pages/userProfilePage";
-import { fetchLoggedInUser } from "./features/user/userAPI";
 import {
   fetchLoggedInUserAsync,
-  selectUserInfo,
+ 
 } from "./features/user/userSlice";
 import Logout from "./features/auth/components/Logout";
 import ForgotPassword from "./features/auth/components/ForgotPassword";
@@ -41,7 +40,7 @@ import AdminHome from "./pages/AdminHome";
 import AdminProductDetailPage from "./pages/AdminProductDetailPage";
 import AdminProductForm from "./pages/AdminProductFormPage";
 import AdminOrdersPage from "./pages/AdminOrdersPage";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import StripeCheckout from "./pages/StripeCheckout";
 import CheckoutForm from "./pages/CheckoutForm";
 import CompletePage from "./pages/CompletePage";

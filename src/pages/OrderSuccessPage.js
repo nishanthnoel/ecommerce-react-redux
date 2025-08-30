@@ -1,9 +1,7 @@
 import { useEffect } from "react";
 import { Link, useParams, Navigate } from "react-router-dom";
-import { resetCart } from "../features/cart/cartAPI";
 import { resetCartAsync } from "../features/cart/cartSlice";
-import { useDispatch, useSelector } from "react-redux";
-import { selectLoggedInUserToken } from "../features/auth/authSlice";
+import { useDispatch,  } from "react-redux";
 import { resetOrder } from "../features/order/orderSlice";
 
 function OrderSuccessPage() {

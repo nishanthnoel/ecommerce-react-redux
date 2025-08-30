@@ -12,7 +12,7 @@ import {
   ArrowUpIcon,
   PencilIcon,
 } from "@heroicons/react/24/outline";
-import { EyeIcon, PencilSquareIcon } from "@heroicons/react/24/solid";
+import { EyeIcon } from "@heroicons/react/24/solid";
 import Pagination from "../../common/Pagination";
 
 function AdminOrders() {
@@ -31,6 +31,8 @@ function AdminOrders() {
       case "cancelled":
         return "bg-red-200 text-red-600";
       case "delivered":
+        return "bg-green-200 text-green-600";
+      case "received":
         return "bg-green-200 text-green-600";
       default:
         return "bg-purple-200 text-purple-600";
@@ -54,8 +56,13 @@ function AdminOrders() {
     setSort(sort); // dispatch(fetchAllOrdersAsync({ sort, pagination }));
   };
 
-  const handleUpdate = (e, order) => {
+  const handleOrderStatus = (e, order) => {
     const updatedOrder = { ...order, status: e.target.value };
+    dispatch(updateOrderAsync(updatedOrder));
+    setEditableOrderId(-1);
+  };
+  const handlePaymentStatus = (e, order) => {
+    const updatedOrder = { ...order, PaymentStatus: e.target.value };
     dispatch(updateOrderAsync(updatedOrder));
     setEditableOrderId(-1);
   };
@@ -109,7 +116,10 @@ function AdminOrders() {
                           <ArrowDownIcon className="w-4 h-4 inline ml-2"></ArrowDownIcon>
                         ))}</th>
                     <th className="py-3 px-6 text-center">Shipping Address</th>
-                    <th className="py-3 px-6 text-center">Status</th>
+                    <th className="py-3 px-6 text-center">Order Status</th>  
+                    {/* this was status */}
+                    <th className="py-3 px-6 text-center">Payment Method</th>
+                    <th className="py-3 px-6 text-center">Payment Status</th>
                     <th className="py-3 px-6 text-center">Actions</th>
                   </tr>
                 </thead>
@@ -166,8 +176,16 @@ function AdminOrders() {
                         </span>
                       </td>
                       <td className="py-3 px-6 text-center">
+                        <div className="flex items-center justify-center">
+                          {" "}
+                          <span className="bg-purple-200 py-1 px-3 rounded-full text-xs">
+                            ${order.paymentMethod}
+                          </span>
+                        </div>
+                      </td>
+                      <td className="py-3 px-6 text-center">
                         {order.id === editableOrderId ? (
-                          <select onChange={(e) => handleUpdate(e, order)}>
+                          <select onChange={(e) => handleOrderStatus(e, order)}>
                             <option value="pending">Pending</option>
                             <option value="dispatched">Dispatched</option>
                             <option value="delivered">Delivered</option>
@@ -180,6 +198,23 @@ function AdminOrders() {
                             )} py-1 px-3 rounded-full text-xs `}
                           >
                             {order.status}
+                          </span>
+                        )}
+                      </td>
+                      {/* this is payment status */}
+                      <td className="py-3 px-6 text-center">
+                        {order.id === editableOrderId ? (
+                          <select onChange={(e) => handlePaymentStatus(e, order)}>
+                            <option value="pending">Pending</option>
+                            <option value="received">Received</option>
+                          </select>
+                        ) : (
+                          <span
+                            className={`${chooseColor(
+                              order.PaymentStatus
+                            )} py-1 px-3 rounded-full text-xs `}
+                          >
+                            {order.PaymentStatus}
                           </span>
                         )}
                       </td>
