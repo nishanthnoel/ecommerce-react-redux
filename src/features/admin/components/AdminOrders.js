@@ -180,14 +180,14 @@ function AdminOrders() {
                           </div>
                         </span>
                       </td>
-                      <td className="py-3 px-6 text-center">
+                      {/* <td className="py-3 px-6 text-center">
                         <div className="flex items-center justify-center">
                           {" "}
                           <span className="bg-purple-200 py-1 px-3 rounded-full text-xs">
                             ${order.paymentMethod}
                           </span>
                         </div>
-                      </td>
+                      </td> */}
                       <td className="py-3 px-6 text-center">
                         {order.id === editableOrderId ? (
                           <select onChange={(e) => handleOrderStatus(e, order)}>
@@ -206,12 +206,12 @@ function AdminOrders() {
                           </span>
                         )}
                       </td>
-                      {/* payment method */}
+                      {/* paymet method */}
                       <td className="py-3 px-6 text-center">
                         <div className="flex items-center justify-center">
                           {" "}
                           <span className="bg-purple-200 py-1 px-3 rounded-full text-xs">
-                            {order.paymentMethod}
+                            ${order.paymentMethod}
                           </span>
                         </div>
                       </td>
