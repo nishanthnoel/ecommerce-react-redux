@@ -103,20 +103,25 @@ function AdminOrders() {
                         ))}
                     </th>
                     <th className="py-3 px-6 text-left">Items</th>
-                    <th  className="py-3 px-6 text-left cursor-pointer"
+                    <th
+                      className="py-3 px-6 text-left cursor-pointer"
                       onClick={(e) =>
                         handleSort({
                           sort: "totalAmount",
                           order: sort?._order === "asc" ? "desc" : "asc",
                         })
-                      }>Total Amount {sort._sort === "totalAmount" &&
+                      }
+                    >
+                      Total Amount{" "}
+                      {sort._sort === "totalAmount" &&
                         (sort._order === "asc" ? (
                           <ArrowUpIcon className="w-4 h-4 inline ml-2"></ArrowUpIcon>
                         ) : (
                           <ArrowDownIcon className="w-4 h-4 inline ml-2"></ArrowDownIcon>
-                        ))}</th>
+                        ))}
+                    </th>
                     <th className="py-3 px-6 text-center">Shipping Address</th>
-                    <th className="py-3 px-6 text-center">Order Status</th>  
+                    <th className="py-3 px-6 text-center">Order Status</th>
                     {/* this was status */}
                     <th className="py-3 px-6 text-center">Payment Method</th>
                     <th className="py-3 px-6 text-center">Payment Status</th>
@@ -201,10 +206,21 @@ function AdminOrders() {
                           </span>
                         )}
                       </td>
+                      {/* payment method */}
+                      <td className="py-3 px-6 text-center">
+                        <div className="flex items-center justify-center">
+                          {" "}
+                          <span className="bg-purple-200 py-1 px-3 rounded-full text-xs">
+                            {order.paymentMethod}
+                          </span>
+                        </div>
+                      </td>
                       {/* this is payment status */}
                       <td className="py-3 px-6 text-center">
                         {order.id === editableOrderId ? (
-                          <select onChange={(e) => handlePaymentStatus(e, order)}>
+                          <select
+                            onChange={(e) => handlePaymentStatus(e, order)}
+                          >
                             <option value="pending">Pending</option>
                             <option value="received">Received</option>
                           </select>
