@@ -1,6 +1,13 @@
 // src/features/counter/counterSlice.js
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { checkAuth, createUser, loginUser, signOut } from "./authAPI";
+import {
+  checkAuth,
+  createUser,
+  loginUser,
+  resetPassword,
+  signOut,
+} from "./authAPI";
+import { resetPasswordRequest } from "./authAPI";
 
 const initialState = {
   loggedInUserToken: null, // this is the user object, which is used to store the user data. both for login(fulfilled) and signup(fulfilled). this should only contain the identity information
@@ -8,6 +15,8 @@ const initialState = {
   error: null,
   userChecked: false,
   justLoggedIn: false,
+  mailSent: false,
+  passwordReset: false,
 };
 
 // code for creating a new user
@@ -27,7 +36,7 @@ export const loginUserAsync = createAsyncThunk(
       const response = await loginUser(loginInfo);
       return response.data;
     } catch (error) {
-      return rejectWithValue(error);
+      return rejectWithValue(error.error || "Login failed");
     }
   }
 );
@@ -76,6 +85,42 @@ export const signOutAsync = createAsyncThunk(
   }
 );
 
+export const resetPasswordRequestAsync = createAsyncThunk(
+  "user/resetPasswordRequest",
+  async (email, { rejectWithValue }) => {
+    console.log("reset-password-request dispatched");
+    try {
+      const response = await resetPasswordRequest(email); // must include credentials
+      return response.data;
+    } catch (error) {
+      // ✅ Properly reject so reducer handles it
+      return rejectWithValue(error.response?.data || error.message);
+    }
+  }
+  // {
+  //   condition: (_, { getState }) => {
+  //     const { auth } = getState();
+  //     return !auth.userChecked;
+  //   },}
+);
+export const resetPasswordAsync = createAsyncThunk(
+  "user/resetPassword",
+  async (data, { rejectWithValue }) => {
+    console.log("Password reset successful");
+    try {
+      const response = await resetPassword(data); // must include credentials
+      return response.data;
+    } catch (error) {
+      // ✅ Properly reject so reducer handles it
+      return rejectWithValue(error.response?.data || error.message);
+    }
+  }
+  // {
+  //   condition: (_, { getState }) => {
+  //     const { auth } = getState();
+  //     return !auth.userChecked;
+  //   },}
+);
 // Create a slice for the counter state
 const authSlice = createSlice({
   name: "user",
@@ -120,7 +165,7 @@ const authSlice = createSlice({
       })
       .addCase(checkAuthAsync.pending, (state) => {
         state.status = "loading";
-        state.userChecked = false;  //the error for redirecting to / than to the older page because this was false
+        state.userChecked = false; //the error for redirecting to / than to the older page because this was false
       })
       .addCase(checkAuthAsync.fulfilled, (state, action) => {
         state.status = "idle";
@@ -131,6 +176,25 @@ const authSlice = createSlice({
       .addCase(checkAuthAsync.rejected, (state) => {
         state.status = "idle";
         state.userChecked = true;
+      })
+      .addCase(resetPasswordRequestAsync.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(resetPasswordRequestAsync.fulfilled, (state, action) => {
+        state.status = "idle";
+        state.mailSent = true;
+      })
+      .addCase(resetPasswordAsync.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(resetPasswordAsync.fulfilled, (state, action) => {
+        state.status = "idle";
+        state.passwordReset = true;
+      })
+      .addCase(resetPasswordAsync.rejected, (state, action) => {
+        state.status = "idle";
+        state.passwordReset = false;
+        state.error = action.payload;
       });
   },
 });
@@ -143,6 +207,8 @@ export const selectLoggedInUserToken = (state) => state.auth.loggedInUserToken;
 export const selectError = (state) => state.auth.error;
 export const selectUserChecked = (state) => state.auth.userChecked;
 export const selectJustLoggedIn = (state) => state.auth.justLoggedIn;
+export const selectMailSent = (state) => state.auth.selectMailSent;
+export const selectPasswordReset = (state) => state.auth.passwordReset;
 
 // export const selectCount = (state) => state.counter.value;
 

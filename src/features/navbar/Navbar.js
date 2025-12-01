@@ -51,7 +51,7 @@ function Navbar({ children }) {
   return (<>
     {
       status === 'loading' || userInfo == null 
-      ? <div className="min-h-full">hello </div> 
+      ? <div className="min-h-full">Loading... </div> 
       : 
       <div className="min-h-full">
       <Disclosure as="nav" className="bg-gray-800">

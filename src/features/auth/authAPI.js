@@ -49,23 +49,49 @@ export function loginUser(loginInfo) {
           "Content-Type": "application/json",
         },
       });
+      // Try to parse JSON body safely. Some backends may send empty or non-JSON bodies.
+      let data = null;
+      try {
+        data = await response.json();
+      } catch (parseErr) {
+        // If parsing fails, try to read as text and wrap it
+        try {
+          const text = await response.text();
+          if (text) {
+            // try to interpret text as JSON-ish
+            try {
+              data = JSON.parse(text);
+            } catch (_) {
+              data = { message: text };
+            }
+          } else {
+            data = null;
+          }
+        } catch (tErr) {
+          data = null;
+        }
+      }
+
       if (response.ok) {
-        const data = await response.json();
+        // Resolve with parsed body (or null) so thunk can set user accordingly
         resolve({ data });
       } else {
-        const error = await response.text();
-        reject({ error });
+        // If body has an error field, prefer it. Otherwise fall back to statusText.
+        const errMsg = (data && (data.error || data.message)) || response.statusText || "Login failed";
+        // reject with a serializable object
+        reject({ error: errMsg });
       }
       //   console.log(data);
     } catch (error) {
-      reject({ error });
+      // Network/parse level errors
+      reject({ error: error.message || "Network error" }); // string only
     }
   });
   // TODO: on server it will return only relevant information of user9not password
 }
 
 export function checkAuth() {
-   console.log('checkAuth called');
+  console.log("checkAuth called");
   return new Promise(async (resolve, reject) => {
     try {
       const response = await fetch("/auth/check", {
@@ -89,5 +115,56 @@ export function signOut(userId) {
   return new Promise(async (resolve) => {
     // TODO: on server we will remove user session info
     resolve({ data: "success" });
+  });
+}
+
+export function resetPasswordRequest(email) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      console.log("reset password Request called");
+      const response = await fetch("/auth/reset-password-request", {
+        method: "POST",
+        body: JSON.stringify(email),
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (response.ok) {
+        const data = await response.json();
+        resolve({ data });
+      } else {
+        const error = await response.text();
+        reject({ error });
+      }
+      //   console.log(data);
+    } catch (error) {
+      reject({ error });
+    }
+  });
+}
+export function resetPassword(data) {
+  console.log("reset password Request called");
+  return new Promise(async (resolve, reject) => {
+    try {
+      const response = await fetch("/auth/reset-password", {
+        method: "POST",
+        body: JSON.stringify(data),
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (response.ok) {
+        const data = await response.json();
+        resolve({ data });
+      } else {
+        const error = await response.text();
+        reject({ error });
+      }
+      //   console.log(data);
+    } catch (error) {
+      reject({ error });
+    }
   });
 }

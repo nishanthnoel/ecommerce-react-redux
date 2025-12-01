@@ -4,12 +4,10 @@ import {
   selectError,
   selectLoggedInUserToken,
   loginUserAsync,
-  selectJustLoggedIn,
 } from "../authSlice";
 import { Link } from "react-router-dom";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { Navigate } from "react-router-dom";
-import { useEffect } from "react";
 
 function Login() {
   const {
@@ -22,6 +20,8 @@ function Login() {
   const error = useSelector(selectError); // Access the counter value from the Redux store
   const dispatch = useDispatch();
   const user = useSelector(selectLoggedInUserToken);
+  // debug logs to help trace why redirect may not happen
+  console.log("Login component - user:", user, "error:", error);
   // const justLoggedIn = useSelector(selectJustLoggedIn);
   // console.log(user); // this logs logincredentails
 
@@ -75,7 +75,7 @@ function Login() {
                   {...register("email", {
                     required: "email is required",
                     pattern: {
-                      value: /\b[\w\.-]+@[\w\.-]+\.\w{2,4}\b/gi,
+                      value: /\b[\w.-]+@[\w.-]+\.\w{2,4}\b/gi,
                       message: "invalid email",
                     },
                   })}

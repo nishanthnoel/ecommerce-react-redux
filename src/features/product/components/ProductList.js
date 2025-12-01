@@ -571,7 +571,10 @@ function ProductGrid({ products, status, LoaderSpinner}) {
         <img
             alt="loading..."
             src="/fade-stagger-circles.svg"  
-            className="  rounded-lg object-cover lg:block"
+            loading = "eager"
+            decoding = "async"
+            fetchpriority = "high" 
+            className="w-32 h-auto flex items-center justify-center rounded-lg object-cover lg:block"
           />
             </div>
         ) : null}
@@ -588,6 +591,9 @@ function ProductGrid({ products, status, LoaderSpinner}) {
                     <img
                       alt={product.title}
                       src={product.thumbnail}
+                      loading="lazy"
+                      decoding="async"
+                      fetchpriority="low"
                       className=" aspect-square w-full rounded-md bg-gray-200 object-cover group-hover:opacity-75 lg:aspect-auto lg:h-80"
                     />
                   </div>

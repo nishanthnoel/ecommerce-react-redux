@@ -125,23 +125,35 @@ export default function ProductDetail() {
             <img
               alt={product.title}
               src={product.images[0]}
+              loading="eager"
+              decoding="async"
+              fetchpriority="high"
               className="hidden size-full rounded-lg object-cover lg:block"
             />
             <div className="hidden lg:grid lg:grid-cols-1 lg:gap-y-8">
               <img
                 alt={product.title}
                 src={product.images[0]}
+                loading="lazy"
+                decoding="async"
+                fetchpriority="low"
                 className="aspect-[3/2] w-full rounded-lg object-cover"
               />
               <img
                 alt={product.title}
                 src={product.images[0]}
+                loading="lazy"
+                decoding="async"
+                fetchpriority="low"
                 className="aspect-[3/2] w-full rounded-lg object-cover"
               />
             </div>
             <img
               alt={product.title}
               src={product.images[0]}
+              loading="lazy"
+              decoding="async"
+              fetchpriority="low"
               className="aspect-[4/5] size-full object-cover sm:rounded-lg lg:aspect-auto"
             />
           </div>

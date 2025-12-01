@@ -1,13 +1,8 @@
 import "./Stripe.css";
 // import Counter from './features/counter/Counter';
 // import ProductList from './features/product-list/ProductList'
-import Home from "./pages/Home";
-import LoginPage from "./pages/LoginPage";
-import SignupPage from "./pages/SignupPage";
-import CartPage from "./pages/CartPage";
-import Checkout from "./pages/Checkout";
-import ProductDetailPage from "./pages/ProductDetailPage";
 import React, { useEffect } from "react";
+import { lazy, Suspense } from "react";
 import { createRoot } from "react-dom/client";
 import {
   createBrowserRouter,
@@ -23,16 +18,8 @@ import {
   selectUserChecked,
 } from "./features/auth/authSlice";
 import { useDispatch, useSelector } from "react-redux";
-import PageNotFound from "./pages/404";
-import OrderSuccessPage from "./pages/OrderSuccessPage";
-import UserOrders from "./features/user/components/userOrders";
-import UserOrdersPage from "./pages/UserOrdersPage";
-import UserProfile from "./features/user/components/userProfile";
-import UserProfilePage from "./pages/userProfilePage";
-import {
-  fetchLoggedInUserAsync,
- 
-} from "./features/user/userSlice";
+
+import { fetchLoggedInUserAsync } from "./features/user/userSlice";
 import Logout from "./features/auth/components/Logout";
 import ForgotPassword from "./features/auth/components/ForgotPassword";
 import ProtectedAdmin from "./features/auth/components/ProtectedAdmin";
@@ -44,6 +31,23 @@ import { ToastContainer } from "react-toastify";
 import StripeCheckout from "./pages/StripeCheckout";
 import CheckoutForm from "./pages/CheckoutForm";
 import CompletePage from "./pages/CompletePage";
+import ResetPassword from "./features/auth/components/ResetPassword";
+
+const LoginPage = lazy(() => import("./pages/LoginPage"));
+const Home = lazy(() => import("./pages/Home"));
+const SignupPage = lazy(() => import("./pages/SignupPage"));
+const CartPage = lazy(() => import("./pages/CartPage"));
+const Checkout = lazy(() => import("./pages/Checkout"));
+const ProductDetailPage = lazy(() => import("./pages/ProductDetailPage"));
+
+const PageNotFound = lazy(() => import("./pages/404"));
+const OrderSuccessPage = lazy(() => import("./pages/OrderSuccessPage"));
+const UserOrders = lazy(() => import("./features/user/components/userOrders"));
+const UserOrdersPage = lazy(() => import("./pages/UserOrdersPage"));
+const UserProfile = lazy(() =>
+  import("./features/user/components/userProfile")
+);
+const UserProfilePage = lazy(() => import("./pages/userProfilePage"));
 
 const router = createBrowserRouter([
   {
@@ -73,6 +77,10 @@ const router = createBrowserRouter([
   {
     path: "/forgot-password",
     element: <ForgotPassword></ForgotPassword>,
+  },
+  {
+    path: "/reset-password",
+    element: <ResetPassword> </ResetPassword>,
   },
   {
     path: "/signup",
@@ -214,7 +222,11 @@ function App() {
     <div className="App">
       {userChecked && (
         <>
-          <RouterProvider router={router} />
+          <Suspense
+            fallback={<div className="p-8 text-center">Loading...</div>}
+          >
+            <RouterProvider router={router} />
+          </Suspense>
           <ToastContainer />
         </>
       )}
