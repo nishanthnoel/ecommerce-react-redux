@@ -32,6 +32,37 @@ function ProductForm() {
   const selectedProduct = useSelector(selectProductById);
   const [openModal, setOpenModal] = useState(null);
 
+  const colors = [
+    {
+      name: "White",
+      class: "bg-white",
+      selectedClass: "ring-gray-400",
+      id: "white ",
+    },
+    {
+      name: "Gray",
+      class: "bg-gray-200",
+      selectedClass: "ring-gray-400",
+      id: "gray",
+    },
+    {
+      name: "Black",
+      class: "bg-gray-900",
+      selectedClass: "ring-gray-900",
+      id: "black",
+    },
+  ];
+  const sizes = [
+    { name: "XXS", inStock: true, id: "xxs" },
+    { name: "XS", inStock: true, id: "xs" },
+    { name: "S", inStock: true, id: "s" },
+    { name: "M", inStock: true, id: "m" },
+    { name: "L", inStock: true, id: "l" },
+    { name: "XL", inStock: true, id: "xl" },
+    { name: "2XL", inStock: true, id: "2xl" },
+    { name: "3XL", inStock: true, id: "3xl" },
+  ];
+
   //This useEffect is just to fetch the product id.
   useEffect(() => {
     console.log(params.id);
@@ -58,6 +89,14 @@ function ProductForm() {
       setValue("price", selectedProduct.price);
       setValue("brand", selectedProduct.brand);
       setValue("category", selectedProduct.category);
+      setValue("highlight1", selectedProduct.highlights[0]);
+      setValue("highlight2", selectedProduct.highlights[1]);
+      setValue("highlight3", selectedProduct.highlights[2]);
+      setValue("highlight4", selectedProduct.highlights[3]);
+      // setValue("sizes", selectedProduct.sizes); // the text box wernt getting selected since we have pased the whole array of objects. so we map it. 
+      // setValue("colors", selectedProduct.colors); // the text box wernt getting selected since we have pased the whole array of objects. so we map it.
+      setValue("sizes", selectedProduct.sizes.map((size) => size.id));
+      setValue("colors", selectedProduct.colors.map((color) => color.id));
     }
   }, [selectedProduct, params.id, setValue]);
 
@@ -75,7 +114,8 @@ function ProductForm() {
         <form
           noValidate
           onSubmit={handleSubmit((data) => {
-            // console.log(data);
+            console.log(data);
+            // return;  // we used this to test the form without submitting
             const product = { ...data };
             product.images = [
               product.image1,
@@ -83,16 +123,28 @@ function ProductForm() {
               product.image3,
               product.thumbnail,
             ];
+            product.highlights = [
+              product.highlight1,
+              product.highlight2,
+              product.highlight3,
+              product.highlight4,
+            ];
             // product.rating = 0;  //default rating for new product
-            product.price = +product.price;
-            product.stock = +product.stock;
-            product.discountPercentage = +product.discountPercentage;
-
+            product.colors = product.colors.map((color) =>
+              colors.find((clr) => clr.id === color)
+            );
+            product.sizes = product.sizes.map((size) =>
+              sizes.find((sz) => sz.id === size)
+            );
             delete product["image1"];
             delete product["image2"];
             delete product["image3"];
-            // console.log(product);
 
+            product.price = +product.price;
+            product.stock = +product.stock;
+            product.discountPercentage = +product.discountPercentage;
+            console.log(product);
+            // return // used to chek the findOne of color and size
             if (params.id) {
               product.id = params.id;
               product.rating = selectedProduct.rating || 0; //if there is previous rating then we give the previous one
@@ -162,6 +214,56 @@ function ProductForm() {
                     </select>
                   </div>
                 </div>
+                <div className="col-span-full">
+                  <label
+                    htmlFor="colors"
+                    className="block text-sm/6 font-semibold  text-gray-900 "
+                  >
+                    Colors
+                  </label>
+                  <div className="mt-2">
+                    {/* <select
+                      className="col-span-3 rounded-md"
+                      {...register("brand", {
+                        required: "brand is required",
+                      })}
+                    > */}
+                    {/* <option>--choose brand--</option> */}
+                    {colors.map((color, index) => (
+                      <>
+                        <input
+                          {...register("colors", {})}
+                          key={color.id}
+                          type="checkbox"
+                          value={color.id}
+                        />
+                        {color.name}
+                      </>
+                    ))}
+                  </div>
+                </div>
+                <div className="col-span-full">
+                  <label
+                    htmlFor="sizes"
+                    className="block text-sm/6 font-semibold  text-gray-900 "
+                  >
+                    Sizes
+                  </label>
+                  <div className="mt-2">
+                    {sizes.map((size, index) => (
+                      <>
+                        <input
+                          {...register("sizes", {})}
+                          key={size.id}
+                          type="checkbox"
+                          value={size.id}
+                        />
+                        {size.name}
+                      </>
+                    ))}
+                  </div>
+                </div>
+
                 <div className="col-span-full">
                   <label
                     htmlFor="title"
@@ -343,6 +445,79 @@ function ProductForm() {
                         {...register("image3", {
                           required: "image is required",
                         })}
+                        type="text"
+                        className="block w-full rounded-md min-w-0 grow py-1.5 pr-3 pl-1 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="col-span-full">
+                  <label
+                    htmlFor="highlight1"
+                    className="block text-sm/6 font-semibold  text-gray-900"
+                  >
+                    Highlight 1
+                  </label>
+                  <div className="mt-2">
+                    <div className="flex items-center rounded-md bg-white pl-3 outline-1 -outline-offset-1 outline-gray-300 focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-indigo-600 ">
+                      <input
+                        id="highlight1"
+                        {...register("highlight1", {})}
+                        type="text"
+                        className="block w-full rounded-md min-w-0 grow py-1.5 pr-3 pl-1 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div className="col-span-full">
+                  <label
+                    htmlFor="highlight2"
+                    className="block text-sm/6 font-semibold  text-gray-900"
+                  >
+                    Highlight 2
+                  </label>
+                  <div className="mt-2">
+                    <div className="flex items-center rounded-md bg-white pl-3 outline-1 -outline-offset-1 outline-gray-300 focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-indigo-600 ">
+                      <input
+                        id="highlight2"
+                        {...register("highlight2", {})}
+                        type="text"
+                        className="block w-full rounded-md min-w-0 grow py-1.5 pr-3 pl-1 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div className="col-span-full">
+                  <label
+                    htmlFor="highlight3"
+                    className="block text-sm/6 font-semibold  text-gray-900"
+                  >
+                    Highlight 3
+                  </label>
+                  <div className="mt-2">
+                    <div className="flex items-center rounded-md bg-white pl-3 outline-1 -outline-offset-1 outline-gray-300 focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-indigo-600 ">
+                      <input
+                        id="highlight3"
+                        {...register("highlight3", {})}
+                        type="text"
+                        className="block w-full rounded-md min-w-0 grow py-1.5 pr-3 pl-1 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div className="col-span-full">
+                  <label
+                    htmlFor="highlight4"
+                    className="block text-sm/6 font-semibold  text-gray-900"
+                  >
+                    Highlight 4
+                  </label>
+                  <div className="mt-2">
+                    <div className="flex items-center rounded-md bg-white pl-3 outline-1 -outline-offset-1 outline-gray-300 focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-indigo-600 ">
+                      <input
+                        id="highlight4"
+                        {...register("highlight4", {})}
                         type="text"
                         className="block w-full rounded-md min-w-0 grow py-1.5 pr-3 pl-1 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none"
                       />

@@ -14,7 +14,7 @@ function ProtectedAdmin({ children }) {
   if (!user) {
     return <Navigate to="/login" replace={true}></Navigate>;
   }
-  if (user && userInfo.role !== "admin") {
+  if (userInfo && userInfo.role !== "admin") {  // this has been changed to userInfo from user in node last part 49.50
     return <Navigate to="/" replace={true}></Navigate>;
   }
   return children; // If the user is logged in AND is an admin:

@@ -77,7 +77,10 @@ export function loginUser(loginInfo) {
         resolve({ data });
       } else {
         // If body has an error field, prefer it. Otherwise fall back to statusText.
-        const errMsg = (data && (data.error || data.message)) || response.statusText || "Login failed";
+        const errMsg =
+          (data && (data.error || data.message)) ||
+          response.statusText ||
+          "Login failed";
         // reject with a serializable object
         reject({ error: errMsg });
       }
@@ -98,8 +101,7 @@ export function checkAuth() {
         credentials: "include",
       });
       if (response.ok) {
-        const data = await response.json();
-        resolve({ data });
+        resolve({ data: "Success" });
       } else {
         const error = await response.text();
         reject({ error });
@@ -111,10 +113,23 @@ export function checkAuth() {
   });
 }
 
-export function signOut(userId) {
-  return new Promise(async (resolve) => {
-    // TODO: on server we will remove user session info
-    resolve({ data: "success" });
+export function signOut() {
+  console.log("signOut called");
+  return new Promise(async (resolve, reject) => {
+    try {
+      const response = await fetch("/auth/logout", {
+        credentials: "include",
+      });
+      if (response.ok) {
+        resolve({ data: "Success" });
+      } else {
+        const error = await response.text();
+        reject({ error });
+      }
+      //   console.log(data);
+    } catch (error) {
+      reject({ error });
+    }
   });
 }
 

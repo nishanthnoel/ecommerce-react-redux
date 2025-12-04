@@ -4,8 +4,8 @@ import {
   checkAuth,
   createUser,
   loginUser,
-  resetPassword,
   signOut,
+  resetPassword,
 } from "./authAPI";
 import { resetPasswordRequest } from "./authAPI";
 
@@ -77,11 +77,16 @@ export const checkAuthAsync = createAsyncThunk(
 //   }
 // );
 export const signOutAsync = createAsyncThunk(
-  "user/signOut",
-  async (loginInfo) => {
-    const response = await signOut(loginInfo);
-    // The value we return becomes the `fulfilled` action payload
-    return response.data;
+  "user/signout",
+  async (_, { rejectWithValue }) => {
+    console.log("logout dispatched");
+    try {
+      const response = await signOut(); // must include credentials
+      return response.data;
+    } catch (error) {
+      // ✅ Properly reject so reducer handles it
+      return rejectWithValue(error.response?.data || error.message);
+    }
   }
 );
 

@@ -79,108 +79,145 @@ function AdminOrders() {
   return (
     <>
       <div className="overflow-x-auto">
-        <div className=" bg-gray-100 flex items-center justify-center bg-gray-100 font-sans overflow-hidden">
-          <div className="w-full ">
+        <div className="flex items-center justify-center bg-gray-100 font-sans overflow-hidden">
+          <div className=" w-full overFlow-x-auto">
             <div className="bg-white shadow-md rounded my-6">
-              <table className="min-w-max w-full table-auto">
-                <thead>
-                  <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
-                    <th
-                      className="py-3 px-6 text-left cursor-pointer"
-                      onClick={(e) =>
-                        handleSort({
-                          sort: "id",
-                          order: sort?._order === "asc" ? "desc" : "asc",
-                        })
-                      }
-                    >
-                      Order #
-                      {sort._sort === "id" &&
-                        (sort._order === "asc" ? (
-                          <ArrowUpIcon className="w-4 h-4 inline ml-2"></ArrowUpIcon>
-                        ) : (
-                          <ArrowDownIcon className="w-4 h-4 inline ml-2"></ArrowDownIcon>
-                        ))}
-                    </th>
-                    <th className="py-3 px-6 text-left">Items</th>
-                    <th
-                      className="py-3 px-6 text-left cursor-pointer"
-                      onClick={(e) =>
-                        handleSort({
-                          sort: "totalAmount",
-                          order: sort?._order === "asc" ? "desc" : "asc",
-                        })
-                      }
-                    >
-                      Total Amount{" "}
-                      {sort._sort === "totalAmount" &&
-                        (sort._order === "asc" ? (
-                          <ArrowUpIcon className="w-4 h-4 inline ml-2"></ArrowUpIcon>
-                        ) : (
-                          <ArrowDownIcon className="w-4 h-4 inline ml-2"></ArrowDownIcon>
-                        ))}
-                    </th>
-                    <th className="py-3 px-6 text-center">Shipping Address</th>
-                    <th className="py-3 px-6 text-center">Order Status</th>
-                    {/* this was status */}
-                    <th className="py-3 px-6 text-center">Payment Method</th>
-                    <th className="py-3 px-6 text-center">Payment Status</th>
-                    <th className="py-3 px-6 text-center">Actions</th>
-                  </tr>
-                </thead>
-                <tbody className="text-gray-600 text-sm font-light">
-                  {orders.map((order) => (
-                    <tr className="border-b border-gray-200 hover:bg-gray-100">
-                      <td className="py-3 px-6 text-left whitespace-nowrap">
-                        <div className="flex items-center">
-                          {/* <div className="mr-2">
+              <div className="overflow-x-auto">
+                <table className="min-w-max w-full table-auto">
+                  <thead>
+                    <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
+                      <th
+                        className="py-3 px-6 text-left cursor-pointer"
+                        onClick={(e) =>
+                          handleSort({
+                            sort: "id",
+                            order: sort?._order === "asc" ? "desc" : "asc",
+                          })
+                        }
+                      >
+                        Order #
+                        {sort._sort === "id" &&
+                          (sort._order === "asc" ? (
+                            <ArrowUpIcon className="w-4 h-4 inline ml-2"></ArrowUpIcon>
+                          ) : (
+                            <ArrowDownIcon className="w-4 h-4 inline ml-2"></ArrowDownIcon>
+                          ))}
+                      </th>
+                      <th className="py-3 px-6 text-left">Items</th>
+                      <th
+                        className="py-3 px-6 text-left cursor-pointer"
+                        onClick={(e) =>
+                          handleSort({
+                            sort: "totalAmount",
+                            order: sort?._order === "asc" ? "desc" : "asc",
+                          })
+                        }
+                      >
+                        Total Amount{" "}
+                        {sort._sort === "totalAmount" &&
+                          (sort._order === "asc" ? (
+                            <ArrowUpIcon className="w-4 h-4 inline ml-2"></ArrowUpIcon>
+                          ) : (
+                            <ArrowDownIcon className="w-4 h-4 inline ml-2"></ArrowDownIcon>
+                          ))}
+                      </th>
+                      <th className="py-3 px-6 text-center">
+                        Shipping Address
+                      </th>
+                      <th className="py-3 px-6 text-center">Order Status</th>
+                      {/* this was status */}
+                      <th className="py-3 px-6 text-center">Payment Method</th>
+                      <th className="py-3 px-6 text-center">Payment Status</th>
+                      <th
+                        className="py-3 px-6 text-left cursor-pointer"
+                        onClick={(e) =>
+                          handleSort({
+                            sort: "createdAt",
+                            order: sort?._order === "asc" ? "desc" : "asc",
+                          })
+                        }
+                      >
+                        Ordered Time{" "}
+                        {sort._sort === "createdAt" &&
+                          (sort._order === "asc" ? (
+                            <ArrowUpIcon className="w-4 h-4 inline ml-2"></ArrowUpIcon>
+                          ) : (
+                            <ArrowDownIcon className="w-4 h-4 inline ml-2"></ArrowDownIcon>
+                          ))}
+                      </th>
+                      <th
+                        className="py-3 px-6 text-left cursor-pointer"
+                        onClick={(e) =>
+                          handleSort({
+                            sort: "updatedAt",
+                            order: sort?._order === "asc" ? "desc" : "asc",
+                          })
+                        }
+                      >
+                        Last Updated{" "}
+                        {sort._sort === "updatedAt" &&
+                          (sort._order === "asc" ? (
+                            <ArrowUpIcon className="w-4 h-4 inline ml-2"></ArrowUpIcon>
+                          ) : (
+                            <ArrowDownIcon className="w-4 h-4 inline ml-2"></ArrowDownIcon>
+                          ))}
+                      </th>
+                      <th className="py-3 px-6 text-center">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody className="text-gray-600 text-sm font-light">
+                    {orders.map((order) => (
+                      <tr className="border-b border-gray-200 hover:bg-gray-100">
+                        <td className="py-3 px-6 text-left whitespace-nowrap">
+                          <div className="flex items-center">
+                            {/* <div className="mr-2">
                     
                         </div> */}
-                          <span className="font-medium">{order.id}</span>
-                        </div>
-                      </td>
-                      <td className="py-3 px-6 text-left">
-                        {order.items.map((item) => (
-                          <div className="flex items-center">
-                            <div className="mr-2">
-                              <img
-                                className="w-6 h-6 rounded-full"
-                                src={item.product.thumbnail}
-                                alt={item.product.title}
-                              />
+                            <span className="font-medium">{order.id}</span>
+                          </div>
+                        </td>
+                        <td className="py-3 px-6 text-left">
+                          {order.items.map((item) => (
+                            <div className="flex items-center">
+                              <div className="mr-2">
+                                <img
+                                  className="w-6 h-6 rounded-full"
+                                  src={item.product.thumbnail}
+                                  alt={item.product.title}
+                                />
+                              </div>
+                              <span>
+                                {item.product.title} - <b>Q:</b> {item.quantity}{" "}
+                                - <b>$:</b> {discountedPrice(item.product)}
+                              </span>
                             </div>
-                            <span>
-                              {item.product.title} - <b>Q:</b> {item.quantity} -{" "}
-                              <b>$:</b> {discountedPrice(item.product)}
+                          ))}
+                        </td>
+                        <td className="py-3 px-6 text-center">
+                          <div className="flex items-center justify-center">
+                            {" "}
+                            <span className="bg-purple-200 py-1 px-3 rounded-full text-xs">
+                              ${order.totalAmount}
                             </span>
                           </div>
-                        ))}
-                      </td>
-                      <td className="py-3 px-6 text-center">
-                        <div className="flex items-center justify-center">
-                          {" "}
-                          <span className="bg-purple-200 py-1 px-3 rounded-full text-xs">
-                            ${order.totalAmount}
-                          </span>
-                        </div>
-                      </td>
-                      <td className="py-3 px-6 text-center">
-                        <span className="bg-purple-200py-1 px-3 rounded-full text-xs">
-                          <strong>{order.selectedAddress.name},</strong>
-                          <div>email: {order.selectedAddress.email},</div>
-                          <div>ph: {order.selectedAddress.phone},</div>
-                          <div>
-                            {order.selectedAddress.street},{" "}
-                            {order.selectedAddress.city},
-                          </div>
+                        </td>
+                        <td className="py-3 px-6 text-center">
+                          <span className="bg-purple-200py-1 px-3 rounded-full text-xs">
+                            <strong>{order.selectedAddress.name},</strong>
+                            <div>email: {order.selectedAddress.email},</div>
+                            <div>ph: {order.selectedAddress.phone},</div>
+                            <div>
+                              {order.selectedAddress.street},{" "}
+                              {order.selectedAddress.city},
+                            </div>
 
-                          <div>
-                            {order.selectedAddress.state} -{" "}
-                            {order.selectedAddress.pinCode},
-                          </div>
-                        </span>
-                      </td>
-                      {/* <td className="py-3 px-6 text-center">
+                            <div>
+                              {order.selectedAddress.state} -{" "}
+                              {order.selectedAddress.pinCode},
+                            </div>
+                          </span>
+                        </td>
+                        {/* <td className="py-3 px-6 text-center">
                         <div className="flex items-center justify-center">
                           {" "}
                           <span className="bg-purple-200 py-1 px-3 rounded-full text-xs">
@@ -188,65 +225,88 @@ function AdminOrders() {
                           </span>
                         </div>
                       </td> */}
-                      <td className="py-3 px-6 text-center">
-                        {order.id === editableOrderId ? (
-                          <select onChange={(e) => handleOrderStatus(e, order)}>
-                            <option value="pending">Pending</option>
-                            <option value="dispatched">Dispatched</option>
-                            <option value="delivered">Delivered</option>
-                            <option value="cancelled">Cancelled</option>
-                          </select>
-                        ) : (
-                          <span
-                            className={`${chooseColor(
-                              order.status
-                            )} py-1 px-3 rounded-full text-xs `}
-                          >
-                            {order.status}
-                          </span>
-                        )}
-                      </td>
-                      {/* paymet method */}
-                      <td className="py-3 px-6 text-center">
-                        <div className="flex items-center justify-center">
-                          {" "}
-                          <span className="bg-purple-200 py-1 px-3 rounded-full text-xs">
-                            ${order.paymentMethod}
-                          </span>
-                        </div>
-                      </td>
-                      {/* this is payment status */}
-                      <td className="py-3 px-6 text-center">
-                        {order.id === editableOrderId ? (
-                          <select
-                            onChange={(e) => handlePaymentStatus(e, order)}
-                          >
-                            <option value="pending">Pending</option>
-                            <option value="received">Received</option>
-                          </select>
-                        ) : (
-                          <span
-                            className={`${chooseColor(
-                              order.PaymentStatus
-                            )} py-1 px-3 rounded-full text-xs `}
-                          >
-                            {order.PaymentStatus}
-                          </span>
-                        )}
-                      </td>
-                      <td className="py-3 px-6 text-center">
-                        <div className="flex item-center justify-center">
-                          <div className="w-4 mr-2 transform hover:text-purple-500 hover:scale-120">
-                            <EyeIcon
-                              onClick={(e) => handleShow(e, order)}
-                            ></EyeIcon>
+                        <td className="py-3 px-6 text-center">
+                          {order.id === editableOrderId ? (
+                            <select
+                              onChange={(e) => handleOrderStatus(e, order)}
+                            >
+                              <option value="pending">Pending</option>
+                              <option value="dispatched">Dispatched</option>
+                              <option value="delivered">Delivered</option>
+                              <option value="cancelled">Cancelled</option>
+                            </select>
+                          ) : (
+                            <span
+                              className={`${chooseColor(
+                                order.status
+                              )} py-1 px-3 rounded-full text-xs `}
+                            >
+                              {order.status}
+                            </span>
+                          )}
+                        </td>
+                        {/* paymet method */}
+                        <td className="py-3 px-6 text-center">
+                          <div className="flex items-center justify-center">
+                            {" "}
+                            <span className="bg-purple-200 py-1 px-3 rounded-full text-xs">
+                              ${order.paymentMethod}
+                            </span>
                           </div>
-                          <div className="w-4 mr-2 transform hover:text-purple-500 hover:scale-120">
-                            <PencilIcon
-                              onClick={(e) => handleEdit(e, order)}
-                            ></PencilIcon>
+                        </td>
+                        {/* this is payment status */}
+                        <td className="py-3 px-6 text-center">
+                          {order.id === editableOrderId ? (
+                            <select
+                              onChange={(e) => handlePaymentStatus(e, order)}
+                            >
+                              <option value="pending">Pending</option>
+                              <option value="received">Received</option>
+                            </select>
+                          ) : (
+                            <span
+                              className={`${chooseColor(
+                                order.paymentStatus
+                              )} py-1 px-3 rounded-full text-xs `}
+                            >
+                              {order.paymentStatus}
+                            </span>
+                          )}
+                        </td>
+
+                        <td className="py-3 px-6 text-center">
+                          <div className="flex items-center justify-center">
+                            {" "}
+                            <span className="bg-purple-200 py-1 px-3 rounded-full text-xs">
+                              {order.createdAt
+                                ? new Date(order.createdAt).toLocaleString()
+                                : null}
+                            </span>
                           </div>
-                          {/* <div className="w-4 mr-2 transform hover:text-purple-500 hover:scale-110">
+                        </td>
+                        <td className="py-3 px-6 text-center">
+                          <div className="flex items-center justify-center">
+                            {" "}
+                            <span className="bg-purple-200 py-1 px-3 rounded-full text-xs">
+                              {order.updatedAt
+                                ? new Date(order.updatedAt).toLocaleString()
+                                : null}
+                            </span>
+                          </div>
+                        </td>
+                        <td className="py-3 px-6 text-center">
+                          <div className="flex item-center justify-center">
+                            <div className="w-4 mr-2 transform hover:text-purple-500 hover:scale-120">
+                              <EyeIcon
+                                onClick={(e) => handleShow(e, order)}
+                              ></EyeIcon>
+                            </div>
+                            <div className="w-4 mr-2 transform hover:text-purple-500 hover:scale-120">
+                              <PencilIcon
+                                onClick={(e) => handleEdit(e, order)}
+                              ></PencilIcon>
+                            </div>
+                            {/* <div className="w-4 mr-2 transform hover:text-purple-500 hover:scale-110">
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
                               fill="none"
@@ -261,7 +321,7 @@ function AdminOrders() {
                               />
                             </svg>
                           </div> */}
-                          {/* <div className="w-4 mr-2 transform hover:text-purple-500 hover:scale-110">
+                            {/* <div className="w-4 mr-2 transform hover:text-purple-500 hover:scale-110">
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
                               fill="none"
@@ -276,12 +336,13 @@ function AdminOrders() {
                               />
                             </svg>
                           </div> */}
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>
