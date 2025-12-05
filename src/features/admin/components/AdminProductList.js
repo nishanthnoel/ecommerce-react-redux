@@ -39,7 +39,7 @@ import {
   fetchCategoriesAsync,
   fetchBrandsAsync,
 } from "../../product/productSlice";
-import { discountedPrice, ITEMS_PER_PAGE } from "../../../app/constants";
+import {  ITEMS_PER_PAGE } from "../../../app/constants";
 
 // const sortOptions = [
 //   { name: "Best Rating", sort: "-rating", current: false },
@@ -48,8 +48,8 @@ import { discountedPrice, ITEMS_PER_PAGE } from "../../../app/constants";
 // ];
 const sortOptions = [
   { name: "Best Rating", sort: "rating", order: "desc", current: false },
-  { name: "Price: Low to High", sort: "price", order: "asc", current: false },
-  { name: "Price: High to Low", sort: "price", order: "desc", current: false }, // order: "desc" this didnt work in my json server
+  { name: "Price: Low to High", sort: "discountPrice", order: "asc", current: false },
+  { name: "Price: High to Low", sort: "discountPrice", order: "desc", current: false }, // order: "desc" this didnt work in my json server
 ];
 // const subCategories = [
 //   { name: "Totes", href: "#" },
@@ -101,7 +101,6 @@ export default function AdminProductList() {
 
   const handleFilter = (e, section, option) => {
     // e.preventDefault(); // do not do this  doesnt check the checkbox for one click
-    //TODO: handle multiple categories
     // console.log(option.value, section.id); // furniture category
 
     // const newFilter = { ...filter,[section.id] : option.value };
@@ -685,7 +684,7 @@ function ProductGrid({ products }) {
                     <div>
                       <p className="text-sm block font-medium text-gray-900">
                         ${" "}
-                        {discountedPrice(product)}
+                        {product.discountPrice}
                       </p>
                       <p className="text-sm block font-medium text-gray-400 line-through">
                         ${product.price}

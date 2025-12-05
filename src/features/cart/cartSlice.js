@@ -7,17 +7,21 @@ import {
   deleteItemFromCart,
   resetCart,
 } from "./cartAPI";
+// import { toast } from "react-toastify";
 
 const initialState = {
   status: "idle",
   items: [],
-  cartLoaded: false
+  cartLoaded: false,
 };
 
 export const addToCartAsync = createAsyncThunk(
   "cart/addToCart",
   async (item) => {
     const response = await addToCart(item);
+    if (response.ok) {
+      toast.success("Item added 2 da cart");
+    }
     return response.data;
   }
 );
@@ -49,14 +53,11 @@ export const deleteItemFromCartAsync = createAsyncThunk(
     return response.data;
   }
 );
-export const resetCartAsync = createAsyncThunk(
-  "cart/resetCart",
-  async () => {
-    const response = await resetCart();
-    // console.log(response.data) // This just returns item object
-    return response.data;
-  }
-);
+export const resetCartAsync = createAsyncThunk("cart/resetCart", async () => {
+  const response = await resetCart();
+  // console.log(response.data) // This just returns item object
+  return response.data;
+});
 
 // Create a slice for the counter state
 const cartSlice = createSlice({
@@ -82,11 +83,11 @@ const cartSlice = createSlice({
       .addCase(fetchItemsByUserIdAsync.fulfilled, (state, action) => {
         state.status = "idle";
         state.items = action.payload;
-        state.cartLoaded = true
+        state.cartLoaded = true;
       })
       .addCase(fetchItemsByUserIdAsync.rejected, (state, action) => {
         state.status = "idle";
-        state.cartLoaded = true
+        state.cartLoaded = true;
       })
       .addCase(updateCartAsync.pending, (state) => {
         state.status = "loading";

@@ -7,7 +7,6 @@ import {
   selectUserInfoStatus,
   selectUserOrders,
 } from "../userSlice";
-import { discountedPrice } from "../../../app/constants";
 // import { selectLoggedInUserToken } from "../../auth/authSlice";
 
 function UserOrders() {
@@ -75,7 +74,7 @@ function UserOrders() {
                                   </p>
                                 </div>
                                 <p className="ml-4 font-bold">
-                                  ${discountedPrice(item.product)}
+                                  ${item.product.discountPrice}
                                 </p>
                               </div>
                               <p className="mt-1 text-left text-sm text-gray-500">

@@ -45,7 +45,7 @@ function ForgotPassword() {
             noValidate
             onSubmit={handleSubmit((data) => {
               console.log(data);
-              // TODO: implementation of this in the backend
+              // implementation of this in the backend using email is done using nodemailer
               dispatch(resetPasswordRequestAsync(data));
             })}
             className="space-y-6"

@@ -46,7 +46,6 @@ function Signup() {
             noValidate
             onSubmit={handleSubmit((data) => {
               dispatch(createUserAsync({email: data.email, password: data.password, addresses: [], role: 'user'
-                // TODO: this role can be directly given on backend
               }));
               // console.log(data);   // this logs the signup credentials(object with email, password, and confirmPassword)
             })}

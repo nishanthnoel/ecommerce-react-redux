@@ -40,7 +40,7 @@ import {
   fetchBrandsAsync,
   selectProductListStatus,
 } from "../productSlice";
-import { discountedPrice, ITEMS_PER_PAGE } from "../../../app/constants";
+import { ITEMS_PER_PAGE } from "../../../app/constants";
 import Pagination from "../../common/Pagination";
 import LoaderSpinner from "../../common/LoaderSpinner";
 
@@ -51,8 +51,18 @@ import LoaderSpinner from "../../common/LoaderSpinner";
 // ];
 const sortOptions = [
   { name: "Best Rating", sort: "rating", order: "desc", current: false },
-  { name: "Price: Low to High", sort: "price", order: "asc", current: false },
-  { name: "Price: High to Low", sort: "price", order: "desc", current: false }, // order: "desc" this didnt work in my json server
+  {
+    name: "Price: Low to High",
+    sort: "discountPrice",
+    order: "asc",
+    current: false,
+  },
+  {
+    name: "Price: High to Low",
+    sort: "discountPrice",
+    order: "desc",
+    current: false,
+  }, // order: "desc" this didnt work in my json server
 ];
 // const subCategories = [
 //   { name: "Totes", href: "#" },
@@ -105,7 +115,6 @@ export default function ProductList() {
 
   const handleFilter = (e, section, option) => {
     // e.preventDefault(); // do not do this  doesnt check the checkbox for one click
-    //TODO: handle multiple categories
     // console.log(option.value, section.id); // furniture category
 
     // const newFilter = { ...filter,[section.id] : option.value };
@@ -271,7 +280,7 @@ export default function ProductList() {
                     <ProductGrid
                       products={products}
                       status={status}
-                      // LoaderSpinner={LoaderSpinner}
+                      LoaderSpinner={LoaderSpinner}
                     ></ProductGrid>
                   </div>
                   {/* Product Grid End */}
@@ -562,22 +571,11 @@ function DesktopFilter({ handleFilter, filters }) {
   );
 }
 
-function ProductGrid({ products, status, LoaderSpinner}) {
+function ProductGrid({ products, status, LoaderSpinner }) {
   return (
     <>
       <div className="bg-white  min-w-screen  min-h-screen flex items-center justify-center">
-        {status === "loading" ? (
-          <div className="  w-32 h-auto  flex items-center justify-center rounded-lg object-cover lg:block">
-        <img
-            alt="loading..."
-            src="/fade-stagger-circles.svg"  
-            loading = "eager"
-            decoding = "async"
-            fetchpriority = "high" 
-            className="w-32 h-auto flex items-center justify-center rounded-lg object-cover lg:block"
-          />
-            </div>
-        ) : null}
+        {status === "loading" ? <LoaderSpinner  /> : null}
         <div className="mx-auto max-w-2xl px-4 py-0 sm:px-6 sm:py-0 lg:max-w-7xl lg:px-8">
           <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-8">
             {products.map((product) => (
@@ -617,7 +615,7 @@ function ProductGrid({ products, status, LoaderSpinner}) {
                     </div>
                     <div>
                       <p className="text-sm block font-medium text-gray-900">
-                        $ {discountedPrice(product)}
+                        $ {product.discountPrice}
                       </p>
                       <p className="text-sm block font-medium text-gray-400 line-through">
                         ${product.price}

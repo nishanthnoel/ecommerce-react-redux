@@ -8,7 +8,6 @@ export function createUser(userData) {
         "Content-Type": "application/json",
       },
     });
-    // TODO: on server it will return only relevant information of user9not password
     const data = await response.json();
     // console.log(data); // this logs the created user object with id
     resolve({ data });
@@ -34,7 +33,6 @@ export function createUser(userData) {
 //             reject({message: "user not found"})
 //         }
 //     })
-//     // TODO: on server it will return only relevant information of user9not password
 
 // }
 
@@ -90,7 +88,6 @@ export function loginUser(loginInfo) {
       reject({ error: error.message || "Network error" }); // string only
     }
   });
-  // TODO: on server it will return only relevant information of user9not password
 }
 
 export function checkAuth() {

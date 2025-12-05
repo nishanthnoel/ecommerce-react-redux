@@ -6,7 +6,7 @@ import {
   updateOrderAsync,
 } from "../../order/orderSlice";
 import { useEffect, useState } from "react";
-import { discountedPrice, ITEMS_PER_PAGE } from "../../../app/constants";
+import {  ITEMS_PER_PAGE } from "../../../app/constants";
 import {
   ArrowDownIcon,
   ArrowUpIcon,
@@ -188,7 +188,7 @@ function AdminOrders() {
                               </div>
                               <span>
                                 {item.product.title} - <b>Q:</b> {item.quantity}{" "}
-                                - <b>$:</b> {discountedPrice(item.product)}
+                                - <b>$:</b> {item.product.discountPrice}
                               </span>
                             </div>
                           ))}

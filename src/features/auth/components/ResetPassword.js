@@ -56,7 +56,7 @@ function ResetPassword() {
               noValidate
               onSubmit={handleSubmit((data) => {
                 // console.log(data); //this logs the email and password
-                // TODO: implementation of this in the backend
+                //implementation of this in the backend using email is done using nodemailer
                 dispatch(
                   resetPasswordAsync({ email, token, password: data.password })
                 );

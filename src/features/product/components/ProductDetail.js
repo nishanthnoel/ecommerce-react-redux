@@ -6,7 +6,6 @@ import { selectProductById, fetchProductByIdAsync } from "../productSlice";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import { addToCartAsync, selectItems } from "../../cart/cartSlice";
-import { discountedPrice } from "../../../app/constants";
 import { ToastContainer, toast } from "react-toastify";
 
 // TODO: in server we will add color, size, and highlights
@@ -26,12 +25,6 @@ import { ToastContainer, toast } from "react-toastify";
 //   { name: "2XL", inStock: true },
 //   { name: "3XL", inStock: true },
 // ];
-const highlights = [
-  "Hand cut and sewn locally",
-  "Dyed with our proprietary colors",
-  "Pre-washed & pre-shrunk",
-  "Ultra-soft 100% cotton",
-];
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -62,18 +55,20 @@ export default function ProductDetail() {
         product: product.id, // again productId has been changed to just product when connecting to backend
         quantity: 1,
       };
-      if(selectedColor){
+      if (selectedColor) {
         newItem.color = selectedColor;
       }
-      if(selectedSize){
+      if (selectedSize) {
         newItem.size = selectedSize;
       }
       // console.log(product)
       // delete newItem["id"]; //not requiredwhen connecting to backend
-      dispatch(addToCartAsync(newItem)); // now we have removed the id here. SO, in the next step the backend creates the id all by itself
-      // dispatch(addToCartAsync({...product, quantity:1, user: user.id}))// this was the old code. where the product id and user id were clashing
+      dispatch(addToCartAsync(newItem)) // now we have removed the id here. SO, in the next step the backend creates the id all by itself
+        .unwrap()  //.unwrap() converts the dispatch into a real promise: If thunk is fulfilled, .unwrap() resolves → .then() runs. If thunk is rejected, .unwrap() rejects → .catch() runs
+        .then(() => toast.success("Item added")) 
+        .catch(() => toast.error("Error adding item")); // dispatch(addToCartAsync({...product, quantity:1, user: user.id}))// this was the old code. where the product id and user id were clashing
       //TODO: the alert will be based on the server response of the backend
-      toast.success("Product added to Cart");
+      // toast.success("Product added to Cart");
     } else {
       // console.log("already added");
       // toast("already added");
@@ -181,7 +176,7 @@ export default function ProductDetail() {
                 ${product.price}
               </p>
               <p className="text-3xl tracking-tight text-gray-900">
-                ${discountedPrice(product)}
+                ${product.discountPrice}
               </p>
 
               {/* Reviews */}
@@ -332,22 +327,26 @@ export default function ProductDetail() {
                 </div>
               </div>
 
-             {product.highlights && <div className="mt-10">
-                <h3 className="text-sm font-medium text-gray-900">
-                  Highlights
-                </h3>
+              {product.highlights && (
+                <div className="mt-10">
+                  <h3 className="text-sm font-medium text-gray-900">
+                    Highlights
+                  </h3>
 
-                <div className="mt-4">
-                  <ul role="list" className="list-disc space-y-2 pl-4 text-sm">
-                    {product.highlights.map((highlight) => (
-                      <li key={highlight} className="text-gray-400">
-                        <span className="text-gray-600">{highlight}</span>
-                      </li>
-                    ))}
-                  </ul>
+                  <div className="mt-4">
+                    <ul
+                      role="list"
+                      className="list-disc space-y-2 pl-4 text-sm"
+                    >
+                      {product.highlights.map((highlight) => (
+                        <li key={highlight} className="text-gray-400">
+                          <span className="text-gray-600">{highlight}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 </div>
-              </div>
-}
+              )}
               <div className="mt-10">
                 <h2 className="text-sm font-medium text-gray-900">Details</h2>
 

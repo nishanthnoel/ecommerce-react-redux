@@ -12,7 +12,7 @@ function UserProfile() {
   const [selectEditIndex, setSelectEditIndex] = useState(-1);
   const [showAddAddressForm, setShowAddAddressForm] = useState(false);
   // selectUserInfo and selectLoggedInUserToken = {name: "Guest", email: "email@gmail,com", addresses: []}
-// TODO : we will add payment section when we work on backend
+
 
   const handleEdit = (addressUpdate, index) => {
     const newUser = { ...userInfo, addresses: [...userInfo.addresses] }; // for shallow copy issue

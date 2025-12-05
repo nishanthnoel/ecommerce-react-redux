@@ -90,7 +90,6 @@ export async function createProduct(product) {
 //               "Content-Type": "application/json",
 //           },
 //   })
-//   // TODO: on server it will return only relevant information of user9not password
 //       const data = await response.json()
 //       console.log(data)  // this logs the created user object with id
 //       resolve({data})
@@ -119,17 +118,14 @@ export async function fetchCategories() {
 
 export function updateProduct(update) {
   return new Promise(async (resolve) => {
-    const response = await fetch(
-      "/products/" + update.id,
-      {
-        method: "PATCH", // this is to modify the database of the item where as slice is to modify the state
-        body: JSON.stringify(update), // this is the patch request with updated item object
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    const response = await fetch("/products/" + update.id, {
+      method: "PATCH", // this is to modify the database of the item where as slice is to modify the state
+      body: JSON.stringify(update), // this is the patch request with updated item object
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
     const data = await response.json();
     // console.log(data);
     resolve({ data });
@@ -157,9 +153,10 @@ export async function fetchProductsByFilters(filter, sort, pagination, admin) {
     const categoryValues = filter[key];
     console.log(categoryValues); //furniture
     if (categoryValues.length) {
-      const lastCategoryValue = categoryValues[categoryValues.length - 1];
+      // const lastCategoryValue = categoryValues[categoryValues.length - 1]; //to select multiple category and brand filter we need to remove this. instead send the whole array
       // console.log(lastCategoryValue);
-      queryString += `${key}=${lastCategoryValue}&`;
+      // queryString += `${key}=${lastCategoryValue}&`;  //to select multiple category and brand filter we need to remove this. instead send the whole array
+      queryString += `${key}=${categoryValues}&`;  // we send the whole array to backend for filtering
       // console.log(queryString);
     }
   }

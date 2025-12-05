@@ -79,7 +79,7 @@ const userSlice = createSlice({
 
 // Export actions so they can be dispatched
 export const { increment } = userSlice.actions;
-//TOdo: change the orders and addresses independent of each other. my code works fine and is independent
+// change the orders and addresses independent of each other. my code works fine and is independent
 export const selectUserOrders = (state) => state.user.userInfo.orders;
 export const selectUserInfo   = (state) => state.user.userInfo;
 export const selectUserInfoStatus   = (state) => state.status;
